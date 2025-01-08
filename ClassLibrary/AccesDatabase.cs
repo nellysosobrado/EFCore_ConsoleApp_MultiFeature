@@ -1,6 +1,6 @@
 ﻿namespace ClassLibrary
 {
-    internal class Program
+    internal class AccesDatabase
     {
         static void Main(string[] args)
         {
