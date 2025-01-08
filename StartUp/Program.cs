@@ -1,4 +1,5 @@
 ﻿using Spectre.Console;
+using StartUp;
 
 namespace StartUp
 {
@@ -17,28 +18,24 @@ namespace StartUp
             Console.Clear();
 
             var option = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
+                new SelectionPrompt<MenuOptions>()
                     .Title("[green]Choose an option:[/]")
-                    .WrapAround(true)
-                    .AddChoices(new[] { "Start Calculator", "Exit" }));
+                    .UseConverter(option => option.GetDescription()) 
+                    .AddChoices(Enum.GetValues<MenuOptions>()));
 
             switch (option)
             {
-                case "Start Calculator":
+                case MenuOptions.StartCalculator:
                     break;
 
+                case MenuOptions.StartShapes:
+                    break;
 
-                case "Exit":
+                case MenuOptions.Exit:
                     AnsiConsole.MarkupLine("[red]Exiting the application...[/]");
                     Environment.Exit(0);
                     break;
-
-                default:
-                    AnsiConsole.MarkupLine("[yellow]Invalid option. Try again![/]");
-                    break;
             }
         }
-
-      
     }
 }
