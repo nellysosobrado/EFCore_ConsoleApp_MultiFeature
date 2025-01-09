@@ -5,12 +5,12 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Checking database...");
+        //Console.WriteLine("Checking database...");
 
-        var dbContext = DatabaseConfig.GetDbContext();
+        //var dbContext = DatabaseConfig.GetDbContext();
 
-        dbContext.Database.EnsureCreated();
+        //dbContext.Database.EnsureCreated();
 
-        Console.WriteLine("Creatwed and connected!");
+        //Console.WriteLine("Creatwed and connected!");
     }
 }

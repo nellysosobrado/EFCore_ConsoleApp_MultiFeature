@@ -2,6 +2,7 @@
 using ClassLibrary.Enums;
 using ClassLibrary.Models;
 using ClassLibrary.Services;
+using Spectre.Console;
 
 namespace CalculatorApp.Controllers;
 
@@ -20,51 +21,54 @@ public class CalculatorController
     {
         while (true)
         {
-            Console.Clear();
-            Console.WriteLine("Calc");
-            Console.WriteLine("1. Calculate");
-            Console.WriteLine("2. Histroy");
-            Console.WriteLine("3. Main Menu");
-            Console.Write(">");
+            AnsiConsole.Clear();
+            var choice = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("[italic yellow]Calculator Menu[/]")
+                    .PageSize(4)
+                    .AddChoices(new[] {
+                        "Calculate",
+                        "History",
+                        "Main Menu"
+                    }));
 
-            var input = Console.ReadLine();
-
-            switch (input)
+            switch (choice)
             {
-                case "1":
+                case "Calculate":
                     PerformCalculation();
                     break;
 
-                case "2":
+                case "History":
                     ShowCalculations();
                     break;
 
-                case "3":
+                case "Main Menu":
                     return;
-
-                default:
-                    Console.WriteLine("ERROR.");
-                    Console.ReadKey();
-                    break;
             }
         }
     }
 
     private void PerformCalculation()
     {
-        Console.Write("First number: ");
-        var operand1 = double.Parse(Console.ReadLine());
+        var operand1 = AnsiConsole.Prompt(
+            new TextPrompt<double>("Enter the [green]first[/] number:")
+                .PromptStyle("blue")
+                .ValidationErrorMessage("[red]Please enter a valid number[/]"));
 
-        Console.Write("Second Number ");
-        var operand2 = double.Parse(Console.ReadLine());
-
-        Console.Write("Choose (+, -, *, /, %): ");
-        var operatorInput = Console.ReadLine();
+        var operand2 = AnsiConsole.Prompt(
+            new TextPrompt<double>("Enter the [green]second[/] number:")
+                .PromptStyle("blue")
+                .ValidationErrorMessage("[red]Please enter a valid number[/]"));
+         
+        var operatorInput = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("Choose an [green]operator[/]")
+                .PageSize(5)
+                .AddChoices(new[] { "+", "-", "*", "/", "%" }));
 
         if (!TryParseOperator(operatorInput, out CalculatorOperator calculatorOperator))
         {
-            Console.WriteLine("Error, invalid operator");
-            Console.ReadKey();
+            AnsiConsole.MarkupLine("[red]Error: Invalid operator[/]");
             return;
         }
 
@@ -89,10 +93,18 @@ public class CalculatorController
 
         _service.AddCalculation(calculation);
 
-        Console.WriteLine($"Result: {calculation.Result}");
-        Console.WriteLine("Press any key to continue");
+        var panel = new Panel($"{operand1} {operatorInput} {operand2} = {calculation.Result}")
+        {
+            Border = BoxBorder.Double,
+            Padding = new Padding(2, 1)
+        };
+        panel.Header = new PanelHeader("Result");
+
+        AnsiConsole.Write(panel);
+        AnsiConsole.MarkupLine("\nPress any key to continue...");
         Console.ReadKey();
     }
+
     private bool TryParseOperator(string input, out CalculatorOperator calculatorOperator)
     {
         switch (input)
@@ -121,12 +133,34 @@ public class CalculatorController
     private void ShowCalculations()
     {
         var calculations = _service.GetAllCalculations();
+
+        var table = new Spectre.Console.Table()
+            .Border(TableBorder.Rounded)
+            .AddColumn(new TableColumn("Date").Centered())
+            .AddColumn(new TableColumn("Calculation").Centered())
+            .AddColumn(new TableColumn("Result").Centered());
+
         foreach (var calc in calculations)
         {
-            Console.WriteLine($"{calc.CalculationDate}: {calc.Operand1} {calc.Operator} {calc.Operand2} = {calc.Result}");
+            table.AddRow(
+                calc.CalculationDate.ToString(),
+                $"{calc.Operand1} {GetOperatorSymbol(calc.Operator)} {calc.Operand2}",
+                calc.Result.ToString()
+            );
         }
 
-        Console.WriteLine("Press any key to continue to main menu..");
+        AnsiConsole.Write(table);
+        AnsiConsole.MarkupLine("\nPress any key to continue...");
         Console.ReadKey();
     }
+
+    private string GetOperatorSymbol(CalculatorOperator op) => op switch
+    {
+        CalculatorOperator.Add => "+",
+        CalculatorOperator.Subtract => "-",
+        CalculatorOperator.Multiply => "*",
+        CalculatorOperator.Divide => "/",
+        CalculatorOperator.Modulus => "%",
+        _ => "?"
+    };
 }
