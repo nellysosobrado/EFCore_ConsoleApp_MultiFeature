@@ -11,7 +11,7 @@ public class SpectreCalculatorUIService : ICalculatorUIService
         AnsiConsole.Clear();
         return AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-                .Title("[italic yellow]Calculator Menu[/]")
+                .Title("[green]Calculator Menu[/]")
                 .PageSize(4)
                 .AddChoices(new[] {
                     "Calculate",
@@ -33,20 +33,28 @@ public class SpectreCalculatorUIService : ICalculatorUIService
         return AnsiConsole.Prompt(
             new SelectionPrompt<string>()
                 .Title("Choose an [green]operator[/]")
-                .PageSize(5)
-                .AddChoices(new[] { "+", "-", "*", "/", "%" }));
+                .PageSize(6)
+                .AddChoices(new[] { "+", "-", "*", "/", "%", "√" }));
     }
 
     public void ShowResult(double operand1, double operand2, string operatorSymbol, double result)
     {
-        var panel = new Panel($"{operand1} {operatorSymbol} {operand2} = {result}")
-        {
-            Border = BoxBorder.Double,
-            Padding = new Padding(2, 1)
-        };
-        panel.Header = new PanelHeader("Result");
+        Console.Clear();
+        var table = new Table()
+            .Border(TableBorder.Rounded)
+            .Title("[italic green]\nResult[/]")
+            .AddColumn("Expression")
+            .AddColumn("Result");
 
-        AnsiConsole.Write(panel);
+        if (operatorSymbol == "√")
+        {
+            table.AddRow($"√{operand1}", $"{Math.Round(result, 2)}");
+            table.AddRow($"√{operand2}", $"{Math.Round(Math.Sqrt(operand2), 2)}");
+        }
+        else
+        {
+            table.AddRow($"{operand1} {operatorSymbol} {operand2}", $"{Math.Round(result, 2)}");
+        }        AnsiConsole.Write(table);
     }
 
     public void ShowHistory(IEnumerable<Calculator> calculations)
@@ -59,11 +67,26 @@ public class SpectreCalculatorUIService : ICalculatorUIService
 
         foreach (var calc in calculations)
         {
-            table.AddRow(
-                calc.CalculationDate.ToString(),
-                $"{calc.Operand1} {GetOperatorSymbol(calc.Operator)} {calc.Operand2}",
-                calc.Result.ToString()
-            );
+            string expression;
+            if (calc.Operator == CalculatorOperator.SquareRoot)
+            {
+                var secondResult = Math.Sqrt(calc.Operand2);
+                expression = $"√{calc.Operand1}, √{calc.Operand2}";
+                table.AddRow(
+                    calc.CalculationDate.ToString(),
+                    expression,
+                    $"{calc.Result}, {Math.Round(secondResult, 2)}"
+                );
+            }
+            else
+            {
+                expression = $"{calc.Operand1} {GetOperatorSymbol(calc.Operator)} {calc.Operand2}";
+                table.AddRow(
+                    calc.CalculationDate.ToString(),
+                    expression,
+                    calc.Result.ToString()
+                );
+            }
         }
 
         AnsiConsole.Write(table);
@@ -87,6 +110,7 @@ public class SpectreCalculatorUIService : ICalculatorUIService
         CalculatorOperator.Multiply => "*",
         CalculatorOperator.Divide => "/",
         CalculatorOperator.Modulus => "%",
+        CalculatorOperator.SquareRoot => "√",
         _ => "?"
     };
 }

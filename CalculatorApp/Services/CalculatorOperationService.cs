@@ -36,10 +36,22 @@ public class CalculatorOperationService : ICalculatorOperationService
             case "%":
                 calculatorOperator = CalculatorOperator.Modulus;
                 return true;
+            case "√":
+                calculatorOperator = CalculatorOperator.SquareRoot;
+                return true;
             default:
                 calculatorOperator = default;
                 return false;
         }
+    }
+
+    public (double firstResult, double secondResult)? CalculateSquareRoots(double operand1, double operand2)
+    {
+        if (operand1 < 0 || operand2 < 0)
+        {
+            throw new InvalidOperationException("Cannot calculate square root of negative numbers");
+        }
+        return (Math.Sqrt(operand1), Math.Sqrt(operand2));
     }
 
     public double Calculate(double operand1, double operand2, CalculatorOperator calculatorOperator)
@@ -47,6 +59,12 @@ public class CalculatorOperationService : ICalculatorOperationService
         if (calculatorOperator == CalculatorOperator.Divide && operand2 == 0)
         {
             throw new DivideByZeroException("Cannot divide by zero");
+        }
+
+        if (calculatorOperator == CalculatorOperator.SquareRoot)
+        {
+            var results = CalculateSquareRoots(operand1, operand2);
+            return results?.firstResult ?? 0; 
         }
 
         return calculatorOperator switch
