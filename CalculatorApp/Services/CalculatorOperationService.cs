@@ -44,12 +44,17 @@ public class CalculatorOperationService : ICalculatorOperationService
 
     public double Calculate(double operand1, double operand2, CalculatorOperator calculatorOperator)
     {
+        if (calculatorOperator == CalculatorOperator.Divide && operand2 == 0)
+        {
+            throw new DivideByZeroException("Cannot divide by zero");
+        }
+
         return calculatorOperator switch
         {
             CalculatorOperator.Add => operand1 + operand2,
             CalculatorOperator.Subtract => operand1 - operand2,
             CalculatorOperator.Multiply => operand1 * operand2,
-            CalculatorOperator.Divide => operand2 != 0 ? operand1 / operand2 : double.NaN,
+            CalculatorOperator.Divide => operand1 / operand2,
             CalculatorOperator.Modulus => operand1 % operand2,
             _ => throw new InvalidOperationException("Invalid operator")
         };
@@ -62,6 +67,11 @@ public class CalculatorOperationService : ICalculatorOperationService
         {
             var errors = string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage));
             throw new ValidationException(errors);
+        }
+
+        if (double.IsInfinity(calculation.Result) || double.IsNaN(calculation.Result))
+        {
+            throw new InvalidOperationException("Result is invalid (Infinity or NaN)");
         }
 
         _service.AddCalculation(calculation);

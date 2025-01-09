@@ -19,14 +19,9 @@ public class CalculatorValidator : AbstractValidator<Calculator>
                 calculator.Operator != CalculatorOperator.Divide || operand2 != 0)
             .WithMessage("Cannot divide by zero");
 
-        RuleFor(x => x.Operator)
-            .IsInEnum()
-            .WithMessage("Invalid operator");
+        //RuleFor(x => x.Operator)
+        //    .IsInEnum()
+        //    .WithMessage("Invalid operator");
 
-        RuleFor(x => x.CalculationDate)
-            .NotNull()
-            .WithMessage("Calculation date is required")
-            .LessThanOrEqualTo(DateTime.Now)
-            .WithMessage("Calculation date cannot be in the future");
     }
 }

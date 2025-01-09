@@ -2,35 +2,31 @@
 using ClassLibrary.Enums;
 using ClassLibrary.Models;
 using ClassLibrary.Services;
-using Spectre.Console;
+using CalculatorApp.Services;
+using FluentValidation;
 
 namespace CalculatorApp.Controllers;
 
 public class CalculatorController
 {
-    private readonly CalculatorService _service;
+    private readonly ICalculatorUIService _uiService;
+    private readonly ICalculatorOperationService _operationService;
 
     public CalculatorController()
     {
         var accessDatabase = new AccessDatabase();
         var dbContext = accessDatabase.GetDbContext();
-        _service = new CalculatorService(dbContext);
+        var calculatorService = new CalculatorService(dbContext);
+
+        _uiService = new SpectreCalculatorUIService();
+        _operationService = new CalculatorOperationService(calculatorService);
     }
 
     public void Start()
     {
         while (true)
         {
-            AnsiConsole.Clear();
-            var choice = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                    .Title("[italic yellow]Calculator Menu[/]")
-                    .PageSize(4)
-                    .AddChoices(new[] {
-                        "Calculate",
-                        "History",
-                        "Main Menu"
-                    }));
+            var choice = _uiService.ShowMainMenu();
 
             switch (choice)
             {
@@ -42,7 +38,7 @@ public class CalculatorController
                     ShowCalculations();
                     break;
 
-                case "Main Menu":
+                case "3Main Menu":
                     return;
             }
         }
@@ -50,117 +46,59 @@ public class CalculatorController
 
     private void PerformCalculation()
     {
-        var operand1 = AnsiConsole.Prompt(
-            new TextPrompt<double>("Enter the [green]first[/] number:")
-                .PromptStyle("blue")
-                .ValidationErrorMessage("[red]Please enter a valid number[/]"));
-
-        var operand2 = AnsiConsole.Prompt(
-            new TextPrompt<double>("Enter the [green]second[/] number:")
-                .PromptStyle("blue")
-                .ValidationErrorMessage("[red]Please enter a valid number[/]"));
-         
-        var operatorInput = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-                .Title("Choose an [green]operator[/]")
-                .PageSize(5)
-                .AddChoices(new[] { "+", "-", "*", "/", "%" }));
-
-        if (!TryParseOperator(operatorInput, out CalculatorOperator calculatorOperator))
+        try
         {
-            AnsiConsole.MarkupLine("[red]Error: Invalid operator[/]");
-            return;
+            var operand1 = _uiService.GetNumberInput("first");
+            var operand2 = _uiService.GetNumberInput("second");
+            var operatorInput = _uiService.GetOperatorInput();
+
+            if (!_operationService.TryParseOperator(operatorInput, out CalculatorOperator calculatorOperator))
+            {
+                _uiService.ShowError("Invalid operator");
+                return;
+            }
+
+            double result;
+            try
+            {
+                result = _operationService.Calculate(operand1, operand2, calculatorOperator);
+            }
+            catch (DivideByZeroException)
+            {
+                _uiService.ShowError("Cannot divide by zero");
+                return;
+            }
+
+            var calculation = new Calculator
+            {
+                Operand1 = operand1,
+                Operand2 = operand2,
+                Operator = calculatorOperator,
+                Result = Math.Round(result, 2),
+                CalculationDate = DateTime.Now
+            };
+
+            _operationService.SaveCalculation(calculation);
+            _uiService.ShowResult(operand1, operand2, operatorInput, calculation.Result);
         }
-
-        double result = calculatorOperator switch
+        catch (ValidationException ex)
         {
-            CalculatorOperator.Add => operand1 + operand2,
-            CalculatorOperator.Subtract => operand1 - operand2,
-            CalculatorOperator.Multiply => operand1 * operand2,
-            CalculatorOperator.Divide => operand2 != 0 ? operand1 / operand2 : double.NaN,
-            CalculatorOperator.Modulus => operand1 % operand2,
-            _ => throw new InvalidOperationException("Invalid operator")
-        };
-
-        var calculation = new Calculator
+            _uiService.ShowError(ex.Message);
+        }
+        catch (InvalidOperationException ex)
         {
-            Operand1 = operand1,
-            Operand2 = operand2,
-            Operator = calculatorOperator,
-            Result = Math.Round(result, 2),
-            CalculationDate = DateTime.Now
-        };
-
-        _service.AddCalculation(calculation);
-
-        var panel = new Panel($"{operand1} {operatorInput} {operand2} = {calculation.Result}")
+            _uiService.ShowError(ex.Message);
+        }
+        finally
         {
-            Border = BoxBorder.Double,
-            Padding = new Padding(2, 1)
-        };
-        panel.Header = new PanelHeader("Result");
-
-        AnsiConsole.Write(panel);
-        AnsiConsole.MarkupLine("\nPress any key to continue...");
-        Console.ReadKey();
-    }
-
-    private bool TryParseOperator(string input, out CalculatorOperator calculatorOperator)
-    {
-        switch (input)
-        {
-            case "+":
-                calculatorOperator = CalculatorOperator.Add;
-                return true;
-            case "-":
-                calculatorOperator = CalculatorOperator.Subtract;
-                return true;
-            case "*":
-                calculatorOperator = CalculatorOperator.Multiply;
-                return true;
-            case "/":
-                calculatorOperator = CalculatorOperator.Divide;
-                return true;
-            case "%":
-                calculatorOperator = CalculatorOperator.Modulus;
-                return true;
-            default:
-                calculatorOperator = default;
-                return false;
+            _uiService.WaitForKeyPress();
         }
     }
 
     private void ShowCalculations()
     {
-        var calculations = _service.GetAllCalculations();
-
-        var table = new Spectre.Console.Table()
-            .Border(TableBorder.Rounded)
-            .AddColumn(new TableColumn("Date").Centered())
-            .AddColumn(new TableColumn("Calculation").Centered())
-            .AddColumn(new TableColumn("Result").Centered());
-
-        foreach (var calc in calculations)
-        {
-            table.AddRow(
-                calc.CalculationDate.ToString(),
-                $"{calc.Operand1} {GetOperatorSymbol(calc.Operator)} {calc.Operand2}",
-                calc.Result.ToString()
-            );
-        }
-
-        AnsiConsole.Write(table);
-        AnsiConsole.MarkupLine("\nPress any key to continue...");
-        Console.ReadKey();
+        var calculations = _operationService.GetCalculationHistory();
+        _uiService.ShowHistory(calculations);
+        _uiService.WaitForKeyPress();
     }
-
-    private string GetOperatorSymbol(CalculatorOperator op) => op switch
-    {
-        CalculatorOperator.Add => "+",
-        CalculatorOperator.Subtract => "-",
-        CalculatorOperator.Multiply => "*",
-        CalculatorOperator.Divide => "/",
-        CalculatorOperator.Modulus => "%",
-        _ => "?"
-    };
 }
