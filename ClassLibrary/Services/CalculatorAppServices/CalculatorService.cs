@@ -1,7 +1,7 @@
 ﻿using ClassLibrary.Data;
 using ClassLibrary.Models;
 
-namespace ClassLibrary.Services;
+namespace ClassLibrary.Services.CalculatorAppServices;
 
 public class CalculatorService
 {

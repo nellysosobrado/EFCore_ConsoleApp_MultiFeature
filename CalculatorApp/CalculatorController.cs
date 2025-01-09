@@ -1,9 +1,9 @@
 ﻿using ClassLibrary.DataAccess;
-using ClassLibrary.Enums;
 using ClassLibrary.Models;
-using ClassLibrary.Services;
+using ClassLibrary.Services.CalculatorAppServices;
 using CalculatorApp.Services;
 using FluentValidation;
+using ClassLibrary.Enums.CalculatorAppEnums;
 
 namespace CalculatorApp.Controllers;
 

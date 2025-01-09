@@ -1,4 +1,4 @@
-﻿using ClassLibrary.Enums;
+﻿using ClassLibrary.Enums.CalculatorAppEnums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,8 +1,8 @@
 ﻿using Spectre.Console;
 using ClassLibrary.Models;
-using ClassLibrary.Enums;
 using CalculatorApp.Validators;
 using System.Globalization;
+using ClassLibrary.Enums.CalculatorAppEnums;
 
 namespace CalculatorApp.Services;
 

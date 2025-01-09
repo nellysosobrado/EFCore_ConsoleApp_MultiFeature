@@ -1,4 +1,4 @@
-﻿using ClassLibrary.Enums;
+﻿using ClassLibrary.Enums.CalculatorAppEnums;
 using ClassLibrary.Models;
 
 namespace CalculatorApp.Services;

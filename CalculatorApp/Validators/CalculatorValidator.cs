@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using ClassLibrary.Models;
-using ClassLibrary.Enums;
+using ClassLibrary.Enums.CalculatorAppEnums;
 
 namespace CalculatorApp.Validators;
 
