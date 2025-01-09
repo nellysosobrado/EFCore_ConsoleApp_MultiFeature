@@ -1,17 +1,26 @@
 ﻿using Spectre.Console;
 using ClassLibrary.Models;
 using ClassLibrary.Enums;
+using CalculatorApp.Validators;
+using System.Globalization;
 
 namespace CalculatorApp.Services;
 
 public class SpectreCalculatorUIService : ICalculatorUIService
 {
+    private readonly InputValidator _inputValidator;
+
+    public SpectreCalculatorUIService()
+    {
+        _inputValidator = new InputValidator();
+    }
+
     public string ShowMainMenu()
     {
         AnsiConsole.Clear();
         return AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-                .Title("[green]Calculator Menu[/]")
+                .Title("[italic yellow]Calculator Menu[/]")
                 .PageSize(4)
                 .AddChoices(new[] {
                     "Calculate",
@@ -22,11 +31,20 @@ public class SpectreCalculatorUIService : ICalculatorUIService
 
     public double GetNumberInput(string prompt)
     {
-        return AnsiConsole.Prompt(
-            new TextPrompt<double>($"Enter the [green]{prompt}[/] number:")
-                .PromptStyle("blue")
-                .ValidationErrorMessage("[red]Please enter a valid number[/]"));
+        while (true)
+        {
+            var input = AnsiConsole.Ask<string>($"Enter the [green]{prompt}[/] number:");
+
+            var validationResult = _inputValidator.Validate(input);
+            if (validationResult.IsValid)
+            {
+                return double.Parse(input, CultureInfo.InvariantCulture);
+            }
+
+            AnsiConsole.MarkupLine($"[red]{validationResult.Errors[0].ErrorMessage}[/]");
+        }
     }
+
 
     public string GetOperatorInput()
     {

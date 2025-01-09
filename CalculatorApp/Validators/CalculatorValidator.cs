@@ -19,9 +19,10 @@ public class CalculatorValidator : AbstractValidator<Calculator>
                 calculator.Operator != CalculatorOperator.Divide || operand2 != 0)
             .WithMessage("Cannot divide by zero");
 
-        //RuleFor(x => x.Operator)
-        //    .IsInEnum()
-        //    .WithMessage("Invalid operator");
+        RuleFor(x => x.Operator)
+            .IsInEnum()
+            .WithMessage("Invalid operator");
 
+  
     }
 }
