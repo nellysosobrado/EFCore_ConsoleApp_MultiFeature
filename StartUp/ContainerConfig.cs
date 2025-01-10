@@ -8,11 +8,8 @@ using ClassLibrary.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ClassLibrary.Services.CalculatorAppServices;
-<<<<<<< HEAD
-using CalculatorApp.Controllers;
-=======
 using ClassLibrary;
->>>>>>> feature/autofac_implementation
+
 
 namespace Startup;
 
