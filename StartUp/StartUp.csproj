@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CalculatorApp\CalculatorApp.csproj" />
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

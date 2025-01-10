@@ -1,6 +1,5 @@
-﻿using ClassLibrary.DataAccess;
+﻿using ClassLibrary.Enums;
 using ClassLibrary.Models;
-using ClassLibrary.Services.CalculatorAppServices;
 using CalculatorApp.Services;
 using FluentValidation;
 using ClassLibrary.Enums.CalculatorAppEnums;
@@ -12,14 +11,10 @@ public class CalculatorController
     private readonly ICalculatorUIService _uiService;
     private readonly ICalculatorOperationService _operationService;
 
-    public CalculatorController()
+    public CalculatorController(ICalculatorUIService uiService, ICalculatorOperationService operationService)
     {
-        var accessDatabase = new AccessDatabase();
-        var dbContext = accessDatabase.GetDbContext();
-        var calculatorService = new CalculatorService(dbContext);
-
-        _uiService = new SpectreCalculatorUIService();
-        _operationService = new CalculatorOperationService(calculatorService);
+        _uiService = uiService;
+        _operationService = operationService;
     }
 
     public void Start()

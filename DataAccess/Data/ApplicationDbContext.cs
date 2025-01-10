@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : DbContext,IApplicationDbContext
     {
         public DbSet<Models.Calculator> Calculations { get; set; }
 
