@@ -9,8 +9,13 @@ public interface ICalculatorUIService
     double GetNumberInput(string prompt);
     string GetOperatorInput();
     void ShowResult(double operand1, double operand2, string operatorSymbol, double result);
+    void ShowResult(string message);
     void ShowHistory(IEnumerable<Calculator> calculations);
     void ShowError(string message);
     void WaitForKeyPress(string message = "\nPress any key to continue...");
+    int GetCalculationIdForUpdate();
+    int GetCalculationIdForDelete();
+    bool ConfirmDeletion();
+
 
 }

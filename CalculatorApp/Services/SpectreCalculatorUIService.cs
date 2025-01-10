@@ -25,6 +25,8 @@ public class SpectreCalculatorUIService : ICalculatorUIService
                 .AddChoices(new[] {
                     "Calculate",
                     "History",
+                    "Update Calculation",
+                    "Delete Calculation",
                     "Menu"
                 }));
     }
@@ -79,9 +81,10 @@ public class SpectreCalculatorUIService : ICalculatorUIService
     {
         var table = new Table()
             .Border(TableBorder.Rounded)
-            .AddColumn(new TableColumn("Date").Centered())
-            .AddColumn(new TableColumn("Calculation").Centered())
-            .AddColumn(new TableColumn("Result").Centered());
+            .AddColumn(new TableColumn("[yellow]ID[/]").Centered())
+            .AddColumn(new TableColumn("[green]Date[/]").Centered())
+            .AddColumn(new TableColumn("[blue]Calculation[/]").Centered())
+            .AddColumn(new TableColumn("[magenta]Result[/]").Centered());
 
         foreach (var calc in calculations)
         {
@@ -91,18 +94,20 @@ public class SpectreCalculatorUIService : ICalculatorUIService
                 var secondResult = Math.Sqrt(calc.Operand2);
                 expression = $"√{calc.Operand1}, √{calc.Operand2}";
                 table.AddRow(
-                    calc.CalculationDate.ToString(),
-                    expression,
-                    $"{calc.Result}, {Math.Round(secondResult, 2)}"
+                    $"[yellow]{calc.Id}[/]",
+                    $"[green]{calc.CalculationDate}[/]",
+                    $"[blue]{expression}[/]",
+                    $"[magenta]{calc.Result}, {Math.Round(secondResult, 2)}[/]"
                 );
             }
             else
             {
                 expression = $"{calc.Operand1} {GetOperatorSymbol(calc.Operator)} {calc.Operand2}";
                 table.AddRow(
-                    calc.CalculationDate.ToString(),
-                    expression,
-                    calc.Result.ToString()
+                    $"[yellow]{calc.Id}[/]",
+                    $"[green]{calc.CalculationDate}[/]",
+                    $"[blue]{expression}[/]",
+                    $"[magenta]{calc.Result}[/]"
                 );
             }
         }
@@ -131,4 +136,60 @@ public class SpectreCalculatorUIService : ICalculatorUIService
         CalculatorOperator.SquareRoot => "√",
         _ => "?"
     };
+    public int GetCalculationIdForUpdate()
+    {
+        return AnsiConsole.Ask<int>("Enter the [green]ID[/] of the calculation to update:");
+    }
+
+    public int GetCalculationIdForDelete()
+    {
+        return AnsiConsole.Ask<int>("Enter the [green]ID[/] of the calculation to delete:");
+    }
+
+    public bool ConfirmDeletion()
+    {
+        return AnsiConsole.Confirm("Are you sure you want to delete this calculation?");
+    }
+    public void ShowResult(string message)
+    {
+        AnsiConsole.MarkupLine($"[green]{message}[/]");
+    }
+
+    //public void ShowHistory(IEnumerable<Calculator> calculations)
+    //{
+    //    var table = new Table()
+    //        .Border(TableBorder.Rounded)
+    //        .AddColumn(new TableColumn("ID").Centered())
+    //        .AddColumn(new TableColumn("Date").Centered())
+    //        .AddColumn(new TableColumn("Calculation").Centered())
+    //        .AddColumn(new TableColumn("Result").Centered());
+
+    //    foreach (var calc in calculations)
+    //    {
+    //        string expression;
+    //        if (calc.Operator == CalculatorOperator.SquareRoot)
+    //        {
+    //            var secondResult = Math.Sqrt(calc.Operand2);
+    //            expression = $"√{calc.Operand1}, √{calc.Operand2}";
+    //            table.AddRow(
+    //                calc.Id.ToString(),
+    //                calc.CalculationDate.ToString(),
+    //                expression,
+    //                $"{calc.Result}, {Math.Round(secondResult, 2)}"
+    //            );
+    //        }
+    //        else
+    //        {
+    //            expression = $"{calc.Operand1} {GetOperatorSymbol(calc.Operator)} {calc.Operand2}";
+    //            table.AddRow(
+    //                calc.Id.ToString(),
+    //                calc.CalculationDate.ToString(),
+    //                expression,
+    //                calc.Result.ToString()
+    //            );
+    //        }
+    //    }
+
+    //    AnsiConsole.Write(table);
+    //}
 }

@@ -98,8 +98,10 @@ public class CalculatorOperationService : ICalculatorOperationService
 
     public IEnumerable<Calculator> GetCalculationHistory()
     {
-        return _calculatorRepository.GetAllCalculations();
+        return _calculatorRepository.GetAllCalculations()
+            .OrderByDescending(c => c.CalculationDate);
     }
+
     public void UpdateCalculation(int id, double operand1, double operand2, CalculatorOperator calculatorOperator)
     {
         var existingCalculation = _calculatorRepository.GetCalculationById(id);

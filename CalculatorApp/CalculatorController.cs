@@ -33,12 +33,73 @@ public class CalculatorController
                     ShowCalculations();
                     break;
 
-                case "Menu":
+                case "Update Calculation":
+                    UpdateCalculation();
+                    break;
+
+                case "Delete Calculation":
+                    DeleteCalculation();
+                    break;
+
+                case "5. Main Menu":
                     return;
             }
         }
     }
 
+    private void UpdateCalculation()
+    {
+        try
+        {
+            ShowCalculations();
+            var id = _uiService.GetCalculationIdForUpdate();
+
+            var operand1 = _uiService.GetNumberInput("first");
+            var operand2 = _uiService.GetNumberInput("second");
+            var operatorInput = _uiService.GetOperatorInput();
+
+            if (!_operationService.TryParseOperator(operatorInput, out CalculatorOperator calculatorOperator))
+            {
+                _uiService.ShowError("Invalid operator");
+                return;
+            }
+
+            _operationService.UpdateCalculation(id, operand1, operand2, calculatorOperator);
+            _uiService.ShowResult(operand1, operand2, operatorInput,
+                _operationService.Calculate(operand1, operand2, calculatorOperator));
+        }
+        catch (Exception ex)
+        {
+            _uiService.ShowError(ex.Message);
+        }
+        finally
+        {
+            _uiService.WaitForKeyPress();
+        }
+    }
+
+    private void DeleteCalculation()
+    {
+        try
+        {
+            ShowCalculations();
+            var id = _uiService.GetCalculationIdForDelete();
+
+            if (_uiService.ConfirmDeletion())
+            {
+                _operationService.DeleteCalculation(id);
+                _uiService.ShowResult("Calculation deleted successfully");
+            }
+        }
+        catch (Exception ex)
+        {
+            _uiService.ShowError(ex.Message);
+        }
+        finally
+        {
+            _uiService.WaitForKeyPress();
+        }
+    }
     private void PerformCalculation()
     {
         try
