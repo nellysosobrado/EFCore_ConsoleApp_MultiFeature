@@ -25,7 +25,7 @@ public class SpectreCalculatorUIService : ICalculatorUIService
                 .AddChoices(new[] {
                     "Calculate",
                     "History",
-                    "Main Menu"
+                    "Menu"
                 }));
     }
 

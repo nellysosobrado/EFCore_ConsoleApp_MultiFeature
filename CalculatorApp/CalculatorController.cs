@@ -38,7 +38,7 @@ public class CalculatorController
                     ShowCalculations();
                     break;
 
-                case "3Main Menu":
+                case "Menu":
                     return;
             }
         }
