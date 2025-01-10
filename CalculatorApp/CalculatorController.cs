@@ -82,12 +82,7 @@ public class CalculatorController
                         break;
                     case "Calculator Menu":
                         return; 
-                    case "Main Menu":
-                        Start(); 
-                        return;
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -121,9 +116,6 @@ public class CalculatorController
                         DeleteCalculation();
                         break;
                     case "Calculator Menu":
-                        return;
-                    case "Main Menu":
-                        Start();
                         return;
                 }
             }
@@ -181,9 +173,6 @@ public class CalculatorController
                     case "New Calculation":
                         continue;
                     case "Calculator Menu":
-                        return;
-                    case "Main Menu":
-                        Start();
                         return;
                 }
             }
