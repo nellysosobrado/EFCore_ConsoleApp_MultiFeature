@@ -31,6 +31,34 @@ public class SpectreCalculatorUIService : ICalculatorUIService
                 }));
     }
 
+    public string ShowMenuAfterCalc()
+    {
+        return AnsiConsole.Prompt(
+                     new SelectionPrompt<string>()
+                         .Title("[green]What would you like to do next?[/]")
+                         .AddChoices(new[]
+                         {
+                        "New Calculation",
+                        "Calculator Menu",
+                        "Main Menu"
+                         }));
+
+    }
+    public string ShowMenuAfterUpdate()
+    {
+        return AnsiConsole.Prompt(
+                     new SelectionPrompt<string>()
+                         .Title("[green]What would you like to do next?[/]")
+                         .AddChoices(new[]
+                         {
+                        "Update Calculation",
+                        "Calculator Menu",
+                        "Main Menu"
+                         }));
+
+    }
+
+
     public double GetNumberInput(string prompt)
     {
         while (true)
@@ -74,7 +102,8 @@ public class SpectreCalculatorUIService : ICalculatorUIService
         else
         {
             table.AddRow($"{operand1} {operatorSymbol} {operand2}", $"{Math.Round(result, 2)}");
-        }        AnsiConsole.Write(table);
+        }
+        AnsiConsole.Write(table);
     }
 
     public void ShowHistory(IEnumerable<Calculator> calculations)

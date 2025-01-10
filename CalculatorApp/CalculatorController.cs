@@ -50,33 +50,52 @@ public class CalculatorController
 
     private void UpdateCalculation()
     {
-        try
+        while(true)
         {
-            ShowCalculations();
-            var id = _uiService.GetCalculationIdForUpdate();
-
-            var operand1 = _uiService.GetNumberInput("first");
-            var operand2 = _uiService.GetNumberInput("second");
-            var operatorInput = _uiService.GetOperatorInput();
-
-            if (!_operationService.TryParseOperator(operatorInput, out CalculatorOperator calculatorOperator))
+            try
             {
-                _uiService.ShowError("Invalid operator");
-                return;
-            }
+                ShowCalculations();
+                var id = _uiService.GetCalculationIdForUpdate();
 
-            _operationService.UpdateCalculation(id, operand1, operand2, calculatorOperator);
-            _uiService.ShowResult(operand1, operand2, operatorInput,
-                _operationService.Calculate(operand1, operand2, calculatorOperator));
+                var operand1 = _uiService.GetNumberInput("first");
+                var operand2 = _uiService.GetNumberInput("second");
+                var operatorInput = _uiService.GetOperatorInput();
+
+                if (!_operationService.TryParseOperator(operatorInput, out CalculatorOperator calculatorOperator))
+                {
+                    _uiService.ShowError("Invalid operator");
+                    return;
+                }
+
+                _operationService.UpdateCalculation(id, operand1, operand2, calculatorOperator);
+                _uiService.ShowResult(operand1, operand2, operatorInput,
+                    _operationService.Calculate(operand1, operand2, calculatorOperator));
+
+                var choice = _uiService.ShowMenuAfterUpdate();
+                switch (choice)
+                {
+                    case "Update Calculation":
+                        UpdateCalculation(); 
+                        break;
+                    case "Calculator Menu":
+                        return; 
+                    case "Main Menu":
+                        Start(); 
+                        return;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                _uiService.ShowError(ex.Message);
+            }
+            finally
+            {
+                _uiService.WaitForKeyPress();
+            }
         }
-        catch (Exception ex)
-        {
-            _uiService.ShowError(ex.Message);
-        }
-        finally
-        {
-            _uiService.WaitForKeyPress();
-        }
+      
     }
 
     private void DeleteCalculation()
@@ -140,16 +159,7 @@ public class CalculatorController
                 _operationService.SaveCalculation(calculation);
                 _uiService.ShowResult(operand1, operand2, operatorInput, calculation.Result);
 
-                var choice = AnsiConsole.Prompt(
-                    new SelectionPrompt<string>()
-                        .Title("[green]What would you like to do next?[/]")
-                        .AddChoices(new[]
-                        {
-                        "New Calculation",
-                        "Calculator Menu",
-                        "Main Menu"
-                        }));
-
+                var choice = _uiService.ShowMenuAfterCalc();
                 switch (choice)
                 {
                     case "New Calculation":

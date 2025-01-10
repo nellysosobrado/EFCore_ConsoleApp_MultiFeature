@@ -6,6 +6,8 @@ namespace CalculatorApp.Services;
 public interface ICalculatorUIService
 {
     string ShowMainMenu();
+    string ShowMenuAfterCalc();
+    string ShowMenuAfterUpdate();
     double GetNumberInput(string prompt);
     string GetOperatorInput();
     void ShowResult(double operand1, double operand2, string operatorSymbol, double result);
