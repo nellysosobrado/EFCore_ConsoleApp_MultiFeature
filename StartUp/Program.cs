@@ -1,6 +1,8 @@
-﻿using Spectre.Console;
+﻿using Autofac;
+using Spectre.Console;
 using StartUp;
 using CalculatorApp.Controllers;
+using Startup;
 
 namespace StartUp;
 
@@ -8,26 +10,28 @@ internal class Program
 {
     static void Main(string[] args)
     {
+        var container = ContainerConfig.Configure();
+
         while (true)
         {
-            ShowMenu();
+            ShowMenu(container);
         }
     }
 
-    private static void ShowMenu()
+    private static void ShowMenu(IContainer container)
     {
         Console.Clear();
 
         var option = AnsiConsole.Prompt(
             new SelectionPrompt<MenuOptions>()
                 .Title("[green]Choose an option:[/]")
-                .UseConverter(option => option.GetDescription()) 
+                .UseConverter(option => option.GetDescription())
                 .AddChoices(Enum.GetValues<MenuOptions>()));
 
         switch (option)
         {
             case MenuOptions.StartCalculator:
-                StartCalculator();
+                StartCalculator(container);
                 break;
 
             case MenuOptions.StartShapes:
@@ -42,9 +46,12 @@ internal class Program
         }
     }
 
-    private static void StartCalculator()
+    private static void StartCalculator(IContainer container)
     {
-        var calculatorController = new CalculatorController();
-        calculatorController.Start();
+        using (var scope = container.BeginLifetimeScope())
+        {
+            var calculatorController = scope.Resolve<CalculatorController>();
+            calculatorController.Start();
+        }
     }
 }
