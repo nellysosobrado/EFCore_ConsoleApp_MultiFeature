@@ -25,15 +25,15 @@ public class CalculatorController
 
             switch (choice)
             {
-                case "1. Calculate":
+                case "Calculate":
                     PerformCalculation();
                     break;
 
-                case "2. History":
+                case "History":
                     ShowCalculations();
                     break;
 
-                case "3. Main Menu":
+                case "Main Menu":
                     return;
             }
         }
