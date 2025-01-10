@@ -12,4 +12,5 @@ public interface ICalculatorUIService
     void ShowHistory(IEnumerable<Calculator> calculations);
     void ShowError(string message);
     void WaitForKeyPress(string message = "\nPress any key to continue...");
+
 }

@@ -1,4 +1,5 @@
-﻿using ClassLibrary.Enums.CalculatorAppEnums;
+﻿using ClassLibrary.Enums;
+using ClassLibrary.Enums.CalculatorAppEnums;
 using ClassLibrary.Models;
 
 namespace CalculatorApp.Services;
@@ -9,4 +10,6 @@ public interface ICalculatorOperationService
     double Calculate(double operand1, double operand2, CalculatorOperator calculatorOperator);
     void SaveCalculation(Calculator calculation);
     IEnumerable<Calculator> GetCalculationHistory();
+    void UpdateCalculation(int id, double operand1, double operand2, CalculatorOperator calculatorOperator);
+    void DeleteCalculation(int id);
 }

@@ -2,18 +2,19 @@
 using CalculatorApp.Validators;
 using FluentValidation;
 using ClassLibrary.Enums.CalculatorAppEnums;
-using ClassLibrary.Services.CalculatorAppServices;
+//using ClassLibrary.Services.CalculatorAppServices;
+using ClassLibrary.Repositories.CalculatorAppRepository;
 
 namespace CalculatorApp.Services;
 
 public class CalculatorOperationService : ICalculatorOperationService
 {
-    private readonly CalculatorService _service;
+    private readonly CalculatorRepository _calculatorRepository;
     private readonly CalculatorValidator _validator;
 
-    public CalculatorOperationService(CalculatorService service)
+    public CalculatorOperationService(CalculatorRepository calculatorRepository)
     {
-        _service = service;
+        _calculatorRepository = calculatorRepository;
         _validator = new CalculatorValidator();
     }
 
@@ -92,11 +93,41 @@ public class CalculatorOperationService : ICalculatorOperationService
             throw new InvalidOperationException("Result is invalid (Infinity or NaN)");
         }
 
-        _service.AddCalculation(calculation);
+        _calculatorRepository.AddCalculation(calculation);
     }
 
     public IEnumerable<Calculator> GetCalculationHistory()
     {
-        return _service.GetAllCalculations();
+        return _calculatorRepository.GetAllCalculations();
+    }
+    public void UpdateCalculation(int id, double operand1, double operand2, CalculatorOperator calculatorOperator)
+    {
+        var existingCalculation = _calculatorRepository.GetCalculationById(id);
+
+        var result = Calculate(operand1, operand2, calculatorOperator);
+
+        var updatedCalculation = new Calculator
+        {
+            Id = id,
+            Operand1 = operand1,
+            Operand2 = operand2,
+            Operator = calculatorOperator,
+            Result = Math.Round(result, 2),
+            CalculationDate = DateTime.Now
+        };
+
+        var validationResult = _validator.Validate(updatedCalculation);
+        if (!validationResult.IsValid)
+        {
+            var errors = string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage));
+            throw new ValidationException(errors);
+        }
+
+        _calculatorRepository.UpdateCalculation(updatedCalculation);
+    }
+
+    public void DeleteCalculation(int id)
+    {
+        _calculatorRepository.DeleteCalculation(id);
     }
 }

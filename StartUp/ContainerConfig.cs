@@ -1,14 +1,15 @@
 ﻿using Autofac;
 using CalculatorApp.Services;
-using ClassLibrary.Services;
+//using ClassLibrary.Services;
 using CalculatorApp.Validators;
 using CalculatorApp.Controllers;
 using ClassLibrary.Data;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using ClassLibrary.Services.CalculatorAppServices;
+//using ClassLibrary.Services.CalculatorAppServices;
 using ClassLibrary;
+using ClassLibrary.Repositories.CalculatorAppRepository;
 
 
 namespace Startup;
@@ -34,7 +35,7 @@ public static class ContainerConfig
         }).As<IApplicationDbContext>().InstancePerLifetimeScope();
 
         // Register Services
-        builder.RegisterType<CalculatorService>().AsSelf();
+        builder.RegisterType<CalculatorRepository>().AsSelf();
         builder.RegisterType<SpectreCalculatorUIService>().As<ICalculatorUIService>();
         builder.RegisterType<CalculatorOperationService>().As<ICalculatorOperationService>();
 
