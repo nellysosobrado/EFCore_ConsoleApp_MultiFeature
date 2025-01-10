@@ -12,7 +12,9 @@ public class CalculatorController
     private readonly ICalculatorUIService _uiService;
     private readonly ICalculatorOperationService _operationService;
 
-    public CalculatorController(ICalculatorUIService uiService, ICalculatorOperationService operationService)
+    public CalculatorController(
+        ICalculatorUIService uiService, 
+        ICalculatorOperationService operationService)
     {
         _uiService = uiService;
         _operationService = operationService;
@@ -54,6 +56,7 @@ public class CalculatorController
         {
             try
             {
+                Console.Clear();
                 ShowCalculations();
                 var id = _uiService.GetCalculationIdForUpdate();
 
@@ -69,7 +72,7 @@ public class CalculatorController
 
                 _operationService.UpdateCalculation(id, operand1, operand2, calculatorOperator);
                 _uiService.ShowResult(operand1, operand2, operatorInput,
-                    _operationService.Calculate(operand1, operand2, calculatorOperator));
+                _operationService.Calculate(operand1, operand2, calculatorOperator));
 
                 var choice = _uiService.ShowMenuAfterUpdate();
                 switch (choice)
@@ -90,10 +93,7 @@ public class CalculatorController
             {
                 _uiService.ShowError(ex.Message);
             }
-            finally
-            {
-                _uiService.WaitForKeyPress();
-            }
+     
         }
       
     }
@@ -131,10 +131,7 @@ public class CalculatorController
             {
                 _uiService.ShowError(ex.Message);
             }
-            finally
-            {
-                _uiService.WaitForKeyPress();
-            }
+        
         }
         
     }
@@ -144,6 +141,7 @@ public class CalculatorController
         {
             try
             {
+                Console.Clear();
                 var operand1 = _uiService.GetNumberInput("first");
                 var operand2 = _uiService.GetNumberInput("second");
                 var operatorInput = _uiService.GetOperatorInput();
@@ -197,10 +195,7 @@ public class CalculatorController
             {
                 _uiService.ShowError(ex.Message);
             }
-            finally
-            {
-                _uiService.WaitForKeyPress();
-            }
+         
         }
     }
 
@@ -208,6 +203,5 @@ public class CalculatorController
     {
         var calculations = _operationService.GetCalculationHistory();
         _uiService.ShowHistory(calculations);
-        _uiService.WaitForKeyPress();
     }
 }
