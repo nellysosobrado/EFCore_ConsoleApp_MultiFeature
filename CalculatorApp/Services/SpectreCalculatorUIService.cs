@@ -154,42 +154,4 @@ public class SpectreCalculatorUIService : ICalculatorUIService
     {
         AnsiConsole.MarkupLine($"[green]{message}[/]");
     }
-
-    //public void ShowHistory(IEnumerable<Calculator> calculations)
-    //{
-    //    var table = new Table()
-    //        .Border(TableBorder.Rounded)
-    //        .AddColumn(new TableColumn("ID").Centered())
-    //        .AddColumn(new TableColumn("Date").Centered())
-    //        .AddColumn(new TableColumn("Calculation").Centered())
-    //        .AddColumn(new TableColumn("Result").Centered());
-
-    //    foreach (var calc in calculations)
-    //    {
-    //        string expression;
-    //        if (calc.Operator == CalculatorOperator.SquareRoot)
-    //        {
-    //            var secondResult = Math.Sqrt(calc.Operand2);
-    //            expression = $"√{calc.Operand1}, √{calc.Operand2}";
-    //            table.AddRow(
-    //                calc.Id.ToString(),
-    //                calc.CalculationDate.ToString(),
-    //                expression,
-    //                $"{calc.Result}, {Math.Round(secondResult, 2)}"
-    //            );
-    //        }
-    //        else
-    //        {
-    //            expression = $"{calc.Operand1} {GetOperatorSymbol(calc.Operator)} {calc.Operand2}";
-    //            table.AddRow(
-    //                calc.Id.ToString(),
-    //                calc.CalculationDate.ToString(),
-    //                expression,
-    //                calc.Result.ToString()
-    //            );
-    //        }
-    //    }
-
-    //    AnsiConsole.Write(table);
-    //}
 }
