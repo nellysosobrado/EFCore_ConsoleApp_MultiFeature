@@ -27,7 +27,7 @@ public class SpectreCalculatorUIService : ICalculatorUIService
                     "History",
                     "Update Calculation",
                     "Delete Calculation",
-                    "Menu"
+                    "Main Menu"
                 }));
     }
 
