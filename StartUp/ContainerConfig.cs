@@ -1,11 +1,14 @@
 ﻿using Autofac;
 using CalculatorApp.Services;
-using ClassLibrary.DataAccess;
 using ClassLibrary.Services;
 using CalculatorApp.Validators;
 using CalculatorApp.Controllers;
 using ClassLibrary.Data;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ClassLibrary.Services.CalculatorAppServices;
+using ClassLibrary;
 
 namespace Startup;
 
@@ -15,13 +18,19 @@ public static class ContainerConfig
     {
         var builder = new ContainerBuilder();
 
+        // Läs in configuration från appsettings.json
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .AddJsonFile("appsettings.json")
+            .Build();
+
         // Register Database
-        builder.RegisterType<AccessDatabase>().AsSelf();
         builder.Register(c =>
         {
-            var accessDatabase = c.Resolve<AccessDatabase>();
-            return accessDatabase.GetDbContext();
-        }).As<ApplicationDbContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            return new ApplicationDbContext(optionsBuilder.Options);
+        }).As<IApplicationDbContext>().InstancePerLifetimeScope();
 
         // Register Services
         builder.RegisterType<CalculatorService>().AsSelf();

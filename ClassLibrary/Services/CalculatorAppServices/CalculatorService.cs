@@ -1,13 +1,12 @@
-﻿using ClassLibrary.Data;
-using ClassLibrary.Models;
+﻿using ClassLibrary.Models;
 
 namespace ClassLibrary.Services.CalculatorAppServices;
 
 public class CalculatorService
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IApplicationDbContext _context;
 
-    public CalculatorService(ApplicationDbContext context)
+    public CalculatorService(IApplicationDbContext context)
     {
         _context = context;
     }
