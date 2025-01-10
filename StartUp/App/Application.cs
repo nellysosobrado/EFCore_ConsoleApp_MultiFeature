@@ -1,14 +1,15 @@
 ﻿using Autofac;
-using Startup;
+using StartUp.Config;
+using StartUp.UI;
 
-namespace StartUp;
+namespace StartUp.App;
 
-public class App
+public class Application
 {
     private readonly IContainer _container;
     private readonly Menu _menu;
 
-    public App()
+    public Application()
     {
         _container = ContainerConfig.Configure();
         _menu = new Menu(_container);

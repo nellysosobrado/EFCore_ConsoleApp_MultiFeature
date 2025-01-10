@@ -1,8 +1,9 @@
 ﻿using Autofac;
 using CalculatorApp.Controllers;
 using Spectre.Console;
+using StartUp.Extensions;
 
-namespace StartUp;
+namespace StartUp.UI;
 
 public class Menu
 {

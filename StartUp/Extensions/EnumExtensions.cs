@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace StartUp;
+namespace StartUp.Extensions;
 
 public static class EnumExtensions
 {

@@ -12,7 +12,7 @@ using ClassLibrary;
 using ClassLibrary.Repositories.CalculatorAppRepository;
 
 
-namespace Startup;
+namespace StartUp.Config;
 
 public static class ContainerConfig
 {

@@ -26,4 +26,9 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Enums\RpsAppEnums\" />
+    <Folder Include="Enums\ShapeAppEnums\" />
+  </ItemGroup>
+
 </Project>
