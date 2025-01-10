@@ -8,6 +8,8 @@ public interface ICalculatorUIService
     string ShowMainMenu();
     string ShowMenuAfterCalc();
     string ShowMenuAfterUpdate();
+    public string ShowMenuAfterDelete();
+
     double GetNumberInput(string prompt);
     string GetOperatorInput();
     void ShowResult(double operand1, double operand2, string operatorSymbol, double result);

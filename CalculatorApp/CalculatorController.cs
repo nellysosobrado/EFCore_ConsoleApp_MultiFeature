@@ -100,25 +100,43 @@ public class CalculatorController
 
     private void DeleteCalculation()
     {
-        try
+        while (true)
         {
-            ShowCalculations();
-            var id = _uiService.GetCalculationIdForDelete();
-
-            if (_uiService.ConfirmDeletion())
+            try
             {
-                _operationService.DeleteCalculation(id);
-                _uiService.ShowResult("Calculation deleted successfully");
+                ShowCalculations();
+                var id = _uiService.GetCalculationIdForDelete();
+
+                if (_uiService.ConfirmDeletion())
+                {
+                    _operationService.DeleteCalculation(id);
+                    Console.Clear();
+                    _uiService.ShowResult("Calculation deleted successfully");
+                }
+                
+                var choice = _uiService.ShowMenuAfterDelete();
+                switch (choice)
+                {
+                    case "Delete a calculation":
+                        DeleteCalculation();
+                        break;
+                    case "Calculator Menu":
+                        return;
+                    case "Main Menu":
+                        Start();
+                        return;
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiService.ShowError(ex.Message);
+            }
+            finally
+            {
+                _uiService.WaitForKeyPress();
             }
         }
-        catch (Exception ex)
-        {
-            _uiService.ShowError(ex.Message);
-        }
-        finally
-        {
-            _uiService.WaitForKeyPress();
-        }
+        
     }
     private void PerformCalculation()
     {

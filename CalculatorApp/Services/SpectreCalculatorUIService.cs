@@ -56,6 +56,19 @@ public class SpectreCalculatorUIService : ICalculatorUIService
                         "Main Menu"
                          }));
 
+    } 
+    public string ShowMenuAfterDelete()
+    {
+        return AnsiConsole.Prompt(
+                     new SelectionPrompt<string>()
+                         .Title("[green]What would you like to do next?[/]")
+                         .AddChoices(new[]
+                         {
+                        "Delete a calculation",
+                        "Calculator Menu",
+                        "Main Menu"
+                         }));
+
     }
 
 
@@ -177,6 +190,7 @@ public class SpectreCalculatorUIService : ICalculatorUIService
 
     public bool ConfirmDeletion()
     {
+        Console.Clear();
         return AnsiConsole.Confirm("Are you sure you want to delete this calculation?");
     }
     public void ShowResult(string message)
