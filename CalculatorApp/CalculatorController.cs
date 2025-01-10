@@ -192,5 +192,7 @@ public class CalculatorController
     {
         var calculations = _operationService.GetCalculationHistory();
         _uiService.ShowHistory(calculations);
+
+        _uiService.WaitForKeyPress();
     }
 }
