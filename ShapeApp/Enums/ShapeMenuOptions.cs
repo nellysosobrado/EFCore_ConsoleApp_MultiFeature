@@ -4,18 +4,18 @@ namespace ShapeApp.Enums;
 
 public enum ShapeMenuOptions
 {
-    [Description("1. New Calculation")]
+    [Description("New Calculation")]
     NewCalculation,
 
-    [Description("2. View History")]
+    [Description("View History")]
     ViewHistory,
 
-    [Description("3. Update Calculation")]
+    [Description("Update Calculation")]
     UpdateCalculation,
 
-    [Description("4. Delete Calculation")]
+    [Description("Delete Calculation")]
     DeleteCalculation,
 
-    [Description("5. Main Menu")]
+    [Description("Main Menu")]
     MainMenu
 }
