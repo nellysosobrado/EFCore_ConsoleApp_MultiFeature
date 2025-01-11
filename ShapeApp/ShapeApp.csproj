@@ -8,11 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="Spectre.Console" Version="0.49.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Validators\" />
+    <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
   </ItemGroup>
 
 </Project>

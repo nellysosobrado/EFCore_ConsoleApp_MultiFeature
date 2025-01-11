@@ -1,4 +1,5 @@
 ﻿using ClassLibrary.Models;
+using ClassLibrary.Enums;
 
 namespace ClassLibrary.Repositories.ShapeAppRepository;
 
@@ -58,7 +59,7 @@ public class ShapeRepository
         {
             new()
             {
-                ShapeType = "Rectangle",
+                ShapeType = ShapeType.Rectangle,
                 Area = 20,
                 Perimeter = 18,
                 Parameters = new Dictionary<string, double>
@@ -70,7 +71,7 @@ public class ShapeRepository
             },
             new()
             {
-                ShapeType = "Parallelogram",
+                ShapeType = ShapeType.Parallelogram,
                 Area = 24,
                 Perimeter = 20,
                 Parameters = new Dictionary<string, double>
@@ -83,7 +84,7 @@ public class ShapeRepository
             },
             new()
             {
-                ShapeType = "Triangle",
+                ShapeType = ShapeType.Triangle,
                 Area = 12,
                 Perimeter = 12,
                 Parameters = new Dictionary<string, double>
@@ -97,7 +98,7 @@ public class ShapeRepository
             },
             new()
             {
-                ShapeType = "Rhombus",
+                ShapeType = ShapeType.Rhombus,
                 Area = 16,
                 Perimeter = 16,
                 Parameters = new Dictionary<string, double>

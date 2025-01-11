@@ -3,7 +3,7 @@ using ClassLibrary.Services.Shapes;
 using ClassLibrary.Repositories.ShapeAppRepository;
 using ShapeApp.Validators;
 using FluentValidation;
-using System.Drawing;
+using ClassLibrary.Enums;
 
 namespace ShapeApp.Services;
 
@@ -11,18 +11,18 @@ public class ShapeOperationService : IShapeOperationService
 {
     private readonly ShapeRepository _shapeRepository;
     private readonly ShapeValidator _validator;
-    private readonly Dictionary<string, IShape> _shapes;
+    private readonly Dictionary<ShapeType, IShape> _shapes;
 
     public ShapeOperationService(ShapeRepository shapeRepository, ShapeValidator validator)
     {
         _shapeRepository = shapeRepository;
         _validator = validator;
-        _shapes = new Dictionary<string, IShape>
+        _shapes = new Dictionary<ShapeType, IShape>
         {
-            { "Rectangle", new Rectangle() },
-            { "Parallelogram", new Parallelogram() },
-            { "Triangle", new Triangle() },
-            { "Rhombus", new Rhombus() }
+            { ShapeType.Rectangle, new Rectangle() },
+            { ShapeType.Parallelogram, new Parallelogram() },
+            { ShapeType.Triangle, new Triangle() },
+            { ShapeType.Rhombus, new Rhombus() }
         };
     }
 
@@ -32,7 +32,7 @@ public class ShapeOperationService : IShapeOperationService
             .OrderByDescending(s => s.CalculationDate);
     }
 
-    public void SaveShape(string shapeType, Dictionary<string, double> parameters)
+    public void SaveShape(ShapeType shapeType, Dictionary<string, double> parameters)
     {
         if (!_shapes.TryGetValue(shapeType, out var shape))
         {
@@ -54,7 +54,7 @@ public class ShapeOperationService : IShapeOperationService
         _shapeRepository.AddShape(shapeModel);
     }
 
-    public void UpdateShape(int id, string shapeType, Dictionary<string, double> parameters)
+    public void UpdateShape(int id, ShapeType shapeType, Dictionary<string, double> parameters)
     {
         if (!_shapes.TryGetValue(shapeType, out var shape))
         {
@@ -82,7 +82,7 @@ public class ShapeOperationService : IShapeOperationService
         _shapeRepository.DeleteShape(id);
     }
 
-    public Dictionary<string, double> GetRequiredParameters(string shapeType)
+    public Dictionary<string, double> GetRequiredParameters(ShapeType shapeType)
     {
         if (!_shapes.TryGetValue(shapeType, out var shape))
         {
