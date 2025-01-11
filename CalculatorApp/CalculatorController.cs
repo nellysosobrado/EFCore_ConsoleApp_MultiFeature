@@ -86,7 +86,17 @@ public class CalculatorController
             }
             catch (Exception ex)
             {
+                Console.Clear();
                 _uiService.ShowError(ex.Message);
+                var choice = _uiService.ShowMenuAfterUpdate();
+                switch (choice)
+                {
+                    case "Update Calculation":
+                        UpdateCalculation();
+                        break;
+                    case "Calculator Menu":
+                        return;
+                }
             }
      
         }
@@ -173,7 +183,7 @@ public class CalculatorController
                     case "New Calculation":
                         continue;
                     case "Calculator Menu":
-                        return;
+                        return; 
                 }
             }
             catch (ValidationException ex)

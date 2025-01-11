@@ -39,8 +39,7 @@ public class SpectreCalculatorUIService : ICalculatorUIService
                          .AddChoices(new[]
                          {
                         "New Calculation",
-                        "Calculator Menu",
-                        "Main Menu"
+                        "Calculator Menu"
                          }));
 
     }
@@ -53,7 +52,6 @@ public class SpectreCalculatorUIService : ICalculatorUIService
                          {
                         "Update Calculation",
                         "Calculator Menu",
-                        "Main Menu"
                          }));
 
     } 
@@ -66,7 +64,6 @@ public class SpectreCalculatorUIService : ICalculatorUIService
                          {
                         "Delete a calculation",
                         "Calculator Menu",
-                        "Main Menu"
                          }));
 
     }
