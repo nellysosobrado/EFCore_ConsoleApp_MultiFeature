@@ -105,8 +105,9 @@ public class SpectreShapeUIService : IShapeUIService
 
     public void ShowError(string message)
     {
-        AnsiConsole.MarkupLine($"[red]{message}[/]");
+        AnsiConsole.MarkupLine($"[red]{message.EscapeMarkup()}[/]");
     }
+
 
     public void WaitForKeyPress(string message = "\nPress any key to continue...")
     {

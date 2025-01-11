@@ -7,9 +7,6 @@ public class ShapeValidator : AbstractValidator<Shape>
 {
     public ShapeValidator()
     {
-        RuleFor(x => x.ShapeType)
-            .NotEmpty()
-            .WithMessage("Shape type is required");
 
         RuleFor(x => x.Parameters)
             .NotNull()
@@ -25,10 +22,5 @@ public class ShapeValidator : AbstractValidator<Shape>
             .GreaterThan(0)
             .WithMessage("Perimeter must be greater than 0");
 
-        RuleFor(x => x.CalculationDate)
-            .NotNull()
-            .WithMessage("Calculation date is required")
-            .LessThanOrEqualTo(DateTime.Now)
-            .WithMessage("Calculation date cannot be in the future");
     }
 }

@@ -14,9 +14,11 @@ public class ShapeRepository
 
     public void AddShape(Shape shape)
     {
-        _context.Shapes.Add(shape);
-        _context.SaveChanges();
+
+            _context.Shapes.Add(shape);
+            _context.SaveChanges();
     }
+
 
     public List<Shape> GetAllShapes()
     {

@@ -61,7 +61,6 @@ public static class ContainerConfig
         builder.RegisterType<InputValidator>().AsSelf();
         builder.RegisterType<ShapeValidator>().AsSelf();
 
-       
         return builder.Build();
     }
 }
