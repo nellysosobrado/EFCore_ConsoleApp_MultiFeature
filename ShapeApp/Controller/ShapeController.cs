@@ -29,7 +29,8 @@ public class ShapeController
             {
                 var option = AnsiConsole.Prompt(
                     new SelectionPrompt<ShapeMenuOptions>()
-                        .Title("[green]Shape Calculator Menu[/]")
+                        .Title("[italic yellow]Shape Calculator Menu[/]")
+                        .WrapAround(true)
                         .UseConverter(option => option.GetDescription())
                         .AddChoices(Enum.GetValues<ShapeMenuOptions>()));
 
