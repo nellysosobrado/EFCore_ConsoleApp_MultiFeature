@@ -45,17 +45,19 @@ public class SpectreShapeUIService : IShapeUIService
                 $"[green]{shape.CalculationDate}[/]",
                 $"[blue]{shape.ShapeType}[/]",
                 $"[cyan]{parameters}[/]",
-                $"[magenta]{shape.Area}[/]",
-                $"[red]{shape.Perimeter}[/]"
+                $"[magenta]{shape.Area:F2}[/]",
+                $"[red]{shape.Perimeter:F2}[/]"
             );
         }
 
         AnsiConsole.Write(table);
     }
+  
+
     public void ShowResult(Shape shape)
     {
         var parameters = string.Join(", ",
-            shape.Parameters.Select(p => $"{p.Key}: {p.Value:F2}"));
+            shape.Parameters.Select(p => $"{p.Key}: {p.Value}"));
 
         AnsiConsole.MarkupLine($"\n[blue]Shape Type:[/] {shape.ShapeType}");
         AnsiConsole.MarkupLine($"[cyan]Parameters:[/] {parameters}");

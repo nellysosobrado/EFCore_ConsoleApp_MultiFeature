@@ -22,5 +22,9 @@ public class ShapeValidator : AbstractValidator<Shape>
             .GreaterThan(0)
             .WithMessage("Perimeter must be greater than 0");
 
+        RuleFor(x => x.Parameters)
+    .Must(p => !p.Keys.Any(key => key.Contains(",")))
+    .WithMessage("Please use '.' instead of ',' in decimal values.");
+
     }
 }
