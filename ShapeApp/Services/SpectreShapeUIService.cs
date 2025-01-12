@@ -38,7 +38,7 @@ public class SpectreShapeUIService : IShapeUIService
         foreach (var shape in shapes)
         {
             var parameters = string.Join(", ",
-                shape.Parameters.Select(p => $"{p.Key}: {p.Value}"));
+                shape.GetParameters().Select(p => $"{p.Key}: {p.Value:F2}"));
 
             table.AddRow(
                 $"[yellow]{shape.Id}[/]",
@@ -52,12 +52,12 @@ public class SpectreShapeUIService : IShapeUIService
 
         AnsiConsole.Write(table);
     }
-  
+
 
     public void ShowResult(Shape shape)
     {
         var parameters = string.Join(", ",
-            shape.Parameters.Select(p => $"{p.Key}: {p.Value}"));
+            shape.GetParameters().Select(p => $"{p.Key}: {p.Value:F2}"));
 
         AnsiConsole.MarkupLine($"\n[blue]Shape Type:[/] {shape.ShapeType}");
         AnsiConsole.MarkupLine($"[cyan]Parameters:[/] {parameters}");

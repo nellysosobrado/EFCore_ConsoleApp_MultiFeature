@@ -39,20 +39,43 @@ public class ShapeOperationService : IShapeOperationService
             throw new ArgumentException("Invalid shape type");
         }
 
-        shape.SetParameters(parameters);
-
         var shapeModel = new Shape
         {
             ShapeType = shapeType,
-            Parameters = parameters,
-            Area = shape.CalculateArea(),
-            Perimeter = shape.CalculatePerimeter(),
             CalculationDate = DateTime.Now
         };
+
+        switch (shapeType)
+        {
+            case ShapeType.Rectangle:
+                shapeModel.Width = parameters["Width"];
+                shapeModel.Height = parameters["Height"];
+                break;
+            case ShapeType.Parallelogram:
+                shapeModel.BaseLength = parameters["Base"];  
+                shapeModel.Height = parameters["Height"];
+                shapeModel.Side = parameters["Side"];
+                break;
+            case ShapeType.Triangle:
+                shapeModel.SideA = parameters["SideA"];
+                shapeModel.SideB = parameters["SideB"];
+                shapeModel.SideC = parameters["SideC"];
+                shapeModel.Height = parameters["Height"];
+                break;
+            case ShapeType.Rhombus:
+                shapeModel.Side = parameters["Side"];
+                shapeModel.Height = parameters["Height"];
+                break;
+        }
+
+        shape.SetParameters(parameters);
+        shapeModel.Area = shape.CalculateArea();
+        shapeModel.Perimeter = shape.CalculatePerimeter();
 
         _validator.ValidateAndThrow(shapeModel);
         _shapeRepository.AddShape(shapeModel);
     }
+
 
     public void UpdateShape(int id, ShapeType shapeType, Dictionary<string, double> parameters)
     {
@@ -61,17 +84,39 @@ public class ShapeOperationService : IShapeOperationService
             throw new ArgumentException("Invalid shape type");
         }
 
-        shape.SetParameters(parameters);
-
         var shapeModel = new Shape
         {
             Id = id,
             ShapeType = shapeType,
-            Parameters = parameters,
-            Area = shape.CalculateArea(),
-            Perimeter = shape.CalculatePerimeter(),
             CalculationDate = DateTime.Now
         };
+
+        switch (shapeType)
+        {
+            case ShapeType.Rectangle:
+                shapeModel.Width = parameters["Width"];
+                shapeModel.Height = parameters["Height"];
+                break;
+            case ShapeType.Parallelogram:
+                shapeModel.BaseLength = parameters["Base"];
+                shapeModel.Height = parameters["Height"];
+                shapeModel.Side = parameters["Side"];
+                break;
+            case ShapeType.Triangle:
+                shapeModel.SideA = parameters["SideA"];
+                shapeModel.SideB = parameters["SideB"];
+                shapeModel.SideC = parameters["SideC"];
+                shapeModel.Height = parameters["Height"];
+                break;
+            case ShapeType.Rhombus:
+                shapeModel.Side = parameters["Side"];
+                shapeModel.Height = parameters["Height"];
+                break;
+        }
+
+        shape.SetParameters(parameters);
+        shapeModel.Area = shape.CalculateArea();
+        shapeModel.Perimeter = shape.CalculatePerimeter();
 
         _validator.ValidateAndThrow(shapeModel);
         _shapeRepository.UpdateShape(shapeModel);

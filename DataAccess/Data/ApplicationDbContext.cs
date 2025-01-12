@@ -31,10 +31,14 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
             entity.Property(s => s.Perimeter)
                 .HasPrecision(18, 2);
 
-            entity.Property(s => s.ParametersJson)
-                .HasColumnName("Parameters")
-                .HasColumnType("nvarchar(max)")
-                .HasDefaultValue("{}");
+            // Configure precision for parameter properties
+            entity.Property(s => s.Width).HasPrecision(18, 2);
+            entity.Property(s => s.Height).HasPrecision(18, 2);
+            entity.Property(s => s.Side).HasPrecision(18, 2);
+            entity.Property(s => s.BaseLength).HasPrecision(18, 2);
+            entity.Property(s => s.SideA).HasPrecision(18, 2);
+            entity.Property(s => s.SideB).HasPrecision(18, 2);
+            entity.Property(s => s.SideC).HasPrecision(18, 2);
         });
     }
 }
