@@ -52,16 +52,15 @@ public class SpectreShapeUIService : IShapeUIService
 
         AnsiConsole.Write(table);
     }
-
     public void ShowResult(Shape shape)
     {
         var parameters = string.Join(", ",
-            shape.Parameters.Select(p => $"{p.Key}: {p.Value}"));
+            shape.Parameters.Select(p => $"{p.Key}: {p.Value:F2}"));
 
         AnsiConsole.MarkupLine($"\n[blue]Shape Type:[/] {shape.ShapeType}");
         AnsiConsole.MarkupLine($"[cyan]Parameters:[/] {parameters}");
-        AnsiConsole.MarkupLine($"[magenta]Area:[/] {shape.Area}");
-        AnsiConsole.MarkupLine($"[red]Perimeter:[/] {shape.Perimeter}");
+        AnsiConsole.MarkupLine($"[magenta]Area:[/] {shape.Area:F2}");
+        AnsiConsole.MarkupLine($"[red]Perimeter:[/] {shape.Perimeter:F2}");
     }
 
     public ShapeType GetShapeType()
