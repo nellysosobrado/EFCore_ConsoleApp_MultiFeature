@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using CalculatorApp.Controllers;
+using ShapeApp.Controllers;
 using Spectre.Console;
 using StartUp.Extensions;
 
@@ -36,8 +37,7 @@ public class Menu
                 break;
 
             case MenuOptions.StartShapes:
-                AnsiConsole.MarkupLine("[yellow]Shapes logic not implemented yet.[/]");
-                Console.ReadKey();
+                StartShapes();
                 break;
 
             case MenuOptions.Exit:
@@ -53,6 +53,15 @@ public class Menu
         {
             var calculatorController = scope.Resolve<CalculatorController>();
             calculatorController.Start();
+        }
+    }
+
+    private void StartShapes()
+    {
+        using (var scope = _container.BeginLifetimeScope())
+        {
+            var shapeController = scope.Resolve<ShapeController>();
+            shapeController.Start();
         }
     }
 }

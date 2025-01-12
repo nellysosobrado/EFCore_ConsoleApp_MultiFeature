@@ -9,12 +9,17 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="8.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Spectre.Console" Version="0.49.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CalculatorApp\CalculatorApp.csproj" />
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+    <ProjectReference Include="..\ShapeApp\ShapeApp.csproj" />
   </ItemGroup>
 
 </Project>

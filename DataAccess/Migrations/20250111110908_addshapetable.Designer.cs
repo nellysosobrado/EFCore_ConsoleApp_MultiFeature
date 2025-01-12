@@ -4,6 +4,7 @@ using ClassLibrary.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClassLibrary.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250111110908_addshapetable")]
+    partial class addshapetable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,17 +66,8 @@ namespace ClassLibrary.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("float(18)");
 
-                    b.Property<double?>("BaseLength")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("float(18)")
-                        .HasColumnName("Base");
-
                     b.Property<DateTime>("CalculationDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<double?>("Height")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("float(18)");
 
                     b.Property<double>("Perimeter")
                         .HasPrecision(18, 2)
@@ -81,26 +75,6 @@ namespace ClassLibrary.Migrations
 
                     b.Property<int>("ShapeType")
                         .HasColumnType("int");
-
-                    b.Property<double?>("Side")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("float(18)");
-
-                    b.Property<double?>("SideA")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("float(18)");
-
-                    b.Property<double?>("SideB")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("float(18)");
-
-                    b.Property<double?>("SideC")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("float(18)");
-
-                    b.Property<double?>("Width")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("float(18)");
 
                     b.HasKey("Id");
 
