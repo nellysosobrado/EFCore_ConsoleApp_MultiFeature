@@ -5,6 +5,7 @@ using ClassLibrary.Enums;
 using ShapeApp.Enums;
 using ShapeApp.Extensions;
 using ShapeApp.Services;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace ShapeApp.Controllers;
 
@@ -23,8 +24,10 @@ public class ShapeController
 
     public void Start()
     {
+
         while (true)
         {
+            Console.Clear();
             try
             {
                 var option = AnsiConsole.Prompt(
@@ -55,9 +58,6 @@ public class ShapeController
             catch (Exception ex)
             {
                 _uiService.ShowError(ex.Message);
-            }
-            finally
-            {
                 _uiService.WaitForKeyPress();
             }
         }
@@ -80,22 +80,66 @@ public class ShapeController
     {
         var shapes = _operationService.GetShapeHistory();
         _uiService.ShowShapes(shapes);
+        _uiService.WaitForKeyPress();
     }
 
     private void UpdateShape()
     {
-        ShowShapes();
-        var id = _uiService.GetShapeIdForUpdate();
+        while (true)
+        {
+            try
+            {
+                ShowShapes();
+                var id = _uiService.GetShapeIdForUpdate();
+                var existingShape = _operationService.GetShapeById(id);
 
-        var shapeType = _uiService.GetShapeType();
-        var requiredParameters = _operationService.GetRequiredParameters(shapeType);
-        var parameters = _uiService.GetShapeParameters(requiredParameters);
+                var currentParameters = existingShape.GetParameters();
+                ShapeType shapeType = existingShape.ShapeType;
+                Dictionary<string, double> parameters;
 
-        _operationService.UpdateShape(id, shapeType, parameters);
+                if (_uiService.ShouldChangeShapeType())
+                {
+                    shapeType = _uiService.GetShapeType();
+                    var requiredParameters = _operationService.GetRequiredParameters(shapeType);
+                    parameters = _uiService.GetShapeParameters(requiredParameters);
+                }
+                else
+                {
+                    var selectedUpdates = _uiService.GetSelectedParametersToUpdate(currentParameters);
+                    parameters = new Dictionary<string, double>(currentParameters);
+                    foreach (var update in selectedUpdates)
+                    {
+                        parameters[update.Key] = update.Value;
+                    }
+                }
 
-        var shapes = _operationService.GetShapeHistory();
-        var updatedShape = shapes.First(s => s.Id == id);
-        _uiService.ShowResult(updatedShape);
+                _operationService.UpdateShape(id, shapeType, parameters);
+
+                var shapes = _operationService.GetShapeHistory();
+                var updatedShape = shapes.First(s => s.Id == id);
+                _uiService.ShowResult(updatedShape);
+
+                Console.Clear();
+                var option = AnsiConsole.Prompt(
+                    new SelectionPrompt<UpdateMenuOptions>()
+                        .Title("[green]What would you like to do next?[/]")
+                        .UseConverter(option => option.GetDescription())
+                        .AddChoices(Enum.GetValues<UpdateMenuOptions>()));
+
+                switch (option)
+                {
+                    case UpdateMenuOptions.UpdateCalculation:
+                        continue;
+                    case UpdateMenuOptions.CalculatorMenu:
+                        return;
+                }
+            }
+            catch (Exception ex)
+            {
+                _uiService.ShowError(ex.Message);
+                _uiService.WaitForKeyPress();
+            }
+        }
     }
 
     private void DeleteShape()
@@ -107,6 +151,7 @@ public class ShapeController
         {
             _operationService.DeleteShape(id);
             AnsiConsole.MarkupLine("[green]Shape deleted successfully[/]");
+            _uiService.WaitForKeyPress();
         }
     }
 }

@@ -10,4 +10,5 @@ public interface IShapeOperationService
     void UpdateShape(int id, ShapeType shapeType, Dictionary<string, double> parameters);
     void DeleteShape(int id);
     Dictionary<string, double> GetRequiredParameters(ShapeType shapeType);
+    Shape GetShapeById(int id);
 }

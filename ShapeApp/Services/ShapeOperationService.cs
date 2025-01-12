@@ -25,6 +25,11 @@ public class ShapeOperationService : IShapeOperationService
             { ShapeType.Rhombus, new Rhombus() }
         };
     }
+    public Shape GetShapeById(int id)
+    {
+        return _shapeRepository.GetShapeById(id);
+    }
+
 
     public IEnumerable<Shape> GetShapeHistory()
     {

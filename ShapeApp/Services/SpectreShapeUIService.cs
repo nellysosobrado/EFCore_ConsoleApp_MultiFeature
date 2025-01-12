@@ -135,4 +135,37 @@ public class SpectreShapeUIService : IShapeUIService
         return AnsiConsole.Prompt(
             new ConfirmationPrompt("Are you sure you want to delete this shape?"));
     }
+    public Dictionary<string, double> GetSelectedParametersToUpdate(Dictionary<string, double> currentParameters)
+    {
+        var updatedParameters = new Dictionary<string, double>();
+        var parameters = currentParameters.Keys.ToList();
+        parameters.Add("[green]Confirm[/]");
+        parameters.Add("[red]Cancel[/]");
+
+        while (true)
+        {
+            var choice = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("[green]Select parameter to update:[/]")
+                    .AddChoices(parameters));
+
+            if (choice == "[green]Confirm[/]")
+                return updatedParameters;
+
+            if (choice == "[red]Cancel[/]")
+                return currentParameters;
+
+            updatedParameters[choice] = GetNumberInput($"Enter new value for {choice}");
+        }
+    }
+    public bool ShouldChangeShapeType()
+    {
+        Console.Clear();
+        return AnsiConsole.Prompt(
+            new SelectionPrompt<bool>()
+                .Title("[green]Would you like to change the shape type?[/]")
+                .AddChoices(true, false)
+                .UseConverter(b => b ? "Yes" : "No"));
+    }
+
 }

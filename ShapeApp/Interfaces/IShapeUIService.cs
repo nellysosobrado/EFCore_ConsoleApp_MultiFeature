@@ -16,4 +16,6 @@ public interface IShapeUIService
     bool ConfirmDeletion();
     ShapeType GetShapeType();
     Dictionary<string, double> GetShapeParameters(Dictionary<string, double> requiredParameters);
+    bool ShouldChangeShapeType();
+    Dictionary<string, double> GetSelectedParametersToUpdate(Dictionary<string, double> currentParameters);
 }
