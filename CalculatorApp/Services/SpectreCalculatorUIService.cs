@@ -15,6 +15,11 @@ public class SpectreCalculatorUIService : ICalculatorUIService
         _inputValidator = new InputValidator();
     }
 
+    public void ShowMessage(string message)
+    {
+        AnsiConsole.MarkupLine($"[green]{message}[/]");
+    }
+
     public string ShowMainMenu()
     {
         AnsiConsole.Clear();
@@ -34,40 +39,38 @@ public class SpectreCalculatorUIService : ICalculatorUIService
     public string ShowMenuAfterCalc()
     {
         return AnsiConsole.Prompt(
-                     new SelectionPrompt<string>()
-                         .Title("[green]What would you like to do next?[/]")
-                         .AddChoices(new[]
-                         {
-                        "New Calculation",
-                        "Calculator Menu"
-                         }));
-
+            new SelectionPrompt<string>()
+                .Title("[green]What would you like to do next?[/]")
+                .AddChoices(new[]
+                {
+                    "New Calculation",
+                    "Calculator Menu"
+                }));
     }
+
     public string ShowMenuAfterUpdate()
     {
         return AnsiConsole.Prompt(
-                     new SelectionPrompt<string>()
-                         .Title("[green]What would you like to do next?[/]")
-                         .AddChoices(new[]
-                         {
-                        "Update Calculation",
-                        "Calculator Menu",
-                         }));
+            new SelectionPrompt<string>()
+                .Title("[green]What would you like to do next?[/]")
+                .AddChoices(new[]
+                {
+                    "Update Calculation",
+                    "Calculator Menu"
+                }));
+    }
 
-    } 
     public string ShowMenuAfterDelete()
     {
         return AnsiConsole.Prompt(
-                     new SelectionPrompt<string>()
-                         .Title("[green]What would you like to do next?[/]")
-                         .AddChoices(new[]
-                         {
-                        "Delete a calculation",
-                        "Calculator Menu",
-                         }));
-
+            new SelectionPrompt<string>()
+                .Title("[green]What would you like to do next?[/]")
+                .AddChoices(new[]
+                {
+                    "Delete a calculation",
+                    "Calculator Menu"
+                }));
     }
-
 
     public double GetNumberInput(string prompt)
     {
@@ -85,7 +88,6 @@ public class SpectreCalculatorUIService : ICalculatorUIService
         }
     }
 
-
     public string GetOperatorInput()
     {
         return AnsiConsole.Prompt(
@@ -97,33 +99,52 @@ public class SpectreCalculatorUIService : ICalculatorUIService
 
     public void ShowResult(double operand1, double operand2, string operatorSymbol, double result)
     {
+        ShowResult(operand1, operand2, operatorSymbol, result, false);
+    }
+
+    public void ShowResult(double operand1, double operand2, string operatorSymbol, double result, bool isDeleted)
+    {
         Console.Clear();
         var table = new Table()
             .Border(TableBorder.Rounded)
             .Title("[italic green]\nResult[/]")
             .AddColumn("Expression")
-            .AddColumn("Result");
+            .AddColumn("Result")
+            .AddColumn("Status");
 
         if (operatorSymbol == "√")
         {
-            table.AddRow($"√{operand1}", $"{Math.Round(result, 2)}");
-            table.AddRow($"√{operand2}", $"{Math.Round(Math.Sqrt(operand2), 2)}");
+            table.AddRow(
+                $"√{operand1}",
+                $"{Math.Round(result, 2)}",
+                isDeleted ? "[red]Deleted[/]" : "[green]Not Deleted[/]"
+            );
+            table.AddRow(
+                $"√{operand2}",
+                $"{Math.Round(Math.Sqrt(operand2), 2)}",
+                isDeleted ? "[red]Deleted[/]" : "[green]Not Deleted[/]"
+            );
         }
         else
         {
-            table.AddRow($"{operand1} {operatorSymbol} {operand2}", $"{Math.Round(result, 2)}");
+            table.AddRow(
+                $"{operand1} {operatorSymbol} {operand2}",
+                $"{Math.Round(result, 2)}",
+                isDeleted ? "[red]Deleted[/]" : "[green]Not Deleted[/]"
+            );
         }
         AnsiConsole.Write(table);
     }
 
-    public void ShowHistory(IEnumerable<Calculator> calculations)
+    public void ShowCalculations(IEnumerable<Calculator> calculations)
     {
         var table = new Table()
             .Border(TableBorder.Rounded)
             .AddColumn(new TableColumn("[yellow]ID[/]").Centered())
             .AddColumn(new TableColumn("[green]Date[/]").Centered())
             .AddColumn(new TableColumn("[blue]Calculation[/]").Centered())
-            .AddColumn(new TableColumn("[magenta]Result[/]").Centered());
+            .AddColumn(new TableColumn("[magenta]Result[/]").Centered())
+            .AddColumn(new TableColumn("[cyan]Status[/]").Centered());
 
         foreach (var calc in calculations)
         {
@@ -136,7 +157,8 @@ public class SpectreCalculatorUIService : ICalculatorUIService
                     $"[yellow]{calc.Id}[/]",
                     $"[green]{calc.CalculationDate}[/]",
                     $"[blue]{expression}[/]",
-                    $"[magenta]{calc.Result}, {Math.Round(secondResult, 2)}[/]"
+                    $"[magenta]{calc.Result}, {Math.Round(secondResult, 2)}[/]",
+                    calc.IsDeleted ? "[red]Deleted[/]" : "[green]Not Deleted[/]"
                 );
             }
             else
@@ -146,7 +168,8 @@ public class SpectreCalculatorUIService : ICalculatorUIService
                     $"[yellow]{calc.Id}[/]",
                     $"[green]{calc.CalculationDate}[/]",
                     $"[blue]{expression}[/]",
-                    $"[magenta]{calc.Result}[/]"
+                    $"[magenta]{calc.Result}[/]",
+                    calc.IsDeleted ? "[red]Deleted[/]" : "[green]Not Deleted[/]"
                 );
             }
         }
@@ -175,6 +198,7 @@ public class SpectreCalculatorUIService : ICalculatorUIService
         CalculatorOperator.SquareRoot => "√",
         _ => "?"
     };
+
     public int GetCalculationIdForUpdate()
     {
         return AnsiConsole.Ask<int>("Enter the [green]ID[/] of the calculation to update:");
@@ -190,8 +214,33 @@ public class SpectreCalculatorUIService : ICalculatorUIService
         Console.Clear();
         return AnsiConsole.Confirm("Are you sure you want to delete this calculation?");
     }
-    public void ShowResult(string message)
+
+    public bool ShouldChangeOperator()
     {
-        AnsiConsole.MarkupLine($"[green]{message}[/]");
+        return AnsiConsole.Confirm("Do you want to change the operator?");
+    }
+
+    public Dictionary<string, double> GetSelectedInputsToUpdate(Dictionary<string, double> currentInputs)
+    {
+        var updatedInputs = new Dictionary<string, double>();
+        var inputs = currentInputs.Keys.ToList();
+        inputs.Add("[green]Confirm[/]");
+        inputs.Add("[red]Cancel[/]");
+
+        while (true)
+        {
+            var choice = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("[green]Select input to update:[/]")
+                    .AddChoices(inputs));
+
+            if (choice == "[green]Confirm[/]")
+                return updatedInputs;
+
+            if (choice == "[red]Cancel[/]")
+                return currentInputs;
+
+            updatedInputs[choice] = GetNumberInput(choice);
+        }
     }
 }

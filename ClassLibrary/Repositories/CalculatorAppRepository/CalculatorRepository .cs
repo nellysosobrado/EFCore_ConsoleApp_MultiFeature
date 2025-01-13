@@ -1,4 +1,5 @@
 ﻿using ClassLibrary.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClassLibrary.Repositories.CalculatorAppRepository;
 
@@ -15,11 +16,6 @@ public class CalculatorRepository
     {
         _context.Calculations.Add(calculator);
         _context.SaveChanges();
-    }
-
-    public List<Calculator> GetAllCalculations()
-    {
-        return _context.Calculations.ToList();
     }
 
     public Calculator GetCalculationById(int id)
@@ -45,10 +41,22 @@ public class CalculatorRepository
 
     public void DeleteCalculation(int id)
     {
-        var calculation = _context.Calculations.Find(id)
+        var calculation = _context.Calculations
+            .IgnoreQueryFilters()
+            .FirstOrDefault(c => c.Id == id)
             ?? throw new InvalidOperationException("Calculation not found");
 
-        _context.Calculations.Remove(calculation);
+        if (calculation.IsDeleted)
+        {
+            throw new InvalidOperationException("This calculation has already been deleted");
+        }
+
+        calculation.IsDeleted = true;
+        calculation.DeletedAt = DateTime.Now;
         _context.SaveChanges();
+    }
+    public List<Calculator> GetAllCalculations()
+    {
+        return _context.Calculations.IgnoreQueryFilters().ToList();
     }
 }

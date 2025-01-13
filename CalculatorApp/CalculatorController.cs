@@ -114,11 +114,21 @@ public class CalculatorController
 
                 if (_uiService.ConfirmDeletion())
                 {
-                    _operationService.DeleteCalculation(id);
-                    Console.Clear();
-                    _uiService.ShowResult("Calculation deleted successfully");
+                    try
+                    {
+                        _operationService.DeleteCalculation(id);
+                        Console.Clear();
+                        _uiService.ShowMessage("Calculation deleted successfully");
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        Console.Clear();
+                        _uiService.ShowError(ex.Message);
+                        _uiService.WaitForKeyPress();
+                        continue;
+                    }
                 }
-                
+
                 var choice = _uiService.ShowMenuAfterDelete();
                 switch (choice)
                 {
@@ -132,8 +142,8 @@ public class CalculatorController
             catch (Exception ex)
             {
                 _uiService.ShowError(ex.Message);
+                _uiService.WaitForKeyPress();
             }
-        
         }
     }
     private void PerformCalculation()
@@ -200,7 +210,7 @@ public class CalculatorController
     private void ShowCalculations()
     {
         var calculations = _operationService.GetCalculationHistory();
-        _uiService.ShowHistory(calculations);
+        _uiService.ShowCalculations(calculations);
 
         _uiService.WaitForKeyPress();
     }

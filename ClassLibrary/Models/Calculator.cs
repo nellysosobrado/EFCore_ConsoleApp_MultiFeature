@@ -20,4 +20,7 @@ public class Calculator
 
     [Required]
     public DateTime CalculationDate { get; set; } = DateTime.Now;
+
+    public bool IsDeleted { get; set; } = false;
+    public DateTime? DeletedAt { get; set; }
 }

@@ -34,7 +34,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
                 .IsRequired();
 
             entity.Property(c => c.Operator)
-                .HasConversion<string>()  // Konvertera enum till string i databasen
+                .HasConversion<string>()
                 .IsRequired();
 
 
