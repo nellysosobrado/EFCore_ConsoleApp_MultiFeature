@@ -17,5 +17,8 @@ public enum CalculatorMenuOptions
     DeleteCalculation,
 
     [Description("Main Menu")]
-    MainMenu
+    MainMenu,
+
+
+
 }

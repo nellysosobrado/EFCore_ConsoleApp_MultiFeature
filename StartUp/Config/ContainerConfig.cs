@@ -15,6 +15,7 @@ using ShapeApp.Controllers;
 using ShapeApp.Services;
 using ShapeApp.Validators;
 using Microsoft.Extensions.Options;
+using CalculatorApp.UI;
 
 
 namespace StartUp.Config;
@@ -46,6 +47,7 @@ public static class ContainerConfig
 
         builder.RegisterType<SpectreCalculatorUIService>().As<ICalculatorUIService>();
         builder.RegisterType<CalculatorOperationService>().As<ICalculatorOperationService>();
+        builder.RegisterType<CalculatorMenu>().AsSelf();
 
         // Register Shape Services
         builder.RegisterType<ShapeRepository>().AsSelf();

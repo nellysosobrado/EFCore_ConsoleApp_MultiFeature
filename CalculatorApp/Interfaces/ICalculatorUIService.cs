@@ -1,13 +1,10 @@
-﻿using ClassLibrary.Models;
+﻿using CalculatorApp.Enums;
+using ClassLibrary.Models;
 
 namespace CalculatorApp.Services;
 
 public interface ICalculatorUIService
 {
-    string ShowMainMenu();
-    string ShowMenuAfterCalc();
-    string ShowMenuAfterUpdate();
-    string ShowMenuAfterDelete();
 
     double GetNumberInput(string prompt);
     string GetOperatorInput();

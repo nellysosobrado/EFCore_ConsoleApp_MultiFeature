@@ -4,6 +4,8 @@ using CalculatorApp.Services;
 using FluentValidation;
 using ClassLibrary.Enums.CalculatorAppEnums;
 using Spectre.Console;
+using CalculatorApp.UI;
+using CalculatorApp.Enums;
 
 namespace CalculatorApp.Controllers;
 
@@ -11,40 +13,44 @@ public class CalculatorController
 {
     private readonly ICalculatorUIService _uiService;
     private readonly ICalculatorOperationService _operationService;
+    private readonly CalculatorMenu _calculatorMenu;
+
 
     public CalculatorController(
         ICalculatorUIService uiService, 
-        ICalculatorOperationService operationService)
+        ICalculatorOperationService operationService,
+        CalculatorMenu calculatorMenu)
     {
         _uiService = uiService;
         _operationService = operationService;
+        _calculatorMenu = calculatorMenu;
     }
 
     public void Start()
     {
         while (true)
         {
-            var choice = _uiService.ShowMainMenu();
+            var choice = _calculatorMenu.ShowMainMenu();
 
             switch (choice)
             {
-                case "Calculate":
+                case CalculatorMenuOptions.Calculate:
                     PerformCalculation();
                     break;
 
-                case "History":
+                case CalculatorMenuOptions.History:
                     CalculationHistory();
                     break;
 
-                case "Update Calculation":
+                case CalculatorMenuOptions.UpdateCalculation:
                     UpdateCalculation();
                     break;
 
-                case "Delete Calculation":
+                case CalculatorMenuOptions.DeleteCalculation:
                     DeleteCalculation();
                     break;
 
-                case "Main Menu":
+                case CalculatorMenuOptions.MainMenu:
                     return;
             }
         }
@@ -74,7 +80,7 @@ public class CalculatorController
                 _uiService.ShowResult(operand1, operand2, operatorInput,
                 _operationService.Calculate(operand1, operand2, calculatorOperator));
 
-                var choice = _uiService.ShowMenuAfterUpdate();
+                var choice = _calculatorMenu.ShowMenuAfterUpdate();
                 switch (choice)
                 {
                     case "Update Calculation":
@@ -88,7 +94,7 @@ public class CalculatorController
             {
                 Console.Clear();
                 _uiService.ShowError(ex.Message);
-                var choice = _uiService.ShowMenuAfterUpdate();
+                var choice = _calculatorMenu.ShowMenuAfterUpdate();
                 switch (choice)
                 {
                     case "Update Calculation":
@@ -129,7 +135,7 @@ public class CalculatorController
                     }
                 }
 
-                var choice = _uiService.ShowMenuAfterDelete();
+                var choice = _calculatorMenu.ShowMenuAfterDelete();
                 switch (choice)
                 {
                     case "Delete a calculation":
@@ -188,7 +194,7 @@ public class CalculatorController
                 _operationService.SaveCalculation(calculation);
                 _uiService.ShowResultSimple(operand1, operand2, operatorInput, calculation.Result);
 
-                var choice = _uiService.ShowMenuAfterCalc();
+                var choice = _calculatorMenu.ShowMenuAfterCalc();
                 switch (choice)
                 {
                     case "New Calculation":

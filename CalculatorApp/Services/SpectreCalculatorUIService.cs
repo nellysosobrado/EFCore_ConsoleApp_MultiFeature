@@ -6,16 +6,19 @@ using ClassLibrary.Enums.CalculatorAppEnums;
 using CalculatorApp.Enums;
 using CalculatorApp.Enums;
 using CalculatorApp.Extensions;
+using CalculatorApp.UI;
 
 namespace CalculatorApp.Services;
 
 public class SpectreCalculatorUIService : ICalculatorUIService
 {
     private readonly InputValidator _inputValidator;
+    private readonly CalculatorMenu _calculatorMenu;
 
-    public SpectreCalculatorUIService()
+    public SpectreCalculatorUIService(InputValidator inputValidator, CalculatorMenu calculatorMenu)
     {
-        _inputValidator = new InputValidator();
+        _inputValidator = inputValidator;
+        _calculatorMenu = calculatorMenu;
     }
 
     public void ShowMessage(string message)
@@ -23,42 +26,6 @@ public class SpectreCalculatorUIService : ICalculatorUIService
         AnsiConsole.MarkupLine($"[green]{message}[/]");
     }
 
-
-    public string ShowMenuAfterCalc()
-    {
-        return AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-                .Title("[green]What would you like to do next?[/]")
-                .AddChoices(new[]
-                {
-                    "New Calculation",
-                    "Calculator Menu"
-                }));
-    }
-
-    public string ShowMenuAfterUpdate()
-    {
-        return AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-                .Title("[green]What would you like to do next?[/]")
-                .AddChoices(new[]
-                {
-                    "Update Calculation",
-                    "Calculator Menu"
-                }));
-    }
-
-    public string ShowMenuAfterDelete()
-    {
-        return AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-                .Title("[green]What would you like to do next?[/]")
-                .AddChoices(new[]
-                {
-                    "Delete a calculation",
-                    "Calculator Menu"
-                }));
-    }
 
     public double GetNumberInput(string prompt)
     {
@@ -152,7 +119,7 @@ public class SpectreCalculatorUIService : ICalculatorUIService
         var table = new Table()
             .Border(TableBorder.Rounded)
             .AddColumn(new TableColumn("[yellow]ID[/]").Centered())
-            .AddColumn(new TableColumn("[green]Date[/]").Centered())
+            .AddColumn(new TableColumn("[green]Created[/]").Centered())
             .AddColumn(new TableColumn("[blue]Calculation[/]").Centered())
             .AddColumn(new TableColumn("[magenta]Result[/]").Centered())
             .AddColumn(new TableColumn("[cyan]Status[/]").Centered())
@@ -166,24 +133,24 @@ public class SpectreCalculatorUIService : ICalculatorUIService
                 var secondResult = Math.Sqrt(calc.SecondNumber);
                 expression = $"√{calc.FirstNumber}, √{calc.SecondNumber}";
                 table.AddRow(
-                    $"[yellow]{calc.Id}[/]",
-                    $"[green]{calc.CalculationDate}[/]",
-                    $"[blue]{expression}[/]",
-                    $"[magenta]{calc.Result}, {Math.Round(secondResult, 2)}[/]",
+                    $"[white]{calc.Id}[/]",
+                    $"[white]{calc.CalculationDate}[/]",
+                    $"[white]{expression}[/]",
+                    $"[white]{calc.Result}, {Math.Round(secondResult, 2)}[/]",
                     calc.IsDeleted ? "[red]Deleted[/]" : "[green]Not Deleted[/]",
-                    calc.IsDeleted ? $"[red]{calc.DeletedAt}[/]" : "-"
+                    calc.IsDeleted ? $"[white]{calc.DeletedAt}[/]" : "-"
                 );
             }
             else
             {
                 expression = $"{calc.FirstNumber} {GetOperatorSymbol(calc.Operator)} {calc.SecondNumber}";
                 table.AddRow(
-                    $"[yellow]{calc.Id}[/]",
-                    $"[green]{calc.CalculationDate}[/]",
-                    $"[blue]{expression}[/]",
-                    $"[magenta]{calc.Result}[/]",
+                    $"[white]{calc.Id}[/]",
+                    $"[white]{calc.CalculationDate}[/]",
+                    $"[white]{expression}[/]",
+                    $"[white]{calc.Result}[/]",
                     calc.IsDeleted ? "[red]Deleted[/]" : "[green]Not Deleted[/]",
-                    calc.IsDeleted ? $"[red]{calc.DeletedAt}[/]" : "-"
+                    calc.IsDeleted ? $"[white]{calc.DeletedAt}[/]" : "-"
                 );
             }
         }
@@ -256,18 +223,5 @@ public class SpectreCalculatorUIService : ICalculatorUIService
 
             updatedInputs[choice] = GetNumberInput(choice);
         }
-    }
-    public string ShowMainMenu()
-    {
-        AnsiConsole.Clear();
-        var option = AnsiConsole.Prompt(
-            new SelectionPrompt<CalculatorMenuOptions>()
-                .Title("[italic yellow]Calculator Menu[/]")
-                .WrapAround(true)
-                .PageSize(5)
-                .UseConverter(opt => opt.GetDescription())
-                .AddChoices(Enum.GetValues<CalculatorMenuOptions>()));
-
-        return option.GetDescription();
     }
 }
