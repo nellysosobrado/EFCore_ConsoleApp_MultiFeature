@@ -3,6 +3,9 @@ using ClassLibrary.Models;
 using CalculatorApp.Validators;
 using System.Globalization;
 using ClassLibrary.Enums.CalculatorAppEnums;
+using CalculatorApp.Enums;
+using CalculatorApp.Enums;
+using CalculatorApp.Extensions;
 
 namespace CalculatorApp.Services;
 
@@ -20,21 +23,21 @@ public class SpectreCalculatorUIService : ICalculatorUIService
         AnsiConsole.MarkupLine($"[green]{message}[/]");
     }
 
-    public string ShowMainMenu()
-    {
-        AnsiConsole.Clear();
-        return AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-                .Title("[italic yellow]Calculator Menu[/]")
-                .PageSize(4)
-                .AddChoices(new[] {
-                    "Calculate",
-                    "History",
-                    "Update Calculation",
-                    "Delete Calculation",
-                    "Main Menu"
-                }));
-    }
+    //public string ShowMainMenu()
+    //{
+    //    AnsiConsole.Clear();
+    //    return AnsiConsole.Prompt(
+    //        new SelectionPrompt<string>()
+    //            .Title("[italic yellow]Calculator Menu[/]")
+    //            .PageSize(4)
+    //            .AddChoices(new[] {
+    //                "Calculate",
+    //                "History",
+    //                "Update Calculation",
+    //                "Delete Calculation",
+    //                "Main Menu"
+    //            }));
+    //}
 
     public string ShowMenuAfterCalc()
     {
@@ -242,5 +245,18 @@ public class SpectreCalculatorUIService : ICalculatorUIService
 
             updatedInputs[choice] = GetNumberInput(choice);
         }
+    }
+    public string ShowMainMenu()
+    {
+        AnsiConsole.Clear();
+        var option = AnsiConsole.Prompt(
+            new SelectionPrompt<CalculatorMenuOptions>()
+                .Title("[italic yellow]Calculator Menu[/]")
+                .WrapAround(true)
+                .PageSize(5)
+                .UseConverter(opt => opt.GetDescription())
+                .AddChoices(Enum.GetValues<CalculatorMenuOptions>()));
+
+        return option.GetDescription();
     }
 }
