@@ -21,4 +21,5 @@ public interface ICalculatorUIService
     bool ConfirmDeletion();
     bool ShouldChangeOperator();
     Dictionary<string, double> GetSelectedInputsToUpdate(Dictionary<string, double> currentInputs);
+    (Dictionary<string, double> parameters, string newOperator) GetSelectedParametersToUpdate(Dictionary<string, double> currentParameters);
 }

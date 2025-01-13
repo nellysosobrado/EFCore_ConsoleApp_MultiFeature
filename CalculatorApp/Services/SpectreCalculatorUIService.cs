@@ -16,11 +16,21 @@ public class SpectreCalculatorUIService : ICalculatorUIService
     private bool _showDeleteButton;
     private readonly InputValidator _inputValidator;
     private readonly CalculatorMenu _calculatorMenu;
+    private bool _operatorChanged = false;
+    private string _newOperator = string.Empty;
 
     public SpectreCalculatorUIService(InputValidator inputValidator, CalculatorMenu calculatorMenu)
     {
         _inputValidator = inputValidator;
         _calculatorMenu = calculatorMenu;
+    }
+
+    public bool ShouldChangeOperator()
+    {
+        return AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("[yellow]Would you like to change the operator?[/]")
+                .AddChoices("Yes", "No")) == "Yes";
     }
 
     public void ShowMessage(string message)
@@ -313,10 +323,6 @@ public class SpectreCalculatorUIService : ICalculatorUIService
         return AnsiConsole.Confirm("Are you sure you want to delete this calculation?");
     }
 
-    public bool ShouldChangeOperator()
-    {
-        return AnsiConsole.Confirm("Do you want to change the operator?");
-    }
 
     public Dictionary<string, double> GetSelectedInputsToUpdate(Dictionary<string, double> currentInputs)
     {
@@ -339,6 +345,77 @@ public class SpectreCalculatorUIService : ICalculatorUIService
                 return currentInputs;
 
             updatedInputs[choice] = GetNumberInput(choice);
+        }
+    }
+    
+
+    private void ShowCurrentParameters(Dictionary<string, double> current, Dictionary<string, double> updated)
+    {
+        var table = new Table()
+            .Border(TableBorder.Rounded)
+            .AddColumn(new TableColumn("[blue]Parameter[/]").Centered())
+            .AddColumn(new TableColumn("[yellow]Current Value[/]").Centered())
+            .AddColumn(new TableColumn("[green]New Value[/]").Centered());
+
+        foreach (var param in current)
+        {
+            table.AddRow(
+                param.Key,
+                param.Value.ToString(),
+                updated.ContainsKey(param.Key) ? updated[param.Key].ToString() : "-"
+            );
+        }
+
+        AnsiConsole.Write(table);
+        AnsiConsole.WriteLine();
+    }
+    public (Dictionary<string, double> parameters, string newOperator) GetSelectedParametersToUpdate(Dictionary<string, double> currentParameters)
+    {
+        var updatedParameters = new Dictionary<string, double>();
+        var parameters = currentParameters.Keys.ToList();
+        if (!_operatorChanged) parameters.Add("Change Operator");
+        parameters.Add("[green]Confirm[/]");
+        parameters.Add("[red]Cancel[/]");
+
+        while (true)
+        {
+            AnsiConsole.Clear();
+            ShowCurrentParameters(currentParameters, updatedParameters);
+            if (_operatorChanged)
+            {
+                AnsiConsole.MarkupLine($"\n[blue]New operator:[/] {_newOperator}");
+            }
+
+            var choice = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("[green]Select parameter to update:[/]")
+                    .AddChoices(parameters));
+
+            if (choice == "[green]Confirm[/]")
+            {
+                var returnOperator = _operatorChanged ? _newOperator : string.Empty;
+                _operatorChanged = false;
+                _newOperator = string.Empty;
+                return (updatedParameters.Count > 0 ? updatedParameters : currentParameters, returnOperator);
+            }
+
+            if (choice == "[red]Cancel[/]")
+            {
+                _operatorChanged = false;
+                _newOperator = string.Empty;
+                return (null, string.Empty); 
+            }
+
+            if (choice == "Change Operator")
+            {
+                _newOperator = GetOperatorInput();
+                _operatorChanged = true;
+                parameters.Remove("Change Operator");
+                continue;
+            }
+
+            var newValue = GetNumberInput($"Enter new value for {choice}");
+            updatedParameters[choice] = newValue;
         }
     }
 }

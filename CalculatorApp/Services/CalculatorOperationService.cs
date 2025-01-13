@@ -131,4 +131,9 @@ public class CalculatorOperationService : ICalculatorOperationService
     {
         _calculatorRepository.DeleteCalculation(id);
     }
+
+    public Calculator GetCalculationById(int id)
+    {
+        return _calculatorRepository.GetCalculationById(id);
+    }
 }

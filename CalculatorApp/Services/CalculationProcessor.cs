@@ -42,4 +42,19 @@ public class CalculationProcessor
 
         _operationService.SaveCalculation(calculation);
     }
+
+    public Calculator GetCalculationById(int id)
+    {
+        return _operationService.GetCalculationById(id);
+    }
+
+    public bool TryParseOperator(string input, out CalculatorOperator calculatorOperator)
+    {
+        return _operationService.TryParseOperator(input, out calculatorOperator);
+    }
+
+    public void UpdateCalculation(int id, double operand1, double operand2, CalculatorOperator calculatorOperator, double result)
+    {
+        _operationService.UpdateCalculation(id, operand1, operand2, calculatorOperator);
+    }
 }
