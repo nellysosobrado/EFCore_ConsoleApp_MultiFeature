@@ -1,13 +1,11 @@
 ﻿using Autofac;
 using CalculatorApp.Services;
-//using ClassLibrary.Services;
 using CalculatorApp.Validators;
 using CalculatorApp.Controllers;
 using ClassLibrary.Data;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-//using ClassLibrary.Services.CalculatorAppServices;
 using ClassLibrary;
 using ClassLibrary.Repositories.CalculatorAppRepository;
 using ClassLibrary.Repositories.ShapeAppRepository;
@@ -48,6 +46,10 @@ public static class ContainerConfig
         builder.RegisterType<SpectreCalculatorUIService>().As<ICalculatorUIService>();
         builder.RegisterType<CalculatorOperationService>().As<ICalculatorOperationService>();
         builder.RegisterType<CalculatorMenu>().AsSelf();
+        builder.RegisterType<CalculationProcessor>().AsSelf();
+        builder.RegisterType<CalculationInputService>().AsSelf();
+        builder.RegisterType<SquareRootCalculator>().AsSelf();
+
 
         // Register Shape Services
         builder.RegisterType<ShapeRepository>().AsSelf();

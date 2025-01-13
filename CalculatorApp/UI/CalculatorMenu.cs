@@ -20,6 +20,8 @@ public class CalculatorMenu
 
     public string ShowMenuAfterCalc()
     {
+        Console.Clear();
+        
         return AnsiConsole.Prompt(
             new SelectionPrompt<string>()
                 .AddChoices(new[]
@@ -27,6 +29,7 @@ public class CalculatorMenu
                     "New Calculation",
                     "Calculator Menu"
                 }));
+        
     }
 
     public string ShowMenuAfterUpdate()

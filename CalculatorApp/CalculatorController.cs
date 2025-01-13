@@ -14,16 +14,27 @@ public class CalculatorController
     private readonly ICalculatorUIService _uiService;
     private readonly ICalculatorOperationService _operationService;
     private readonly CalculatorMenu _calculatorMenu;
+    private readonly CalculationProcessor _calculationProcessor;
+    private readonly CalculationInputService _inputService; 
+    private readonly SquareRootCalculator _squareRootCalculator;
+
+
 
 
     public CalculatorController(
         ICalculatorUIService uiService, 
         ICalculatorOperationService operationService,
-        CalculatorMenu calculatorMenu)
+        CalculatorMenu calculatorMenu,
+        CalculationProcessor calculationProcessor,
+        CalculationInputService calculationInputService,
+        SquareRootCalculator squareRootCalculator)
     {
         _uiService = uiService;
         _operationService = operationService;
         _calculatorMenu = calculatorMenu;
+        _calculationProcessor = calculationProcessor;
+        _inputService = calculationInputService;
+        _squareRootCalculator = squareRootCalculator;
     }
 
     public void Start()
@@ -152,202 +163,60 @@ public class CalculatorController
             }
         }
     }
-    private Table CreateCalculationTable()
-    {
-        var table = new Table().Border(TableBorder.Square);
-        table.AddColumns(
-            new TableColumn("First Number").Centered(),
-            new TableColumn("Operator").Centered(),
-            new TableColumn("Second Number").Centered(),
-            new TableColumn("Result").Centered()
-        );
-        table.AddRow("", "", "", "");
-        return table;
-    }
-
-    private void DisplayTable(Table table)
-    {
-        AnsiConsole.Clear();
-        AnsiConsole.Write(table);
-    }
-
-    private (double operand1, double operand2, string operatorInput) GetUserInput(Table table)
-    {
-        var operand1 = _uiService.GetNumberInput("first");
-        table.UpdateCell(0, 0, operand1.ToString());
-        DisplayTable(table);
-
-        var operand2 = _uiService.GetNumberInput("second");
-        table.UpdateCell(0, 2, operand2.ToString());
-        DisplayTable(table);
-
-        var operatorInput = _uiService.GetOperatorInput();
-        table.UpdateCell(0, 1, operatorInput);
-        DisplayTable(table);
-
-        return (operand1, operand2, operatorInput);
-    }
-
-    private double CalculateResult(double operand1, double operand2, string operatorInput)
-    {
-        if (!_operationService.TryParseOperator(operatorInput, out CalculatorOperator calculatorOperator))
-        {
-            throw new InvalidOperationException("Invalid operator");
-        }
-
-        var result = _operationService.Calculate(operand1, operand2, calculatorOperator);
-        return Math.Round(result, 2);
-    }
-
-    private void SaveCalculationResult(double operand1, double operand2, CalculatorOperator calculatorOperator, double result)
-    {
-        var calculation = new Calculator
-        {
-            FirstNumber = operand1,
-            SecondNumber = operand2,
-            Operator = calculatorOperator,
-            Result = result,
-            CalculationDate = DateTime.Now
-        };
-
-        _operationService.SaveCalculation(calculation);
-    }
-
     private void PerformCalculation()
     {
         while (true)
         {
             try
             {
-                var table = CreateCalculationTable();
-                DisplayTable(table);
-
-                var (operand1, operand2, operatorInput) = GetUserInput(table);
+                var (operand1, operand2, operatorInput) = _inputService.GetUserInput();
 
                 try
                 {
-                    var result = CalculateResult(operand1, operand2, operatorInput);
-                    table.UpdateCell(0, 3, result.ToString());
-                    DisplayTable(table);
+                    var (result, isSquareRoot) = _calculationProcessor.Calculate(operand1, operand2, operatorInput);
 
-                    if (_operationService.TryParseOperator(operatorInput, out CalculatorOperator calculatorOperator))
+                    if (isSquareRoot)
                     {
-                        SaveCalculationResult(operand1, operand2, calculatorOperator, result);
+                        var (firstRoot, secondRoot) = _squareRootCalculator.CalculateRoots(operand1, operand2);
+                        _inputService.DisplaySquareRootResults(firstRoot, secondRoot);
+                        _uiService.WaitForKeyPress();
                     }
+                    else
+                    {
+                        _inputService.DisplayResult(result);
+                        _uiService.WaitForKeyPress();
+                    }
+
+                    _calculationProcessor.SaveCalculation(operand1, operand2, operatorInput, result);
 
                     AnsiConsole.WriteLine();
                     var choice = _calculatorMenu.ShowMenuAfterCalc();
                     if (choice == "Calculator Menu") return;
+
+                    _inputService.ClearTable();
                 }
                 catch (DivideByZeroException)
                 {
                     _uiService.ShowError("Cannot divide by zero");
                     _uiService.WaitForKeyPress();
+                    _inputService.ClearTable();
                 }
             }
             catch (ValidationException ex)
             {
                 _uiService.ShowError(ex.Message);
                 _uiService.WaitForKeyPress();
+                _inputService.ClearTable();
             }
             catch (InvalidOperationException ex)
             {
                 _uiService.ShowError(ex.Message);
                 _uiService.WaitForKeyPress();
+                _inputService.ClearTable();
             }
         }
     }
-    //private void PerformCalculation()
-    //{
-    //    while (true)
-    //    {
-    //        try
-    //        {
-    //            Console.Clear();
-    //            var table = new Table().Border(TableBorder.Square);
-    //            table.AddColumns(
-    //                new TableColumn("First Number").Centered(),
-    //                new TableColumn("Operator").Centered(),
-    //                new TableColumn("Second Number").Centered(),
-    //                new TableColumn("Result").Centered()
-    //            );
-    //            table.AddRow("", "", "", "");
-
-    //            AnsiConsole.Clear();
-    //            AnsiConsole.Write(table);
-
-    //            var operand1 = _uiService.GetNumberInput("first");
-    //            table.UpdateCell(0, 0, operand1.ToString());
-    //            AnsiConsole.Clear();
-    //            AnsiConsole.Write(table);
-
-    //            var operand2 = _uiService.GetNumberInput("second");
-    //            table.UpdateCell(0, 2, operand2.ToString());
-    //            AnsiConsole.Clear();
-    //            AnsiConsole.Write(table);
-
-    //            var operatorInput = _uiService.GetOperatorInput();
-    //            table.UpdateCell(0, 1, operatorInput);
-    //            AnsiConsole.Clear();
-    //            AnsiConsole.Write(table);
-
-    //            if (!_operationService.TryParseOperator(operatorInput, out CalculatorOperator calculatorOperator))
-    //            {
-    //                _uiService.ShowError("Invalid operator");
-    //                _uiService.WaitForKeyPress();
-    //                continue;
-    //            }
-
-    //            double result;
-    //            try
-    //            {
-    //                result = _operationService.Calculate(operand1, operand2, calculatorOperator);
-    //                result = Math.Round(result, 2);
-    //                table.UpdateCell(0, 3, result.ToString());
-    //                AnsiConsole.Clear();
-    //                AnsiConsole.Write(table);
-    //            }
-    //            catch (DivideByZeroException)
-    //            {
-    //                _uiService.ShowError("Cannot divide by zero");
-    //                _uiService.WaitForKeyPress();
-    //                continue;
-    //            }
-
-    //            var calculation = new Calculator
-    //            {
-    //                FirstNumber = operand1,
-    //                SecondNumber = operand2,
-    //                Operator = calculatorOperator,
-    //                Result = result,
-    //                CalculationDate = DateTime.Now
-    //            };
-
-    //            _operationService.SaveCalculation(calculation);
-
-    //            AnsiConsole.WriteLine();
-    //            var choice = _calculatorMenu.ShowMenuAfterCalc();
-    //            switch (choice)
-    //            {
-    //                case "New Calculation":
-    //                    continue;
-    //                case "Calculator Menu":
-    //                    return;
-    //            }
-    //        }
-    //        catch (ValidationException ex)
-    //        {
-    //            _uiService.ShowError(ex.Message);
-    //            _uiService.WaitForKeyPress();
-    //        }
-    //        catch (InvalidOperationException ex)
-    //        {
-    //            _uiService.ShowError(ex.Message);
-    //            _uiService.WaitForKeyPress();
-    //        }
-    //    }
-    //}
-
+ 
     private void CalculationHistory()
     {
         var calculations = _operationService.GetCalculationHistory();
