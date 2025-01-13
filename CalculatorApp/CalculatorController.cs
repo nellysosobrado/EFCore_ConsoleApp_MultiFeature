@@ -152,82 +152,97 @@ public class CalculatorController
             }
         }
     }
+    private Table CreateCalculationTable()
+    {
+        var table = new Table().Border(TableBorder.Square);
+        table.AddColumns(
+            new TableColumn("First Number").Centered(),
+            new TableColumn("Operator").Centered(),
+            new TableColumn("Second Number").Centered(),
+            new TableColumn("Result").Centered()
+        );
+        table.AddRow("", "", "", "");
+        return table;
+    }
+
+    private void DisplayTable(Table table)
+    {
+        AnsiConsole.Clear();
+        AnsiConsole.Write(table);
+    }
+
+    private (double operand1, double operand2, string operatorInput) GetUserInput(Table table)
+    {
+        var operand1 = _uiService.GetNumberInput("first");
+        table.UpdateCell(0, 0, operand1.ToString());
+        DisplayTable(table);
+
+        var operand2 = _uiService.GetNumberInput("second");
+        table.UpdateCell(0, 2, operand2.ToString());
+        DisplayTable(table);
+
+        var operatorInput = _uiService.GetOperatorInput();
+        table.UpdateCell(0, 1, operatorInput);
+        DisplayTable(table);
+
+        return (operand1, operand2, operatorInput);
+    }
+
+    private double CalculateResult(double operand1, double operand2, string operatorInput)
+    {
+        if (!_operationService.TryParseOperator(operatorInput, out CalculatorOperator calculatorOperator))
+        {
+            throw new InvalidOperationException("Invalid operator");
+        }
+
+        var result = _operationService.Calculate(operand1, operand2, calculatorOperator);
+        return Math.Round(result, 2);
+    }
+
+    private void SaveCalculationResult(double operand1, double operand2, CalculatorOperator calculatorOperator, double result)
+    {
+        var calculation = new Calculator
+        {
+            FirstNumber = operand1,
+            SecondNumber = operand2,
+            Operator = calculatorOperator,
+            Result = result,
+            CalculationDate = DateTime.Now
+        };
+
+        _operationService.SaveCalculation(calculation);
+    }
+
     private void PerformCalculation()
     {
         while (true)
         {
             try
             {
-                Console.Clear();
-                var table = new Table().Border(TableBorder.Square);
-                table.AddColumns(
-                    new TableColumn("First Number").Centered(),
-                    new TableColumn("Operator").Centered(),
-                    new TableColumn("Second Number").Centered(),
-                    new TableColumn("Result").Centered()
-                );
-                table.AddRow("", "", "", "");
+                var table = CreateCalculationTable();
+                DisplayTable(table);
 
-                AnsiConsole.Clear();
-                AnsiConsole.Write(table);
+                var (operand1, operand2, operatorInput) = GetUserInput(table);
 
-                var operand1 = _uiService.GetNumberInput("first");
-                table.UpdateCell(0, 0, operand1.ToString());
-                AnsiConsole.Clear();
-                AnsiConsole.Write(table);
-
-                var operand2 = _uiService.GetNumberInput("second");
-                table.UpdateCell(0, 2, operand2.ToString());
-                AnsiConsole.Clear();
-                AnsiConsole.Write(table);
-
-                var operatorInput = _uiService.GetOperatorInput();
-                table.UpdateCell(0, 1, operatorInput);
-                AnsiConsole.Clear();
-                AnsiConsole.Write(table);
-
-                if (!_operationService.TryParseOperator(operatorInput, out CalculatorOperator calculatorOperator))
-                {
-                    _uiService.ShowError("Invalid operator");
-                    _uiService.WaitForKeyPress();
-                    continue;
-                }
-
-                double result;
                 try
                 {
-                    result = _operationService.Calculate(operand1, operand2, calculatorOperator);
-                    result = Math.Round(result, 2);
+                    var result = CalculateResult(operand1, operand2, operatorInput);
                     table.UpdateCell(0, 3, result.ToString());
-                    AnsiConsole.Clear();
-                    AnsiConsole.Write(table);
+                    DisplayTable(table);
+
+                    if (_operationService.TryParseOperator(operatorInput, out CalculatorOperator calculatorOperator))
+                    {
+                        SaveCalculationResult(operand1, operand2, calculatorOperator, result);
+                    }
+
+                    AnsiConsole.WriteLine();
+                    var choice = _calculatorMenu.ShowMenuAfterCalc();
+                    if (choice == "Calculator Menu") return;
                 }
                 catch (DivideByZeroException)
                 {
                     _uiService.ShowError("Cannot divide by zero");
                     _uiService.WaitForKeyPress();
-                    continue;
-                }
-
-                var calculation = new Calculator
-                {
-                    FirstNumber = operand1,
-                    SecondNumber = operand2,
-                    Operator = calculatorOperator,
-                    Result = result,
-                    CalculationDate = DateTime.Now
-                };
-
-                _operationService.SaveCalculation(calculation);
-
-                AnsiConsole.WriteLine();
-                var choice = _calculatorMenu.ShowMenuAfterCalc();
-                switch (choice)
-                {
-                    case "New Calculation":
-                        continue;
-                    case "Calculator Menu":
-                        return;
                 }
             }
             catch (ValidationException ex)
@@ -242,6 +257,96 @@ public class CalculatorController
             }
         }
     }
+    //private void PerformCalculation()
+    //{
+    //    while (true)
+    //    {
+    //        try
+    //        {
+    //            Console.Clear();
+    //            var table = new Table().Border(TableBorder.Square);
+    //            table.AddColumns(
+    //                new TableColumn("First Number").Centered(),
+    //                new TableColumn("Operator").Centered(),
+    //                new TableColumn("Second Number").Centered(),
+    //                new TableColumn("Result").Centered()
+    //            );
+    //            table.AddRow("", "", "", "");
+
+    //            AnsiConsole.Clear();
+    //            AnsiConsole.Write(table);
+
+    //            var operand1 = _uiService.GetNumberInput("first");
+    //            table.UpdateCell(0, 0, operand1.ToString());
+    //            AnsiConsole.Clear();
+    //            AnsiConsole.Write(table);
+
+    //            var operand2 = _uiService.GetNumberInput("second");
+    //            table.UpdateCell(0, 2, operand2.ToString());
+    //            AnsiConsole.Clear();
+    //            AnsiConsole.Write(table);
+
+    //            var operatorInput = _uiService.GetOperatorInput();
+    //            table.UpdateCell(0, 1, operatorInput);
+    //            AnsiConsole.Clear();
+    //            AnsiConsole.Write(table);
+
+    //            if (!_operationService.TryParseOperator(operatorInput, out CalculatorOperator calculatorOperator))
+    //            {
+    //                _uiService.ShowError("Invalid operator");
+    //                _uiService.WaitForKeyPress();
+    //                continue;
+    //            }
+
+    //            double result;
+    //            try
+    //            {
+    //                result = _operationService.Calculate(operand1, operand2, calculatorOperator);
+    //                result = Math.Round(result, 2);
+    //                table.UpdateCell(0, 3, result.ToString());
+    //                AnsiConsole.Clear();
+    //                AnsiConsole.Write(table);
+    //            }
+    //            catch (DivideByZeroException)
+    //            {
+    //                _uiService.ShowError("Cannot divide by zero");
+    //                _uiService.WaitForKeyPress();
+    //                continue;
+    //            }
+
+    //            var calculation = new Calculator
+    //            {
+    //                FirstNumber = operand1,
+    //                SecondNumber = operand2,
+    //                Operator = calculatorOperator,
+    //                Result = result,
+    //                CalculationDate = DateTime.Now
+    //            };
+
+    //            _operationService.SaveCalculation(calculation);
+
+    //            AnsiConsole.WriteLine();
+    //            var choice = _calculatorMenu.ShowMenuAfterCalc();
+    //            switch (choice)
+    //            {
+    //                case "New Calculation":
+    //                    continue;
+    //                case "Calculator Menu":
+    //                    return;
+    //            }
+    //        }
+    //        catch (ValidationException ex)
+    //        {
+    //            _uiService.ShowError(ex.Message);
+    //            _uiService.WaitForKeyPress();
+    //        }
+    //        catch (InvalidOperationException ex)
+    //        {
+    //            _uiService.ShowError(ex.Message);
+    //            _uiService.WaitForKeyPress();
+    //        }
+    //    }
+    //}
 
     private void CalculationHistory()
     {
