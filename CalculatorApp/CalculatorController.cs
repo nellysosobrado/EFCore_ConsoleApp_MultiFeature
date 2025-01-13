@@ -159,9 +159,32 @@ public class CalculatorController
             try
             {
                 Console.Clear();
+                var table = new Table().Border(TableBorder.Square);
+                table.AddColumns(
+                    new TableColumn("First Number").Centered(),
+                    new TableColumn("Operator").Centered(),
+                    new TableColumn("Second Number").Centered(),
+                    new TableColumn("Result").Centered()
+                );
+                table.AddRow("", "", "", "");
+
+                AnsiConsole.Clear();
+                AnsiConsole.Write(table);
+
                 var operand1 = _uiService.GetNumberInput("first");
+                table.UpdateCell(0, 0, operand1.ToString());
+                AnsiConsole.Clear();
+                AnsiConsole.Write(table);
+
                 var operand2 = _uiService.GetNumberInput("second");
+                table.UpdateCell(0, 2, operand2.ToString());
+                AnsiConsole.Clear();
+                AnsiConsole.Write(table);
+
                 var operatorInput = _uiService.GetOperatorInput();
+                table.UpdateCell(0, 1, operatorInput);
+                AnsiConsole.Clear();
+                AnsiConsole.Write(table);
 
                 if (!_operationService.TryParseOperator(operatorInput, out CalculatorOperator calculatorOperator))
                 {
@@ -174,6 +197,10 @@ public class CalculatorController
                 try
                 {
                     result = _operationService.Calculate(operand1, operand2, calculatorOperator);
+                    result = Math.Round(result, 2);
+                    table.UpdateCell(0, 3, result.ToString());
+                    AnsiConsole.Clear();
+                    AnsiConsole.Write(table);
                 }
                 catch (DivideByZeroException)
                 {
@@ -187,20 +214,20 @@ public class CalculatorController
                     FirstNumber = operand1,
                     SecondNumber = operand2,
                     Operator = calculatorOperator,
-                    Result = Math.Round(result, 2),
+                    Result = result,
                     CalculationDate = DateTime.Now
                 };
 
                 _operationService.SaveCalculation(calculation);
-                _uiService.ShowResultSimple(operand1, operand2, operatorInput, calculation.Result);
 
+                AnsiConsole.WriteLine();
                 var choice = _calculatorMenu.ShowMenuAfterCalc();
                 switch (choice)
                 {
                     case "New Calculation":
                         continue;
                     case "Calculator Menu":
-                        return; 
+                        return;
                 }
             }
             catch (ValidationException ex)
@@ -213,7 +240,6 @@ public class CalculatorController
                 _uiService.ShowError(ex.Message);
                 _uiService.WaitForKeyPress();
             }
-         
         }
     }
 
