@@ -22,7 +22,7 @@ namespace ClassLibrary.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ClassLibrary.Models.Calculator", b =>
+            modelBuilder.Entity("Calculator", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,16 +33,19 @@ namespace ClassLibrary.Migrations
                     b.Property<DateTime>("CalculationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("Operand1")
-                        .HasColumnType("float");
+                    b.Property<double>("FirstNumber")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("float(18)");
 
-                    b.Property<double>("Operand2")
-                        .HasColumnType("float");
-
-                    b.Property<int>("Operator")
-                        .HasColumnType("int");
+                    b.Property<string>("Operator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Result")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("float(18)");
+
+                    b.Property<double>("SecondNumber")
                         .HasPrecision(18, 2)
                         .HasColumnType("float(18)");
 

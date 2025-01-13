@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClassLibrary.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250112144717_AddingParametersColumns")]
-    partial class AddingParametersColumns
+    [Migration("20250113053605_ImplementedEnumsForCalcApp")]
+    partial class ImplementedEnumsForCalcApp
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace ClassLibrary.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ClassLibrary.Models.Calculator", b =>
+            modelBuilder.Entity("Calculator", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -36,16 +36,19 @@ namespace ClassLibrary.Migrations
                     b.Property<DateTime>("CalculationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("Operand1")
-                        .HasColumnType("float");
+                    b.Property<double>("FirstNumber")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("float(18)");
 
-                    b.Property<double>("Operand2")
-                        .HasColumnType("float");
-
-                    b.Property<int>("Operator")
-                        .HasColumnType("int");
+                    b.Property<string>("Operator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Result")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("float(18)");
+
+                    b.Property<double>("SecondNumber")
                         .HasPrecision(18, 2)
                         .HasColumnType("float(18)");
 
@@ -66,14 +69,17 @@ namespace ClassLibrary.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("float(18)");
 
+                    b.Property<double?>("BaseLength")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("float(18)")
+                        .HasColumnName("Base");
+
                     b.Property<DateTime>("CalculationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ParametersJson")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("jsonb")
-                        .HasDefaultValue("{}");
+                    b.Property<double?>("Height")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("float(18)");
 
                     b.Property<double>("Perimeter")
                         .HasPrecision(18, 2)
@@ -81,6 +87,26 @@ namespace ClassLibrary.Migrations
 
                     b.Property<int>("ShapeType")
                         .HasColumnType("int");
+
+                    b.Property<double?>("Side")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("float(18)");
+
+                    b.Property<double?>("SideA")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("float(18)");
+
+                    b.Property<double?>("SideB")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("float(18)");
+
+                    b.Property<double?>("SideC")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("float(18)");
+
+                    b.Property<double?>("Width")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("float(18)");
 
                     b.HasKey("Id");
 

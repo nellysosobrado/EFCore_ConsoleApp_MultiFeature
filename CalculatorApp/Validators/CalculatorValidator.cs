@@ -8,11 +8,11 @@ public class CalculatorValidator : AbstractValidator<Calculator>
 {
     public CalculatorValidator()
     {
-        RuleFor(x => x.Operand1)
+        RuleFor(x => x.FirstNumber)
             .NotNull()
             .WithMessage("First operand is required");
 
-        RuleFor(x => x.Operand2)
+        RuleFor(x => x.SecondNumber)
             .NotNull()
             .WithMessage("Second operand is required")
             .Must((calculator, operand2) =>

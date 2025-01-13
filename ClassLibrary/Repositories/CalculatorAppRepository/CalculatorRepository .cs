@@ -33,13 +33,15 @@ public class CalculatorRepository
         var existing = _context.Calculations.Find(calculator.Id)
             ?? throw new InvalidOperationException("Calculation not found");
 
-        existing.Operand1 = calculator.Operand1;
-        existing.Operand2 = calculator.Operand2;
+        existing.FirstNumber = calculator.FirstNumber;
+        existing.SecondNumber = calculator.SecondNumber;
         existing.Operator = calculator.Operator;
         existing.Result = calculator.Result;
+        existing.CalculationDate = DateTime.Now;
 
         _context.SaveChanges();
     }
+
 
     public void DeleteCalculation(int id)
     {

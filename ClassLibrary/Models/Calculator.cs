@@ -1,19 +1,23 @@
 ﻿using ClassLibrary.Enums.CalculatorAppEnums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
-namespace ClassLibrary.Models
+public class Calculator
 {
-    public class Calculator
-    {
-        public int Id { get; set; }
-        public double Operand1 { get; set; }
-        public double Operand2 { get; set; }
-        public CalculatorOperator Operator { get; set; }
-        public double Result { get; set; }
-        public DateTime CalculationDate { get; set; } = DateTime.Now;
-    }
+    [Key]
+    public int Id { get; set; }
+
+    [Required]
+    public double FirstNumber { get; set; }
+
+    [Required]
+    public double SecondNumber { get; set; }
+
+    [Required]
+    public double Result { get; set; }
+
+    [Required]
+    public CalculatorOperator Operator { get; set; }
+
+    [Required]
+    public DateTime CalculationDate { get; set; } = DateTime.Now;
 }

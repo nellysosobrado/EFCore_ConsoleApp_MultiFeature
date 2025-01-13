@@ -130,8 +130,8 @@ public class SpectreCalculatorUIService : ICalculatorUIService
             string expression;
             if (calc.Operator == CalculatorOperator.SquareRoot)
             {
-                var secondResult = Math.Sqrt(calc.Operand2);
-                expression = $"√{calc.Operand1}, √{calc.Operand2}";
+                var secondResult = Math.Sqrt(calc.SecondNumber);
+                expression = $"√{calc.FirstNumber}, √{calc.SecondNumber}";
                 table.AddRow(
                     $"[yellow]{calc.Id}[/]",
                     $"[green]{calc.CalculationDate}[/]",
@@ -141,7 +141,7 @@ public class SpectreCalculatorUIService : ICalculatorUIService
             }
             else
             {
-                expression = $"{calc.Operand1} {GetOperatorSymbol(calc.Operator)} {calc.Operand2}";
+                expression = $"{calc.FirstNumber} {GetOperatorSymbol(calc.Operator)} {calc.SecondNumber}";
                 table.AddRow(
                     $"[yellow]{calc.Id}[/]",
                     $"[green]{calc.CalculationDate}[/]",

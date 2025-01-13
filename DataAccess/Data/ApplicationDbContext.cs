@@ -17,9 +17,31 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Calculator>()
-            .Property(c => c.Result)
-            .HasPrecision(18, 2);
+        modelBuilder.Entity<Calculator>(entity =>
+        {
+            entity.HasKey(c => c.Id);
+
+            entity.Property(c => c.FirstNumber)
+                .HasPrecision(18, 2)
+                .IsRequired();
+
+            entity.Property(c => c.SecondNumber)
+                .HasPrecision(18, 2)
+                .IsRequired();
+
+            entity.Property(c => c.Result)
+                .HasPrecision(18, 2)
+                .IsRequired();
+
+            entity.Property(c => c.Operator)
+                .HasConversion<string>()  // Konvertera enum till string i databasen
+                .IsRequired();
+
+
+            entity.Property(c => c.CalculationDate)
+                .IsRequired();
+
+        });
 
         modelBuilder.Entity<Shape>(entity =>
         {
@@ -31,7 +53,6 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
             entity.Property(s => s.Perimeter)
                 .HasPrecision(18, 2);
 
-            // Configure precision for parameter properties
             entity.Property(s => s.Width).HasPrecision(18, 2);
             entity.Property(s => s.Height).HasPrecision(18, 2);
             entity.Property(s => s.Side).HasPrecision(18, 2);

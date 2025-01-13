@@ -135,7 +135,6 @@ public class CalculatorController
             }
         
         }
-        
     }
     private void PerformCalculation()
     {
@@ -167,8 +166,8 @@ public class CalculatorController
 
                 var calculation = new Calculator
                 {
-                    Operand1 = operand1,
-                    Operand2 = operand2,
+                    FirstNumber = operand1,
+                    SecondNumber = operand2,
                     Operator = calculatorOperator,
                     Result = Math.Round(result, 2),
                     CalculationDate = DateTime.Now

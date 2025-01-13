@@ -2,7 +2,6 @@
 using CalculatorApp.Validators;
 using FluentValidation;
 using ClassLibrary.Enums.CalculatorAppEnums;
-//using ClassLibrary.Services.CalculatorAppServices;
 using ClassLibrary.Repositories.CalculatorAppRepository;
 
 namespace CalculatorApp.Services;
@@ -111,8 +110,8 @@ public class CalculatorOperationService : ICalculatorOperationService
         var updatedCalculation = new Calculator
         {
             Id = id,
-            Operand1 = operand1,
-            Operand2 = operand2,
+            FirstNumber = operand1,
+            SecondNumber = operand2,
             Operator = calculatorOperator,
             Result = Math.Round(result, 2),
             CalculationDate = DateTime.Now
