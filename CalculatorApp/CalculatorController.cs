@@ -160,6 +160,7 @@ public class CalculatorController
                 if (!_operationService.TryParseOperator(operatorInput, out CalculatorOperator calculatorOperator))
                 {
                     _uiService.ShowError("Invalid operator");
+                    _uiService.WaitForKeyPress();
                     continue;
                 }
 
@@ -171,6 +172,7 @@ public class CalculatorController
                 catch (DivideByZeroException)
                 {
                     _uiService.ShowError("Cannot divide by zero");
+                    _uiService.WaitForKeyPress();
                     continue;
                 }
 
@@ -184,7 +186,7 @@ public class CalculatorController
                 };
 
                 _operationService.SaveCalculation(calculation);
-                _uiService.ShowResult(operand1, operand2, operatorInput, calculation.Result);
+                _uiService.ShowResultSimple(operand1, operand2, operatorInput, calculation.Result);
 
                 var choice = _uiService.ShowMenuAfterCalc();
                 switch (choice)
@@ -198,10 +200,12 @@ public class CalculatorController
             catch (ValidationException ex)
             {
                 _uiService.ShowError(ex.Message);
+                _uiService.WaitForKeyPress();
             }
             catch (InvalidOperationException ex)
             {
                 _uiService.ShowError(ex.Message);
+                _uiService.WaitForKeyPress();
             }
          
         }
