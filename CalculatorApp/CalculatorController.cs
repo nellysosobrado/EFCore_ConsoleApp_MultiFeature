@@ -98,7 +98,7 @@ public class CalculatorController
             var result = _calculationProcessor.Calculate(firstNumber, secondNumber, operatorInput).result;
             _calculationProcessor.UpdateCalculation(id, firstNumber, secondNumber, calculatorOperator, result);
 
-            _uiService.ShowResult(firstNumber, secondNumber, operatorInput, result);
+            _uiService.ShowResultSimple(firstNumber, secondNumber, operatorInput, result);
             _uiService.ShowMessage("\n[green]Calculation updated successfully![/]");
 
             var choice = _calculatorMenu.ShowMenuAfterUpdate();
