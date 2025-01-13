@@ -126,7 +126,9 @@ public class CalculatorController
         {
             try
             {
-                CalculationHistory();
+                var calculations = _operationService.GetCalculationHistory();
+                _uiService.CalculationHistory(calculations, showDeleteButton: true);
+
                 var id = _uiService.GetCalculationIdForDelete();
 
                 if (_uiService.ConfirmDeletion())
@@ -149,9 +151,8 @@ public class CalculatorController
                 var choice = _calculatorMenu.ShowMenuAfterDelete();
                 switch (choice)
                 {
-                    case "Delete a calculation":
-                        DeleteCalculation();
-                        break;
+                    case "Delete Another Calculation":
+                        continue;
                     case "Calculator Menu":
                         return;
                 }
