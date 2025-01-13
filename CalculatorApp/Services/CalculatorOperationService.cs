@@ -95,10 +95,10 @@ public class CalculatorOperationService : ICalculatorOperationService
         _calculatorRepository.AddCalculation(calculation);
     }
 
+
     public IEnumerable<Calculator> GetCalculationHistory()
     {
-        return _calculatorRepository.GetAllCalculations()
-            .OrderBy(c => c.CalculationDate);
+        return _calculatorRepository.GetAllCalculations();
     }
 
     public void UpdateCalculation(int id, double operand1, double operand2, CalculatorOperator calculatorOperator)

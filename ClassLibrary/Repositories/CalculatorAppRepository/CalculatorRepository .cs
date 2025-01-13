@@ -57,6 +57,8 @@ public class CalculatorRepository
     }
     public List<Calculator> GetAllCalculations()
     {
-        return _context.Calculations.IgnoreQueryFilters().ToList();
+        return _context.Calculations
+            .OrderBy(c => c.CalculationDate)
+            .ToList();
     }
 }
