@@ -10,7 +10,7 @@ using CalculatorApp.UI;
 
 namespace CalculatorApp.Services;
 
-public class SpectreCalculatorUIService : ICalculatorUIService
+public class SpectreCalculatorUI : ICalculatorUIService
 {
     private const int PageSize = 10;
     private bool _showDeleteButton;
@@ -19,7 +19,7 @@ public class SpectreCalculatorUIService : ICalculatorUIService
     private bool _operatorChanged = false;
     private string _newOperator = string.Empty;
 
-    public SpectreCalculatorUIService(InputValidator inputValidator, CalculatorMenu calculatorMenu)
+    public SpectreCalculatorUI(InputValidator inputValidator, CalculatorMenu calculatorMenu)
     {
         _inputValidator = inputValidator;
         _calculatorMenu = calculatorMenu;

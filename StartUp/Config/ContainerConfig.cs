@@ -43,7 +43,7 @@ public static class ContainerConfig
         builder.RegisterType<CalculatorRepository>().AsSelf();
         // Register Calculator Services
 
-        builder.RegisterType<SpectreCalculatorUIService>().As<ICalculatorUIService>();
+        builder.RegisterType<SpectreCalculatorUI>().As<ICalculatorUIService>();
         builder.RegisterType<CalculatorOperationService>().As<ICalculatorOperationService>();
         builder.RegisterType<CalculatorMenu>().AsSelf();
         builder.RegisterType<CalculationProcessor>().AsSelf();
