@@ -151,7 +151,7 @@ public class CalculatorController
                 var choice = _calculatorMenu.ShowMenuAfterDelete();
                 switch (choice)
                 {
-                    case "Delete Another Calculation":
+                    case "Back":
                         continue;
                     case "Calculator Menu":
                         return;

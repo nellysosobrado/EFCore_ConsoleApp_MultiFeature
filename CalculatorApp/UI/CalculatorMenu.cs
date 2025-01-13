@@ -48,10 +48,9 @@ public class CalculatorMenu
     {
         return AnsiConsole.Prompt(
             new SelectionPrompt<string>()
-                .Title("[green]What would you like to do next?[/]")
                 .AddChoices(new[]
                 {
-                    "Delete Another Calculation",
+                    "Back",
                     "Calculator Menu"
                 }));
     }
