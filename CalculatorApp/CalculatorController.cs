@@ -33,7 +33,7 @@ public class CalculatorController
                     break;
 
                 case "History":
-                    ShowCalculations();
+                    CalculationHistory();
                     break;
 
                 case "Update Calculation":
@@ -57,7 +57,7 @@ public class CalculatorController
             try
             {
                 Console.Clear();
-                ShowCalculations();
+                CalculationHistory();
                 var id = _uiService.GetCalculationIdForUpdate();
 
                 var operand1 = _uiService.GetNumberInput("first");
@@ -109,7 +109,7 @@ public class CalculatorController
         {
             try
             {
-                ShowCalculations();
+                CalculationHistory();
                 var id = _uiService.GetCalculationIdForDelete();
 
                 if (_uiService.ConfirmDeletion())
@@ -211,10 +211,10 @@ public class CalculatorController
         }
     }
 
-    private void ShowCalculations()
+    private void CalculationHistory()
     {
         var calculations = _operationService.GetCalculationHistory();
-        _uiService.ShowCalculations(calculations);
+        _uiService.CalculationHistory(calculations);
 
         _uiService.WaitForKeyPress();
     }

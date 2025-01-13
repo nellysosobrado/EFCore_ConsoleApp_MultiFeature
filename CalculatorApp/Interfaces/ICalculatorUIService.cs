@@ -11,7 +11,7 @@ public interface ICalculatorUIService
 
     double GetNumberInput(string prompt);
     string GetOperatorInput();
-    void ShowCalculations(IEnumerable<Calculator> calculations);
+    void CalculationHistory(IEnumerable<Calculator> calculations);
     void ShowResult(double operand1, double operand2, string operatorSymbol, double result, bool isDeleted = false);
 
     void ShowResultSimple(double operand1, double operand2, string operatorSymbol, double result);

@@ -186,7 +186,7 @@ public class SpectreCalculatorUIService : ICalculatorUIService
         AnsiConsole.Write(table);
     }
 
-    public void ShowCalculations(IEnumerable<Calculator> calculations)
+    public void CalculationHistory(IEnumerable<Calculator> calculations)
     {
         var table = new Table()
             .Border(TableBorder.Rounded)
@@ -194,7 +194,8 @@ public class SpectreCalculatorUIService : ICalculatorUIService
             .AddColumn(new TableColumn("[green]Date[/]").Centered())
             .AddColumn(new TableColumn("[blue]Calculation[/]").Centered())
             .AddColumn(new TableColumn("[magenta]Result[/]").Centered())
-            .AddColumn(new TableColumn("[cyan]Status[/]").Centered());
+            .AddColumn(new TableColumn("[cyan]Status[/]").Centered())
+            .AddColumn(new TableColumn("[red]Deleted At[/]").Centered());
 
         foreach (var calc in calculations)
         {
@@ -208,7 +209,8 @@ public class SpectreCalculatorUIService : ICalculatorUIService
                     $"[green]{calc.CalculationDate}[/]",
                     $"[blue]{expression}[/]",
                     $"[magenta]{calc.Result}, {Math.Round(secondResult, 2)}[/]",
-                    calc.IsDeleted ? "[red]Deleted[/]" : "[green]Not Deleted[/]"
+                    calc.IsDeleted ? "[red]Deleted[/]" : "[green]Not Deleted[/]",
+                    calc.IsDeleted ? $"[red]{calc.DeletedAt}[/]" : "-"
                 );
             }
             else
@@ -219,7 +221,8 @@ public class SpectreCalculatorUIService : ICalculatorUIService
                     $"[green]{calc.CalculationDate}[/]",
                     $"[blue]{expression}[/]",
                     $"[magenta]{calc.Result}[/]",
-                    calc.IsDeleted ? "[red]Deleted[/]" : "[green]Not Deleted[/]"
+                    calc.IsDeleted ? "[red]Deleted[/]" : "[green]Not Deleted[/]",
+                    calc.IsDeleted ? $"[red]{calc.DeletedAt}[/]" : "-"
                 );
             }
         }
