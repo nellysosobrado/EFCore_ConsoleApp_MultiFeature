@@ -117,45 +117,6 @@ public class SpectreCalculatorUIService : ICalculatorUIService
         }
         AnsiConsole.Write(table);
     }
-
-    //public void ShowResult(double operand1, double operand2, string operatorSymbol, double result)
-    //{
-    //    ShowResult(operand1, operand2, operatorSymbol, result, false);
-    //}
-
-    //public void ShowResult(double operand1, double operand2, string operatorSymbol, double result, bool isDeleted)
-    //{
-    //    Console.Clear();
-    //    var table = new Table()
-    //        .Border(TableBorder.Rounded)
-    //        .Title("[italic green]\nResult[/]")
-    //        .AddColumn("Expression")
-    //        .AddColumn("Result")
-    //        .AddColumn("Status");
-
-    //    if (operatorSymbol == "√")
-    //    {
-    //        table.AddRow(
-    //            $"√{operand1}",
-    //            $"{Math.Round(result, 2)}",
-    //            isDeleted ? "[red]Deleted[/]" : "[green]Not Deleted[/]"
-    //        );
-    //        table.AddRow(
-    //            $"√{operand2}",
-    //            $"{Math.Round(Math.Sqrt(operand2), 2)}",
-    //            isDeleted ? "[red]Deleted[/]" : "[green]Not Deleted[/]"
-    //        );
-    //    }
-    //    else
-    //    {
-    //        table.AddRow(
-    //            $"{operand1} {operatorSymbol} {operand2}",
-    //            $"{Math.Round(result, 2)}",
-    //            isDeleted ? "[red]Deleted[/]" : "[green]Not Deleted[/]"
-    //        );
-    //    }
-    //    AnsiConsole.Write(table);
-    //}
     public void ShowResultSimple(double operand1, double operand2, string operatorSymbol, double result)
     {
         Console.Clear();
