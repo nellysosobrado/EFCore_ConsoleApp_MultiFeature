@@ -260,20 +260,7 @@ public class SpectreShapeUIService : IShapeUIService
                 .ValidationErrorMessage("[red]Please enter a valid ID[/]"));
     }
 
-    //public int GetShapeIdForDelete()
-    //{
-    //    return AnsiConsole.Prompt(
-    //        new TextPrompt<int>("[green]Enter the ID of the shape to delete:[/]")
-    //            .ValidationErrorMessage("[red]Please enter a valid ID[/]"));
-    //}
-
-    public bool ConfirmDeletion()
-    {
-        return AnsiConsole.Prompt(
-            new ConfirmationPrompt("Are you sure you want to delete this shape?")
-                .ShowChoices()
-                .ShowDefaultValue());
-    }
+  
 
     public bool ShouldChangeShapeType()
     {

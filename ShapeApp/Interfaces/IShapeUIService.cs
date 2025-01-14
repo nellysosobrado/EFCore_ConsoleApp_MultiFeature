@@ -13,8 +13,6 @@ public interface IShapeUIService
     bool ShouldChangeShapeType();
     Dictionary<string, double> GetSelectedParametersToUpdate(Dictionary<string, double> currentParameters);
     int GetShapeIdForUpdate();
-    //int GetShapeIdForDelete();
-    bool ConfirmDeletion();
 
     double GetNumberInput(string prompt);
     void ShowShapes(IEnumerable<Shape> shapes);
