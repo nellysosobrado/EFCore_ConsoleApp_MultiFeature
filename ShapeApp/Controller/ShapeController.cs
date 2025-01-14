@@ -81,7 +81,7 @@ public class ShapeController
     private void CalculateShape()
     {
         var shapeType = _inputService.GetShapeType();
-        var requiredParameters = _operationService.GetRequiredParameters(shapeType);
+        var requiredParameters = _inputService.GetRequiredParameters(shapeType);
         var parameters = _inputService.GetShapeParameters(requiredParameters);
 
         _operationService.SaveShape(shapeType, parameters);

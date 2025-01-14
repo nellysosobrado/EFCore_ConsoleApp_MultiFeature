@@ -22,11 +22,7 @@ public class ShapeOperationService : IShapeOperationService
         _validator = validator;
         _shapeFactory = shapeFactory;
     }
-    public Shape GetShapeById(int id)
-    {
-        return _shapeRepository.GetShapeById(id);
-    }
-
+    
 
    
 
@@ -77,9 +73,5 @@ public class ShapeOperationService : IShapeOperationService
   
 
    
-    public Dictionary<string, double> GetRequiredParameters(ShapeType shapeType)
-    {
-        var shape = _shapeFactory.CreateShape(shapeType);
-        return shape.GetParameters();
-    }
+    
 }

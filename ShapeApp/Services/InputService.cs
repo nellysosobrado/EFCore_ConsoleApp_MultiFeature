@@ -1,4 +1,6 @@
 ﻿using ClassLibrary.Enums;
+using ClassLibrary.Models;
+using ClassLibrary.Repositories.ShapeAppRepository;
 using ShapeApp.Interfaces;
 using Spectre.Console;
 using System;
@@ -12,10 +14,14 @@ namespace ShapeApp.Services
     public class InputService : IInputService
     {
         private readonly IErrorService _errorService;
+        private readonly ShapeRepository _shapeRepository;
+        private readonly ShapeFactory _shapeFactory;
 
-        public InputService(IErrorService errorService)
+        public InputService(IErrorService errorService, ShapeRepository shapeRepository, ShapeFactory shapeFactory)
         {
             _errorService = errorService;
+            _shapeRepository = shapeRepository;
+            _shapeFactory = shapeFactory;
         }
 
         public double GetNumberInput(string prompt)
@@ -82,6 +88,15 @@ namespace ShapeApp.Services
 
             AnsiConsole.Write(table);
         }
-       
+        public Shape GetShapeById(int id)
+        {
+            return _shapeRepository.GetShapeById(id);
+        }
+
+        public Dictionary<string, double> GetRequiredParameters(ShapeType shapeType)
+        {
+            var shape = _shapeFactory.CreateShape(shapeType);
+            return shape.GetParameters();
+        }
     }
 }

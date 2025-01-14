@@ -36,7 +36,7 @@ public class UpdateShapeService : IUpdateShapeService
 
     public void UpdateShape(int id)
     {
-        var existingShape = _operationService.GetShapeById(id);
+        var existingShape = _inputService.GetShapeById(id);
         var currentParameters = existingShape.GetParameters();
         ShapeType shapeType = existingShape.ShapeType;
         Dictionary<string, double> parameters;
@@ -44,7 +44,7 @@ public class UpdateShapeService : IUpdateShapeService
         if (ShouldChangeShapeType())
         {
             shapeType = _inputService.GetShapeType();
-            var requiredParameters = _operationService.GetRequiredParameters(shapeType);
+            var requiredParameters = _inputService.GetRequiredParameters(shapeType);
             parameters = _inputService.GetShapeParameters(requiredParameters);
         }
         else
