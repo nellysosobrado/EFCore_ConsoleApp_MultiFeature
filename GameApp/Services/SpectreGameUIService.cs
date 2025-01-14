@@ -1,7 +1,6 @@
 ﻿using Spectre.Console;
 using ClassLibrary.Models;
 using ClassLibrary.Enums;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace GameApp.Services;
 
@@ -17,34 +16,36 @@ public class SpectreGameUIService : IGameUIService
 
     public void ShowGameResult(Game game, double winPercentage)
     {
-        var resultColor = game.Result switch
+        var resultColor = game.Winner switch
         {
-            GameResult.Win => "green",
-            GameResult.Loss => "red",
+            "Player" => "green",
+            "Computer" => "red",
             _ => "yellow"
         };
 
         AnsiConsole.MarkupLine($"\nYour move: [blue]{game.PlayerMove}[/]");
         AnsiConsole.MarkupLine($"Computer's move: [blue]{game.ComputerMove}[/]");
-        AnsiConsole.MarkupLine($"Result: [{resultColor}]{game.Result}[/]");
-        AnsiConsole.MarkupLine($"Win percentage: [cyan]{winPercentage:F2}%[/]");
+        AnsiConsole.MarkupLine($"Winner: [{resultColor}]{game.Winner}[/]");
+        AnsiConsole.MarkupLine($"Current win percentage: [cyan]{winPercentage:F2}%[/]");
+        AnsiConsole.MarkupLine($"Average win rate: [cyan]{game.AverageWinRate:F2}%[/]");
     }
 
     public void ShowGameHistory(IEnumerable<Game> games)
     {
-        var table = new Spectre.Console.Table()
+        var table = new Table()
             .Border(TableBorder.Rounded)
             .AddColumn(new TableColumn("[yellow]Date[/]").Centered())
             .AddColumn(new TableColumn("[blue]Your Move[/]").Centered())
             .AddColumn(new TableColumn("[blue]Computer's Move[/]").Centered())
-            .AddColumn(new TableColumn("[green]Result[/]").Centered());
+            .AddColumn(new TableColumn("[green]Winner[/]").Centered())
+            .AddColumn(new TableColumn("[cyan]Avg Win Rate[/]").Centered());
 
         foreach (var game in games)
         {
-            var resultColor = game.Result switch
+            var resultColor = game.Winner switch
             {
-                GameResult.Win => "green",
-                GameResult.Loss => "red",
+                "Player" => "green",
+                "Computer" => "red",
                 _ => "yellow"
             };
 
@@ -52,7 +53,8 @@ public class SpectreGameUIService : IGameUIService
                 game.GameDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 game.PlayerMove.ToString(),
                 game.ComputerMove.ToString(),
-                $"[{resultColor}]{game.Result}[/]"
+                $"[{resultColor}]{game.Winner}[/]",
+                $"{game.AverageWinRate:F2}%"
             );
         }
 

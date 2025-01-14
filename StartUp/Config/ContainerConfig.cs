@@ -72,6 +72,7 @@ public static class ContainerConfig
         builder.RegisterType<GameService>().As<IGameService>();
         builder.RegisterType<SpectreGameUIService>().As<IGameUIService>();
 
+
         return builder.Build();
     }
 }

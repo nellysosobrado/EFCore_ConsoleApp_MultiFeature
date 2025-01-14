@@ -47,13 +47,13 @@ public class GameController
         {
             var playerMove = _uiService.GetPlayerMove();
             var computerMove = _gameService.GetComputerMove();
-            var result = _gameService.DetermineWinner(playerMove, computerMove);
+            var winner = _gameService.DetermineWinner(playerMove, computerMove);
 
             var game = new ClassLibrary.Models.Game
             {
                 PlayerMove = playerMove,
                 ComputerMove = computerMove,
-                Result = result,
+                Winner = winner,  
                 GameDate = DateTime.Now
             };
 
@@ -65,10 +65,9 @@ public class GameController
             Console.Clear();
             var playAgain = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
-                    //.Title("[green]What would you like to do?[/]")
                     .AddChoices(new[] {
-                        "Play Again",
-                        "Back to Game Menu"
+                    "Play Again",
+                    "Back to Game Menu"
                     }));
 
             if (playAgain == "Back to Game Menu")
@@ -82,6 +81,7 @@ public class GameController
             _uiService.WaitForKeyPress();
         }
     }
+
 
     private void ShowHistory()
     {

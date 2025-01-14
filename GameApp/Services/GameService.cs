@@ -20,22 +20,37 @@ public class GameService : IGameService
         return (GameMove)_random.Next(0, 3);
     }
 
-    public GameResult DetermineWinner(GameMove playerMove, GameMove computerMove)
+    public string DetermineWinner(GameMove playerMove, GameMove computerMove)
     {
         if (playerMove == computerMove)
-            return GameResult.Draw;
+            return "Draw";
 
         return (playerMove, computerMove) switch
         {
-            (GameMove.Rock, GameMove.Scissors) => GameResult.Win,
-            (GameMove.Paper, GameMove.Rock) => GameResult.Win,
-            (GameMove.Scissors, GameMove.Paper) => GameResult.Win,
-            _ => GameResult.Loss
+            (GameMove.Rock, GameMove.Scissors) => "Player",
+            (GameMove.Paper, GameMove.Rock) => "Player",
+            (GameMove.Scissors, GameMove.Paper) => "Player",
+            _ => "Computer"
         };
     }
 
     public void SaveGame(Game game)
     {
+        var totalGames = _context.Games.Count();
+        var playerWins = _context.Games.Count(g => g.Winner == "Player");
+
+        if (totalGames == 0)
+        {
+            game.AverageWinRate = game.Winner == "Player" ? 100.0 : 0.0;
+        }
+        else
+        {
+            if (game.Winner == "Player")
+                playerWins++;
+
+            game.AverageWinRate = (double)playerWins / (totalGames + 1) * 100;
+        }
+
         _context.Games.Add(game);
         _context.SaveChanges();
     }
@@ -52,7 +67,7 @@ public class GameService : IGameService
         var totalGames = _context.Games.Count();
         if (totalGames == 0) return 0;
 
-        var wins = _context.Games.Count(g => g.Result == GameResult.Win);
+        var wins = _context.Games.Count(g => g.Winner == "Player");
         return (double)wins / totalGames * 100;
     }
 }
