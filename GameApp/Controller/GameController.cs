@@ -10,11 +10,13 @@ public class GameController
 {
     private readonly IGameService _gameService;
     private readonly IGameUIService _uiService;
+    private readonly IPlayGame _playGame;
 
-    public GameController(IGameService gameService, IGameUIService uiService)
+    public GameController(IGameService gameService, IGameUIService uiService, IPlayGame playGame)
     {
         _gameService = gameService;
         _uiService = uiService;
+        _playGame = playGame;
     }
 
     public void Start()
@@ -45,40 +47,17 @@ public class GameController
     {
         try
         {
-            var playerMove = _uiService.GetPlayerMove();
-            var computerMove = _gameService.GetComputerMove();
-            var winner = _gameService.DetermineWinner(playerMove, computerMove);
+            var game = _playGame.CreateGame();
+            _playGame.ProcessGameResult(game);
 
-            var game = new ClassLibrary.Models.Game
-            {
-                PlayerMove = playerMove,
-                ComputerMove = computerMove,
-                Winner = winner,  
-                GameDate = DateTime.Now
-            };
-
-            _gameService.SaveGame(game);
-            var winPercentage = _gameService.CalculateWinPercentage();
-            _uiService.ShowGameResult(game, winPercentage);
-            _uiService.WaitForKeyPress();
-
-            Console.Clear();
-            var playAgain = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                    .AddChoices(new[] {
-                    "Play Again",
-                    "Back to Game Menu"
-                    }));
-
-            if (playAgain == "Back to Game Menu")
+            if (!_playGame.ShouldPlayAgain())
             {
                 return;
             }
         }
         catch (Exception ex)
         {
-            _uiService.ShowError(ex.Message);
-            _uiService.WaitForKeyPress();
+            _playGame.HandleGameError(ex);
         }
     }
 
