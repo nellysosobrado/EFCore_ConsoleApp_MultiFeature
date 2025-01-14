@@ -70,6 +70,7 @@ public class SpectreShapeUIService : IShapeUIService
         return AnsiConsole.Prompt(
             new SelectionPrompt<ShapeType>()
                 .Title("[green]Select a shape:[/]")
+                .WrapAround(true)
                 .UseConverter(type => type.ToString())
                 .AddChoices(Enum.GetValues<ShapeType>()));
     }

@@ -11,19 +11,16 @@ public class ShapeOperationService : IShapeOperationService
 {
     private readonly ShapeRepository _shapeRepository;
     private readonly ShapeValidator _validator;
-    private readonly Dictionary<ShapeType, IShape> _shapes;
+    private readonly IShapeFactory _shapeFactory;
 
-    public ShapeOperationService(ShapeRepository shapeRepository, ShapeValidator validator)
+    public ShapeOperationService(
+        ShapeRepository shapeRepository,
+        ShapeValidator validator,
+        IShapeFactory shapeFactory)
     {
         _shapeRepository = shapeRepository;
         _validator = validator;
-        _shapes = new Dictionary<ShapeType, IShape>
-        {
-            { ShapeType.Rectangle, new Rectangle() },
-            { ShapeType.Parallelogram, new Parallelogram() },
-            { ShapeType.Triangle, new Triangle() },
-            { ShapeType.Rhombus, new Rhombus() }
-        };
+        _shapeFactory = shapeFactory;
     }
     public Shape GetShapeById(int id)
     {
@@ -39,63 +36,16 @@ public class ShapeOperationService : IShapeOperationService
 
     public void SaveShape(ShapeType shapeType, Dictionary<string, double> parameters)
     {
-        if (!_shapes.TryGetValue(shapeType, out var shape))
-        {
-            throw new ArgumentException("Invalid shape type");
-        }
-
-        var shapeModel = new Shape
-        {
-            ShapeType = shapeType,
-            CalculationDate = DateTime.Now
-        };
-
-        switch (shapeType)
-        {
-            case ShapeType.Rectangle:
-                shapeModel.Width = parameters["Width"];
-                shapeModel.Height = parameters["Height"];
-                break;
-            case ShapeType.Parallelogram:
-                shapeModel.BaseLength = parameters["Base"];  
-                shapeModel.Height = parameters["Height"];
-                shapeModel.Side = parameters["Side"];
-                break;
-            case ShapeType.Triangle:
-                shapeModel.SideA = parameters["SideA"];
-                shapeModel.SideB = parameters["SideB"];
-                shapeModel.SideC = parameters["SideC"];
-                shapeModel.Height = parameters["Height"];
-                break;
-            case ShapeType.Rhombus:
-                shapeModel.Side = parameters["Side"];
-                shapeModel.Height = parameters["Height"];
-                break;
-        }
-
+        var shape = _shapeFactory.CreateShape(shapeType);
         shape.SetParameters(parameters);
-        shapeModel.Area = shape.CalculateArea();
-        shapeModel.Perimeter = shape.CalculatePerimeter();
-
-        _validator.ValidateAndThrow(shapeModel);
-        _shapeRepository.AddShape(shapeModel);
-    }
-
-
-    public void UpdateShape(int id, ShapeType shapeType, Dictionary<string, double> parameters)
-    {
-        if (!_shapes.TryGetValue(shapeType, out var shape))
-        {
-            throw new ArgumentException("Invalid shape type");
-        }
 
         var shapeModel = new Shape
         {
-            Id = id,
             ShapeType = shapeType,
             CalculationDate = DateTime.Now
         };
 
+        // Sätt specifika parametrar baserat på formtyp
         switch (shapeType)
         {
             case ShapeType.Rectangle:
@@ -119,7 +69,52 @@ public class ShapeOperationService : IShapeOperationService
                 break;
         }
 
+        // Beräkna area och omkrets
+        shapeModel.Area = shape.CalculateArea();
+        shapeModel.Perimeter = shape.CalculatePerimeter();
+
+        _validator.ValidateAndThrow(shapeModel);
+        _shapeRepository.AddShape(shapeModel);
+    }
+
+
+    public void UpdateShape(int id, ShapeType shapeType, Dictionary<string, double> parameters)
+    {
+        var shape = _shapeFactory.CreateShape(shapeType);
         shape.SetParameters(parameters);
+
+        var shapeModel = new Shape
+        {
+            Id = id,
+            ShapeType = shapeType,
+            CalculationDate = DateTime.Now
+        };
+
+        // Sätt specifika parametrar baserat på formtyp
+        switch (shapeType)
+        {
+            case ShapeType.Rectangle:
+                shapeModel.Width = parameters["Width"];
+                shapeModel.Height = parameters["Height"];
+                break;
+            case ShapeType.Parallelogram:
+                shapeModel.BaseLength = parameters["Base"];
+                shapeModel.Height = parameters["Height"];
+                shapeModel.Side = parameters["Side"];
+                break;
+            case ShapeType.Triangle:
+                shapeModel.SideA = parameters["SideA"];
+                shapeModel.SideB = parameters["SideB"];
+                shapeModel.SideC = parameters["SideC"];
+                shapeModel.Height = parameters["Height"];
+                break;
+            case ShapeType.Rhombus:
+                shapeModel.Side = parameters["Side"];
+                shapeModel.Height = parameters["Height"];
+                break;
+        }
+
+        // Beräkna area och omkrets
         shapeModel.Area = shape.CalculateArea();
         shapeModel.Perimeter = shape.CalculatePerimeter();
 
@@ -134,11 +129,7 @@ public class ShapeOperationService : IShapeOperationService
 
     public Dictionary<string, double> GetRequiredParameters(ShapeType shapeType)
     {
-        if (!_shapes.TryGetValue(shapeType, out var shape))
-        {
-            throw new ArgumentException("Invalid shape type");
-        }
-
+        var shape = _shapeFactory.CreateShape(shapeType);
         return shape.GetParameters();
     }
 }
