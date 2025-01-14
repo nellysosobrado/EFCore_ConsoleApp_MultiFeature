@@ -1,6 +1,7 @@
 ﻿using Spectre.Console;
 using ClassLibrary.Models;
 using ClassLibrary.Enums;
+using ClassLibrary.Pagination;
 
 namespace GameApp.Services;
 
@@ -32,34 +33,46 @@ public class SpectreGameUIService : IGameUIService
 
     public void ShowGameHistory(IEnumerable<Game> games)
     {
-        var table = new Table()
-            .Border(TableBorder.Rounded)
-            .AddColumn(new TableColumn("[yellow]Date[/]").Centered())
-            .AddColumn(new TableColumn("[blue]Your Move[/]").Centered())
-            .AddColumn(new TableColumn("[blue]Computer's Move[/]").Centered())
-            .AddColumn(new TableColumn("[green]Winner[/]").Centered())
-            .AddColumn(new TableColumn("[cyan]Avg Win Rate[/]").Centered());
+        var pagination = new Pagination<Game>(games, pageSize: 5);
 
-        foreach (var game in games)
+        while (true)
         {
-            var resultColor = game.Winner switch
+            Console.Clear();
+            var table = new Table()
+                .Border(TableBorder.Rounded)
+                .AddColumn(new TableColumn("[yellow]Date[/]").Centered())
+                .AddColumn(new TableColumn("[blue]Your Move[/]").Centered())
+                .AddColumn(new TableColumn("[blue]Computer's Move[/]").Centered())
+                .AddColumn(new TableColumn("[green]Winner[/]").Centered())
+                .AddColumn(new TableColumn("[cyan]Avg Win Rate[/]").Centered());
+
+            foreach (var game in pagination.GetCurrentPage())
             {
-                "Player" => "green",
-                "Computer" => "red",
-                _ => "yellow"
-            };
+                var resultColor = game.Winner switch
+                {
+                    "Player" => "green",
+                    "Computer" => "red",
+                    _ => "yellow"
+                };
 
-            table.AddRow(
-                game.GameDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                game.PlayerMove.ToString(),
-                game.ComputerMove.ToString(),
-                $"[{resultColor}]{game.Winner}[/]",
-                $"{game.AverageWinRate:F2}%"
-            );
+                table.AddRow(
+                    game.GameDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                    game.PlayerMove.ToString(),
+                    game.ComputerMove.ToString(),
+                    $"[{resultColor}]{game.Winner}[/]",
+                    $"{game.AverageWinRate:F2}%"
+                );
+            }
+
+            AnsiConsole.Write(table);
+
+            var choice = PaginationRenderer.ShowPaginationControls(pagination);
+
+            if (choice == "Back to Menu")
+                break;
         }
-
-        AnsiConsole.Write(table);
     }
+
 
     public void ShowError(string message)
     {

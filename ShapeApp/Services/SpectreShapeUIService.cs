@@ -1,6 +1,7 @@
 ﻿using Spectre.Console;
 using ClassLibrary.Models;
 using ClassLibrary.Enums;
+using ClassLibrary.Pagination;
 
 namespace ShapeApp.Services;
 
@@ -24,31 +25,43 @@ public class SpectreShapeUIService : IShapeUIService
 
     public void ShowShapes(IEnumerable<Shape> shapes)
     {
-        var table = new Table()
-            .Border(TableBorder.Rounded)
-            .AddColumn(new TableColumn("[yellow]ID[/]").Centered())
-            .AddColumn(new TableColumn("[green]Date[/]").Centered())
-            .AddColumn(new TableColumn("[blue]Shape[/]").Centered())
-            .AddColumn(new TableColumn("[cyan]Parameters[/]").LeftAligned())
-            .AddColumn(new TableColumn("[magenta]Area[/]").Centered())
-            .AddColumn(new TableColumn("[red]Perimeter[/]").Centered());
+        var pagination = new Pagination<Shape>(shapes, pageSize: 5);
 
-        foreach (var shape in shapes)
+        while (true)
         {
-            var parameters = GetParametersString(shape);
+            Console.Clear();
+            var table = new Table()
+                .Border(TableBorder.Rounded)
+                .AddColumn(new TableColumn("[yellow]ID[/]").Centered())
+                .AddColumn(new TableColumn("[green]Date[/]").Centered())
+                .AddColumn(new TableColumn("[blue]Shape[/]").Centered())
+                .AddColumn(new TableColumn("[cyan]Parameters[/]").LeftAligned())
+                .AddColumn(new TableColumn("[magenta]Area[/]").Centered())
+                .AddColumn(new TableColumn("[red]Perimeter[/]").Centered());
 
-            table.AddRow(
-                $"[yellow]{shape.Id}[/]",
-                $"[green]{shape.CalculationDate:yyyy-MM-dd HH:mm:ss}[/]",
-                $"[blue]{shape.ShapeType}[/]",
-                $"[cyan]{parameters}[/]",
-                $"[magenta]{shape.Area:F2}[/]",
-                $"[red]{shape.Perimeter:F2}[/]"
-            );
+            foreach (var shape in pagination.GetCurrentPage())
+            {
+                var parameters = GetParametersString(shape);
+
+                table.AddRow(
+                    $"[yellow]{shape.Id}[/]",
+                    $"[green]{shape.CalculationDate:yyyy-MM-dd HH:mm:ss}[/]",
+                    $"[blue]{shape.ShapeType}[/]",
+                    $"[cyan]{parameters}[/]",
+                    $"[magenta]{shape.Area:F2}[/]",
+                    $"[red]{shape.Perimeter:F2}[/]"
+                );
+            }
+
+            AnsiConsole.Write(table);
+
+            var choice = PaginationRenderer.ShowPaginationControls(pagination);
+
+            if (choice == "Back to Menu")
+                break;
         }
-
-        AnsiConsole.Write(table);
     }
+
 
     private string GetParametersString(Shape shape)
     {
