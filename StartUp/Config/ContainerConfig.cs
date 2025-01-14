@@ -54,6 +54,9 @@ public static class ContainerConfig
         builder.RegisterType<SquareRootCalculator>().AsSelf();
 
 
+        //shape factory
+        builder.RegisterType<ShapeFactory>().AsSelf();
+
         // Register Shape Services
         builder.RegisterType<ShapeRepository>().AsSelf();
         builder.RegisterType<ShapeOperationService>().As<IShapeOperationService>();

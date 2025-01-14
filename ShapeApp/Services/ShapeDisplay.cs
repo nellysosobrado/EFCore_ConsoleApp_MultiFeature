@@ -1,6 +1,7 @@
 ﻿using ClassLibrary.Enums;
 using ClassLibrary.Models;
 using ClassLibrary.Pagination;
+using ClassLibrary.Repositories.ShapeAppRepository;
 using ShapeApp.Interfaces;
 using Spectre.Console;
 using System;
@@ -14,9 +15,11 @@ namespace ShapeApp.Services
     public class ShapeDisplay : IShapeDisplay
     {
         private readonly IErrorService _errorService;
-        public ShapeDisplay(IErrorService errorService)
+        private readonly ShapeRepository _shapeRepository;
+        public ShapeDisplay(IErrorService errorService, ShapeRepository shapeRepository)
         {
             _errorService = errorService;
+            _shapeRepository = shapeRepository;
         }
         public void ShowResult(Shape shape)
         {
@@ -160,6 +163,11 @@ namespace ShapeApp.Services
                         return;
                 }
             }
+        }
+        public IEnumerable<Shape> GetShapeHistory()
+        {
+            return _shapeRepository.GetAllShapes()
+                .OrderByDescending(s => s.CalculationDate);
         }
 
     }

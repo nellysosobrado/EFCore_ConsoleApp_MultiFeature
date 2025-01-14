@@ -88,14 +88,14 @@ public class ShapeController
 
         _operationService.SaveShape(shapeType, parameters);
 
-        var shapes = _operationService.GetShapeHistory();
+        var shapes = _shapeDisplay.GetShapeHistory();
         var latestShape = shapes.First();
         _shapeDisplay.ShowResult(latestShape);
     }
 
     private void ShowShapes()
     {
-        var shapes = _operationService.GetShapeHistory();
+        var shapes = _shapeDisplay.GetShapeHistory();
         _shapeDisplay.ShowShapes(shapes);
         _errorService.WaitForKeyPress();
     }
@@ -133,7 +133,7 @@ public class ShapeController
 
     private void DeleteShape()
     {
-        var shapes = _operationService.GetShapeHistory();
+        var shapes = _shapeDisplay.GetShapeHistory();
 
         var id = _deleteShapeService.GetShapeIdForDelete();
 
