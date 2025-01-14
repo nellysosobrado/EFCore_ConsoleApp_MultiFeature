@@ -134,7 +134,6 @@ public class CalculatorController
                 _uiService.CalculationHistory(calculations, showDeleteButton: true);
 
                 var id = _uiService.GetCalculationIdForDelete();
-
                 if (_uiService.ConfirmDeletion())
                 {
                     try
@@ -174,6 +173,7 @@ public class CalculatorController
         {
             try
             {
+                _inputService.ClearTable();
                 var (operand1, operand2, operatorInput) = _inputService.GetUserInput();
 
                 try

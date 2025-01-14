@@ -161,11 +161,7 @@ public class SpectreCalculatorUI : ICalculatorUIService
                     SearchById(allCalculations);
                     break;
                 case "[red]Delete Calculation[/]":
-                    if (ConfirmDeletion())
-                    {
                         return;
-                    }
-                    break;
                 case "Previous Page":
                     currentPage--;
                     break;
