@@ -13,11 +13,10 @@ namespace ShapeApp.Services
 {
     public class ShapeDisplay : IShapeDisplay
     {
-        private readonly IShapeUIService _uiService;
-
-        public ShapeDisplay(IShapeUIService uiService)
+        private readonly IErrorService _errorService;
+        public ShapeDisplay(IErrorService errorService)
         {
-            _uiService = uiService;
+            _errorService = errorService;
         }
         public void ShowResult(Shape shape)
         {
@@ -57,7 +56,7 @@ namespace ShapeApp.Services
             table.AddRow("[red]Perimeter[/]", $"[white]{shape.Perimeter:F2}[/]");
 
             AnsiConsole.Write(table);
-            _uiService.WaitForKeyPress();
+            _errorService.WaitForKeyPress();
         }
 
         private string GetParametersString(Shape shape)

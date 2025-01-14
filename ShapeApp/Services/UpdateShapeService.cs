@@ -7,17 +7,20 @@ namespace ShapeApp.Services;
 public class UpdateShapeService : IUpdateShapeService
 {
     private readonly IShapeOperationService _operationService;
-    private readonly IShapeUIService _uiService;
     private readonly IShapeDisplay _shapeDisplay;
+    private readonly IInputService _inputService;
+    private readonly IShapeMenuService _shapeMenuService;
 
     public UpdateShapeService(
         IShapeOperationService operationService,
-        IShapeUIService uiService,
-        IShapeDisplay shapeDisplay)
+        IShapeDisplay shapeDisplay,
+        IInputService inputService,
+        IShapeMenuService shapeMenuService)
     {
         _operationService = operationService;
-        _uiService = uiService;
         _shapeDisplay = shapeDisplay;
+        _inputService = inputService;
+        _shapeMenuService = shapeMenuService;
     }
 
     public void UpdateShape(int id)
@@ -29,9 +32,9 @@ public class UpdateShapeService : IUpdateShapeService
 
         if (ShouldChangeShapeType())
         {
-            shapeType = _uiService.GetShapeType();
+            shapeType = _inputService.GetShapeType();
             var requiredParameters = _operationService.GetRequiredParameters(shapeType);
-            parameters = _uiService.GetShapeParameters(requiredParameters);
+            parameters = _shapeMenuService.GetShapeParameters(requiredParameters);
         }
         else
         {
@@ -79,7 +82,7 @@ public class UpdateShapeService : IUpdateShapeService
                     .ShowChoices()
                     .ShowDefaultValue()))
             {
-                updatedParameters[param.Key] = _uiService.GetNumberInput($"Enter new value for {param.Key}");
+                updatedParameters[param.Key] = _inputService.GetNumberInput($"Enter new value for {param.Key}");
             }
             else
             {

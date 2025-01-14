@@ -8,23 +8,26 @@ namespace ShapeApp.Services;
 public class DeleteShapeService : IDeleteShapeService
 {
     private readonly IShapeOperationService _operationService;
-    private readonly IShapeUIService _uiService;
     private readonly ShapeRepository _shapeRepository;
     private readonly IShapeDisplay _shapeDisplay;
+    private readonly IErrorService _errorService;
 
-    public DeleteShapeService(IShapeOperationService operationService, IShapeUIService uiService, ShapeRepository shapeRepository,IShapeDisplay shapeDisplay)
+    public DeleteShapeService(IShapeOperationService operationService,
+        ShapeRepository shapeRepository,
+        IShapeDisplay shapeDisplay,
+        IErrorService errorService)
     {
         _operationService = operationService;
-        _uiService = uiService;
         _shapeRepository = shapeRepository;
         _shapeDisplay = shapeDisplay;
+        _errorService = errorService;
     }
 
     public void DeleteShape(int id)
     {
         _operationService.DeleteShape(id);
         AnsiConsole.MarkupLine("[green]Shape deleted successfully[/]");
-        _uiService.WaitForKeyPress();
+        _errorService.WaitForKeyPress();
     }
 
     public void ShowShapes(IEnumerable<Shape> shapes)
@@ -47,7 +50,7 @@ public class DeleteShapeService : IDeleteShapeService
             }
             catch (InvalidOperationException ex)
             {
-                _uiService.ShowError(ex.Message);
+                _errorService.ShowError(ex.Message);
                 if (!AnsiConsole.Confirm("Would you like to try another ID?"))
                     throw new OperationCanceledException("Delete cancelled.");
             }

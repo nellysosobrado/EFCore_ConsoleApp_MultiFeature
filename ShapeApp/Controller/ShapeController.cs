@@ -12,25 +12,31 @@ namespace ShapeApp.Controllers;
 public class ShapeController
 {
     private readonly IShapeOperationService _operationService;
-    private readonly IShapeUIService _uiService;
     private readonly IUpdateShapeService _updateShapeService;
     private readonly IDeleteShapeService _deleteShapeService;
     private readonly IShapeDisplay _shapeDisplay;
+    private readonly IErrorService _errorService;
+    private readonly IInputService _inputService;
+    private readonly IShapeMenuService _shapeMenuService;
 
 
 
     public ShapeController(
         IShapeOperationService operationService,
-        IShapeUIService uiService,
         IUpdateShapeService updateShapeService,
         IDeleteShapeService deleteShapeService,
-        IShapeDisplay shapeDisplay)
+        IShapeDisplay shapeDisplay,
+        IErrorService errorService,
+        IInputService inputService,
+        IShapeMenuService shapeMenuService)
     {
         _operationService = operationService;
-        _uiService = uiService;
         _updateShapeService = updateShapeService;
         _deleteShapeService = deleteShapeService;
         _shapeDisplay = shapeDisplay;
+        _errorService = errorService;
+        _inputService = inputService;
+        _shapeMenuService = shapeMenuService;
     }
 
     public void Start()
@@ -68,17 +74,17 @@ public class ShapeController
             }
             catch (Exception ex)
             {
-                _uiService.ShowError(ex.Message);
-                _uiService.WaitForKeyPress();
+                _errorService.ShowError(ex.Message);
+                _errorService.WaitForKeyPress();
             }
         }
     }
 
     private void CalculateShape()
     {
-        var shapeType = _uiService.GetShapeType();
+        var shapeType = _inputService.GetShapeType();
         var requiredParameters = _operationService.GetRequiredParameters(shapeType);
-        var parameters = _uiService.GetShapeParameters(requiredParameters);
+        var parameters = _shapeMenuService.GetShapeParameters(requiredParameters);
 
         _operationService.SaveShape(shapeType, parameters);
 
@@ -91,7 +97,7 @@ public class ShapeController
     {
         var shapes = _operationService.GetShapeHistory();
         _shapeDisplay.ShowShapes(shapes);
-        _uiService.WaitForKeyPress();
+        _errorService.WaitForKeyPress();
     }
     private void UpdateShape()
     {
@@ -118,8 +124,8 @@ public class ShapeController
             }
             catch (Exception ex)
             {
-                _uiService.ShowError(ex.Message);
-                _uiService.WaitForKeyPress();
+                _errorService.ShowError(ex.Message);
+                _errorService.WaitForKeyPress();
             }
         }
     }
