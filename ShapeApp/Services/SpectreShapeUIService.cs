@@ -253,13 +253,7 @@ public class SpectreShapeUIService : IShapeUIService
         Console.ReadKey(true);
     }
 
-    public int GetShapeIdForUpdate()
-    {
-        return AnsiConsole.Prompt(
-            new TextPrompt<int>("[green]Enter the ID of the shape to update:[/]")
-                .ValidationErrorMessage("[red]Please enter a valid ID[/]"));
-    }
-
+  
   
 
     public bool ShouldChangeShapeType()

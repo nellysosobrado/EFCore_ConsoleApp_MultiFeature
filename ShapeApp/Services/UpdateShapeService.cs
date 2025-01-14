@@ -45,4 +45,11 @@ public class UpdateShapeService : IUpdateShapeService
         var updatedShape = shapes.First(s => s.Id == id);
         _uiService.ShowResult(updatedShape);
     }
+    public int GetShapeIdForUpdate()
+    {
+        return AnsiConsole.Prompt(
+            new TextPrompt<int>("[green]Enter the ID of the shape to update:[/]")
+                .ValidationErrorMessage("[red]Please enter a valid ID[/]"));
+    }
+
 }

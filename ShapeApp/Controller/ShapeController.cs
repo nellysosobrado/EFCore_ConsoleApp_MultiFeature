@@ -95,7 +95,7 @@ public class ShapeController
         {
             try
             {
-                var id = _uiService.GetShapeIdForUpdate();
+                var id = _updateShapeService.GetShapeIdForUpdate();
                 _updateShapeService.UpdateShape(id);
 
                 var option = AnsiConsole.Prompt(
