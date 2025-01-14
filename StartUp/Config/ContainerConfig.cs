@@ -17,6 +17,7 @@ using ShapeApp.Validators;
 using Microsoft.Extensions.Options;
 using CalculatorApp.UI;
 using ShapeApp.Interfaces;
+using GameApp.Interfaces;
 
 
 namespace StartUp.Config;

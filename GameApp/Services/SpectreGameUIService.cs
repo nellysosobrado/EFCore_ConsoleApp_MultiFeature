@@ -2,6 +2,7 @@
 using ClassLibrary.Models;
 using ClassLibrary.Enums;
 using ClassLibrary.Pagination;
+using GameApp.Interfaces;
 
 namespace GameApp.Services;
 

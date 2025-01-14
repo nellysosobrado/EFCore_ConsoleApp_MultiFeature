@@ -1,7 +1,7 @@
 ﻿using ClassLibrary.Models;
 using ClassLibrary.Enums;
 
-namespace GameApp.Services;
+namespace GameApp.Interfaces;
 
 public interface IGameUIService
 {
