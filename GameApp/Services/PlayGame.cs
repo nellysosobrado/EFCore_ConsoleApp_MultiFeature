@@ -33,7 +33,7 @@ namespace GameApp.Services
             var computerMove = _gameService.GetComputerMove();
             var winner = _gameService.DetermineWinner(playerMove, computerMove);
 
-            return new ClassLibrary.Models.Game
+            return new Game
             {
                 PlayerMove = playerMove,
                 ComputerMove = computerMove,
@@ -50,19 +50,7 @@ namespace GameApp.Services
             _uiService.WaitForKeyPress();
         }
 
-        public bool ShouldPlayAgain()
-        {
-            Console.Clear();
-            var playAgain = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                    .AddChoices(new[] {
-                    "Play Again",
-                    "Back to Game Menu"
-                    }));
-
-            return playAgain != "Back to Game Menu";
-        }
-
+       
        
     }
 }

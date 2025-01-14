@@ -9,7 +9,7 @@ namespace GameApp.Controller;
 public class GameController
 {
     private readonly IGameService _gameService;
-    private readonly IPlayerInput _uiService;
+    private readonly IPlayerInput _playerInput;
     private readonly IPlayGame _playGame;
     private readonly IGameError _gameError;
     private readonly IDisplayRspGame _displayGame;
@@ -21,7 +21,7 @@ public class GameController
         IDisplayRspGame displayGame)
     {
         _gameService = gameService;
-        _uiService = uiService;
+        _playerInput = uiService;
         _playGame = playGame;
         _gameError = gameError;
         _displayGame = displayGame;
@@ -58,7 +58,7 @@ public class GameController
             var game = _playGame.CreateGame();
             _playGame.ProcessGameResult(game);
 
-            if (!_playGame.ShouldPlayAgain())
+            if (!_playerInput.ShouldPlayAgain())
             {
                 return;
             }
@@ -76,12 +76,12 @@ public class GameController
         {
             var history = _gameService.GetGameHistory();
             _displayGame.ShowGameHistory(history);
-            _uiService.WaitForKeyPress();
+            _playerInput.WaitForKeyPress();
         }
         catch (Exception ex)
         {
             _gameError.ShowError(ex.Message);
-            _uiService.WaitForKeyPress();
+            _playerInput.WaitForKeyPress();
         }
     }
 }
