@@ -10,6 +10,9 @@ public enum MenuOptions
     [Description("Start Shapes App")]
     StartShapes,
 
+    [Description("Start Rock Paper Scissors")]
+    StartGame,
+
     [Description("Exit Application")]
     Exit
 }

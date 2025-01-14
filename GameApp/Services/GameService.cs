@@ -1,16 +1,15 @@
 ﻿using ClassLibrary.Models;
 using ClassLibrary.Enums;
-using ClassLibrary.Data;
 using ClassLibrary;
 
 namespace GameApp.Services;
 
 public class GameService : IGameService
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IApplicationDbContext _context;
     private readonly Random _random;
 
-    public GameService(ApplicationDbContext context)
+    public GameService(IApplicationDbContext context)
     {
         _context = context;
         _random = new Random();

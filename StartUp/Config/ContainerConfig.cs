@@ -10,6 +10,8 @@ using ClassLibrary;
 using ClassLibrary.Repositories.CalculatorAppRepository;
 using ClassLibrary.Repositories.ShapeAppRepository;
 using ShapeApp.Controllers;
+using GameApp.Services;
+using GameApp.Controller;
 using ShapeApp.Services;
 using ShapeApp.Validators;
 using Microsoft.Extensions.Options;
@@ -59,11 +61,16 @@ public static class ContainerConfig
         // Register Controllers
         builder.RegisterType<CalculatorController>().AsSelf();
         builder.RegisterType<ShapeController>().AsSelf();
+        builder.RegisterType<GameController>().AsSelf();
 
         // Register Validators
         builder.RegisterType<CalculatorValidator>().AsSelf();
         builder.RegisterType<InputValidator>().AsSelf();
         builder.RegisterType<ShapeValidator>().AsSelf();
+
+        // Register Game Services
+        builder.RegisterType<GameService>().As<IGameService>();
+        builder.RegisterType<SpectreGameUIService>().As<IGameUIService>();
 
         return builder.Build();
     }
