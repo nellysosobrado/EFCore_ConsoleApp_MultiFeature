@@ -12,6 +12,5 @@ namespace GameApp.Interfaces
         Game CreateGame();
         void ProcessGameResult(Game game);
         bool ShouldPlayAgain();
-        void HandleGameError(Exception ex);
     }
 }

@@ -9,7 +9,7 @@ using ClassLibrary.Models;
 
 namespace GameApp.Services
 {
-    public class PlayGame :IPlayGame
+    public class PlayGame : IPlayGame
     {
         private readonly IGameService _gameService;
         private readonly IGameUIService _uiService;
@@ -58,10 +58,6 @@ namespace GameApp.Services
             return playAgain != "Back to Game Menu";
         }
 
-        public void HandleGameError(Exception ex)
-        {
-            _uiService.ShowError(ex.Message);
-            _uiService.WaitForKeyPress();
-        }
+       
     }
 }

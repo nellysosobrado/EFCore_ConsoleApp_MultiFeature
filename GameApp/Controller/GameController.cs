@@ -11,12 +11,14 @@ public class GameController
     private readonly IGameService _gameService;
     private readonly IGameUIService _uiService;
     private readonly IPlayGame _playGame;
+    private readonly IGameError _gameError;
 
-    public GameController(IGameService gameService, IGameUIService uiService, IPlayGame playGame)
+    public GameController(IGameService gameService, IGameUIService uiService, IPlayGame playGame, IGameError gameError)
     {
         _gameService = gameService;
         _uiService = uiService;
         _playGame = playGame;
+        _gameError = gameError;
     }
 
     public void Start()
@@ -57,7 +59,7 @@ public class GameController
         }
         catch (Exception ex)
         {
-            _playGame.HandleGameError(ex);
+            _gameError.HandleGameError(ex);
         }
     }
 
@@ -72,7 +74,7 @@ public class GameController
         }
         catch (Exception ex)
         {
-            _uiService.ShowError(ex.Message);
+            _gameError.ShowError(ex.Message);
             _uiService.WaitForKeyPress();
         }
     }

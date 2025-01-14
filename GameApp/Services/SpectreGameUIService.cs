@@ -75,10 +75,7 @@ public class SpectreGameUIService : IGameUIService
     }
 
 
-    public void ShowError(string message)
-    {
-        AnsiConsole.MarkupLine($"[red]{message}[/]");
-    }
+ 
 
     public void WaitForKeyPress(string message = "\nPress any key to continue...")
     {

@@ -81,6 +81,7 @@ public static class ContainerConfig
         builder.RegisterType<GameService>().As<IGameService>();
         builder.RegisterType<SpectreGameUIService>().As<IGameUIService>();
         builder.RegisterType<PlayGame>().As<IPlayGame>();
+        builder.RegisterType<GameError>().As<IGameError>();
 
         // Registrera ShapeFactory
         builder.RegisterType<ShapeFactory>().As<IShapeFactory>();
