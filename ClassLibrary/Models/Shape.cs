@@ -14,6 +14,9 @@ public class Shape
     [Required]
     public ShapeType ShapeType { get; set; }
 
+    public bool IsDeleted { get; set; }
+    public DateTime? DeletedAt { get; set; }
+
     [Required]
     [Precision(18, 2)]
     public double Area { get; set; }

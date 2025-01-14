@@ -124,9 +124,8 @@ public class ShapeOperationService : IShapeOperationService
 
     public void DeleteShape(int id)
     {
-        _shapeRepository.DeleteShape(id);
+        _shapeRepository.SoftDeleteShape(id);
     }
-
     public Dictionary<string, double> GetRequiredParameters(ShapeType shapeType)
     {
         var shape = _shapeFactory.CreateShape(shapeType);

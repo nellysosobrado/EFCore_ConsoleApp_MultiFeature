@@ -11,6 +11,30 @@ public class ShapeRepository
     {
         _context = context;
     }
+    public List<Shape> GetAllShapes()
+    {
+        return _context.Shapes
+            .Where(s => !s.IsDeleted)
+            .ToList();
+    }
+
+    public Shape GetShapeById(int id)
+    {
+        return _context.Shapes
+            .FirstOrDefault(s => s.Id == id && !s.IsDeleted)
+            ?? throw new InvalidOperationException("Shape not found");
+    }
+
+    public void SoftDeleteShape(int id)
+    {
+        var shape = _context.Shapes.Find(id)
+            ?? throw new InvalidOperationException("Shape not found");
+
+        shape.IsDeleted = true;
+        shape.DeletedAt = DateTime.Now;
+
+        _context.SaveChanges();
+    }
 
     public void AddShape(Shape shape)
     {
@@ -18,16 +42,7 @@ public class ShapeRepository
         _context.SaveChanges();
     }
 
-    public List<Shape> GetAllShapes()
-    {
-        return _context.Shapes.ToList();
-    }
 
-    public Shape GetShapeById(int id)
-    {
-        return _context.Shapes.Find(id)
-            ?? throw new InvalidOperationException("Shape not found");
-    }
 
     public void UpdateShape(Shape shape)
     {
@@ -39,7 +54,6 @@ public class ShapeRepository
         existing.Perimeter = shape.Perimeter;
         existing.CalculationDate = shape.CalculationDate;
 
-        // Uppdatera parametrar baserat på shape type
         switch (shape.ShapeType)
         {
             case ShapeType.Rectangle:
