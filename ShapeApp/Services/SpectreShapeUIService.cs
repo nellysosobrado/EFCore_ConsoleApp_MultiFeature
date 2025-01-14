@@ -1,8 +1,6 @@
 ﻿using Spectre.Console;
 using ClassLibrary.Models;
 using ClassLibrary.Enums;
-using ShapeApp.Validators;
-using ClassLibrary.Extensions;
 
 namespace ShapeApp.Services;
 
@@ -31,18 +29,17 @@ public class SpectreShapeUIService : IShapeUIService
             .AddColumn(new TableColumn("[yellow]ID[/]").Centered())
             .AddColumn(new TableColumn("[green]Date[/]").Centered())
             .AddColumn(new TableColumn("[blue]Shape[/]").Centered())
-            .AddColumn(new TableColumn("[cyan]Parameters[/]").Centered())
+            .AddColumn(new TableColumn("[cyan]Parameters[/]").LeftAligned())
             .AddColumn(new TableColumn("[magenta]Area[/]").Centered())
             .AddColumn(new TableColumn("[red]Perimeter[/]").Centered());
 
         foreach (var shape in shapes)
         {
-            var parameters = string.Join(", ",
-                shape.GetParameters().Select(p => $"{p.Key}: {p.Value:F2}"));
+            var parameters = GetParametersString(shape);
 
             table.AddRow(
                 $"[yellow]{shape.Id}[/]",
-                $"[green]{shape.CalculationDate}[/]",
+                $"[green]{shape.CalculationDate:yyyy-MM-dd HH:mm:ss}[/]",
                 $"[blue]{shape.ShapeType}[/]",
                 $"[cyan]{parameters}[/]",
                 $"[magenta]{shape.Area:F2}[/]",
@@ -53,16 +50,46 @@ public class SpectreShapeUIService : IShapeUIService
         AnsiConsole.Write(table);
     }
 
+    private string GetParametersString(Shape shape)
+    {
+        var parameters = new List<string>();
+
+        switch (shape.ShapeType)
+        {
+            case ShapeType.Rectangle:
+                parameters.Add($"Width: {shape.Width:F2}");
+                parameters.Add($"Height: {shape.Height:F2}");
+                break;
+            case ShapeType.Parallelogram:
+                parameters.Add($"Base: {shape.BaseLength:F2}");
+                parameters.Add($"Height: {shape.Height:F2}");
+                parameters.Add($"Side: {shape.Side:F2}");
+                break;
+            case ShapeType.Triangle:
+                parameters.Add($"SideA: {shape.SideA:F2}");
+                parameters.Add($"SideB: {shape.SideB:F2}");
+                parameters.Add($"SideC: {shape.SideC:F2}");
+                parameters.Add($"Height: {shape.Height:F2}");
+                break;
+            case ShapeType.Rhombus:
+                parameters.Add($"Side: {shape.Side:F2}");
+                parameters.Add($"Height: {shape.Height:F2}");
+                break;
+        }
+
+        return string.Join("\n", parameters);
+    }
 
     public void ShowResult(Shape shape)
     {
-        var parameters = string.Join(", ",
-            shape.GetParameters().Select(p => $"{p.Key}: {p.Value:F2}"));
+        var parameters = GetParametersString(shape);
 
         AnsiConsole.MarkupLine($"\n[blue]Shape Type:[/] {shape.ShapeType}");
-        AnsiConsole.MarkupLine($"[cyan]Parameters:[/] {parameters}");
+        AnsiConsole.MarkupLine($"[cyan]Parameters:[/]\n{parameters}");
         AnsiConsole.MarkupLine($"[magenta]Area:[/] {shape.Area:F2}");
         AnsiConsole.MarkupLine($"[red]Perimeter:[/] {shape.Perimeter:F2}");
+
+        WaitForKeyPress();
     }
 
     public ShapeType GetShapeType()
@@ -70,7 +97,6 @@ public class SpectreShapeUIService : IShapeUIService
         return AnsiConsole.Prompt(
             new SelectionPrompt<ShapeType>()
                 .Title("[green]Select a shape:[/]")
-                .WrapAround(true)
                 .UseConverter(type => type.ToString())
                 .AddChoices(Enum.GetValues<ShapeType>()));
     }
@@ -79,13 +105,85 @@ public class SpectreShapeUIService : IShapeUIService
     {
         var parameters = new Dictionary<string, double>();
 
+        AnsiConsole.Clear();
+        AnsiConsole.Write(new Rule("[yellow]Shape Parameters Input[/]").RuleStyle("grey"));
+
+        var table = new Table()
+            .Border(TableBorder.Rounded)
+            .AddColumn(new TableColumn("[blue]Parameter[/]").Centered())
+            .AddColumn(new TableColumn("[green]Value[/]").Centered())
+            .AddColumn(new TableColumn("[grey]Status[/]").Centered());
+
+        // Först visa alla parametrar som "Pending"
         foreach (var param in requiredParameters)
         {
-            parameters[param.Key] = GetNumberInput($"Enter {param.Key}");
+            table.AddRow(
+                param.Key,
+                "-",
+                "[yellow]Pending[/]"
+            );
+        }
+
+        AnsiConsole.Write(table);
+
+        // Nu samla in värden och uppdatera tabellen efter varje inmatning
+        foreach (var param in requiredParameters)
+        {
+            var value = AnsiConsole.Prompt(
+                new TextPrompt<double>($"\n[green]Enter {param.Key}:[/]")
+                    .PromptStyle("blue")
+                    .ValidationErrorMessage("[red]Please enter a valid number greater than 0[/]")
+                    .Validate(number =>
+                    {
+                        if (number <= 0)
+                            return ValidationResult.Error("[red]Value must be greater than 0[/]");
+                        return ValidationResult.Success();
+                    }));
+
+            parameters[param.Key] = value;
+
+            // Rensa skärmen och rita om tabellen med uppdaterade värden
+            AnsiConsole.Clear();
+            AnsiConsole.Write(new Rule("[yellow]Shape Parameters Input[/]").RuleStyle("grey"));
+
+            table = new Table()
+                .Border(TableBorder.Rounded)
+                .AddColumn(new TableColumn("[blue]Parameter[/]").Centered())
+                .AddColumn(new TableColumn("[green]Value[/]").Centered())
+                .AddColumn(new TableColumn("[grey]Status[/]").Centered());
+
+            foreach (var p in requiredParameters)
+            {
+                if (parameters.ContainsKey(p.Key))
+                {
+                    table.AddRow(
+                        p.Key,
+                        $"{parameters[p.Key]:F2}",
+                        "[green]Completed[/]"
+                    );
+                }
+                else
+                {
+                    table.AddRow(
+                        p.Key,
+                        "-",
+                        "[yellow]Pending[/]"
+                    );
+                }
+            }
+
+            AnsiConsole.Write(table);
+        }
+
+        // Visa slutlig bekräftelse
+        if (!AnsiConsole.Confirm("\n[yellow]Are these values correct?[/]"))
+        {
+            return GetShapeParameters(requiredParameters);
         }
 
         return parameters;
     }
+
 
     public double GetNumberInput(string prompt)
     {
@@ -107,9 +205,8 @@ public class SpectreShapeUIService : IShapeUIService
 
     public void ShowError(string message)
     {
-        AnsiConsole.MarkupLine($"[red]{message.EscapeMarkup()}[/]");
+        AnsiConsole.MarkupLine($"[red]{message}[/]");
     }
-
 
     public void WaitForKeyPress(string message = "\nPress any key to continue...")
     {
@@ -134,39 +231,44 @@ public class SpectreShapeUIService : IShapeUIService
     public bool ConfirmDeletion()
     {
         return AnsiConsole.Prompt(
-            new ConfirmationPrompt("Are you sure you want to delete this shape?"));
+            new ConfirmationPrompt("Are you sure you want to delete this shape?")
+                .ShowChoices()
+                .ShowDefaultValue());
     }
+
+    public bool ShouldChangeShapeType()
+    {
+        return AnsiConsole.Prompt(
+            new ConfirmationPrompt("Do you want to change the shape type?")
+                .ShowChoices()
+                .ShowDefaultValue());
+    }
+
     public Dictionary<string, double> GetSelectedParametersToUpdate(Dictionary<string, double> currentParameters)
     {
         var updatedParameters = new Dictionary<string, double>();
-        var parameters = currentParameters.Keys.ToList();
-        parameters.Add("[green]Confirm[/]");
-        parameters.Add("[red]Cancel[/]");
 
-        while (true)
+        AnsiConsole.MarkupLine("[blue]Current parameters:[/]");
+        foreach (var param in currentParameters)
         {
-            var choice = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                    .Title("[green]Select parameter to update:[/]")
-                    .AddChoices(parameters));
-
-            if (choice == "[green]Confirm[/]")
-                return updatedParameters;
-
-            if (choice == "[red]Cancel[/]")
-                return currentParameters;
-
-            updatedParameters[choice] = GetNumberInput($"Enter new value for {choice}");
+            AnsiConsole.MarkupLine($"{param.Key}: [cyan]{param.Value:F2}[/]");
         }
-    }
-    public bool ShouldChangeShapeType()
-    {
-        Console.Clear();
-        return AnsiConsole.Prompt(
-            new SelectionPrompt<bool>()
-                .Title("[green]Would you like to change the shape type?[/]")
-                .AddChoices(true, false)
-                .UseConverter(b => b ? "Yes" : "No"));
-    }
 
+        foreach (var param in currentParameters)
+        {
+            if (AnsiConsole.Prompt(
+                new ConfirmationPrompt($"Do you want to update {param.Key}?")
+                    .ShowChoices()
+                    .ShowDefaultValue()))
+            {
+                updatedParameters[param.Key] = GetNumberInput($"Enter new value for {param.Key}");
+            }
+            else
+            {
+                updatedParameters[param.Key] = param.Value;
+            }
+        }
+
+        return updatedParameters;
+    }
 }
