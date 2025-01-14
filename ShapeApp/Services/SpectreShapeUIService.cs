@@ -114,31 +114,5 @@ public class SpectreShapeUIService : IShapeUIService
 
     
 
-    public Dictionary<string, double> GetSelectedParametersToUpdate(Dictionary<string, double> currentParameters)
-    {
-        var updatedParameters = new Dictionary<string, double>();
-
-        AnsiConsole.MarkupLine("[blue]Current parameters:[/]");
-        foreach (var param in currentParameters)
-        {
-            AnsiConsole.MarkupLine($"{param.Key}: [cyan]{param.Value:F2}[/]");
-        }
-
-        foreach (var param in currentParameters)
-        {
-            if (AnsiConsole.Prompt(
-                new ConfirmationPrompt($"Do you want to update {param.Key}?")
-                    .ShowChoices()
-                    .ShowDefaultValue()))
-            {
-                updatedParameters[param.Key] = GetNumberInput($"Enter new value for {param.Key}");
-            }
-            else
-            {
-                updatedParameters[param.Key] = param.Value;
-            }
-        }
-
-        return updatedParameters;
-    }
+    
 }

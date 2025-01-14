@@ -11,5 +11,6 @@ namespace ShapeApp.Interfaces
     {
         void ShowShapes(IEnumerable<Shape> shapes);
         void ShowResult(Shape shape);
+        
     }
 }

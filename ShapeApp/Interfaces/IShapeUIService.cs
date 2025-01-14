@@ -10,10 +10,9 @@ public interface IShapeUIService
     ShapeType GetShapeType();
     Dictionary<string, double> GetShapeParameters(Dictionary<string, double> requiredParameters);
 
-    Dictionary<string, double> GetSelectedParametersToUpdate(Dictionary<string, double> currentParameters);
+    //Dictionary<string, double> GetSelectedParametersToUpdate(Dictionary<string, double> currentParameters);
 
     double GetNumberInput(string prompt);
-    //void ShowResult(Shape shape);
 
     void ShowError(string message);
     void WaitForKeyPress(string message = "\nPress any key to continue...");
