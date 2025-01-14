@@ -125,7 +125,7 @@ public class ShapeController
     {
         var shapes = _operationService.GetShapeHistory();
 
-        var id = _uiService.GetShapeIdForDelete();
+        var id = _deleteShapeService.GetShapeIdForDelete();
 
         if (_deleteShapeService.ConfirmDeletion())
         {

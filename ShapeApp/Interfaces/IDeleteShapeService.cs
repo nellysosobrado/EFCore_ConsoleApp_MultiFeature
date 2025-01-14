@@ -8,4 +8,5 @@ public interface IDeleteShapeService
     void DeleteShape(int id);
     void ShowShapes(IEnumerable<Shape> shapes);
     bool ConfirmDeletion();
+    int GetShapeIdForDelete();
 }

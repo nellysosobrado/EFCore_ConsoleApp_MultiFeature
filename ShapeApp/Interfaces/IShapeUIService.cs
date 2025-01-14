@@ -13,7 +13,7 @@ public interface IShapeUIService
     bool ShouldChangeShapeType();
     Dictionary<string, double> GetSelectedParametersToUpdate(Dictionary<string, double> currentParameters);
     int GetShapeIdForUpdate();
-    int GetShapeIdForDelete();
+    //int GetShapeIdForDelete();
     bool ConfirmDeletion();
 
     double GetNumberInput(string prompt);

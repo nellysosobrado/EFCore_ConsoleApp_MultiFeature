@@ -48,7 +48,7 @@ public class SpectreShapeUIService : IShapeUIService
             {
                 var parameters = GetParametersString(shape);
                 var statusColor = shape.IsDeleted ? "red" : "green";
-                var status = shape.IsDeleted ? "Deleted" : "Active";
+                var status = shape.IsDeleted ? "Deleted" : "Not deleted";
 
                 table.AddRow(
                     $"[yellow]{shape.Id}[/]",
@@ -260,12 +260,12 @@ public class SpectreShapeUIService : IShapeUIService
                 .ValidationErrorMessage("[red]Please enter a valid ID[/]"));
     }
 
-    public int GetShapeIdForDelete()
-    {
-        return AnsiConsole.Prompt(
-            new TextPrompt<int>("[green]Enter the ID of the shape to delete:[/]")
-                .ValidationErrorMessage("[red]Please enter a valid ID[/]"));
-    }
+    //public int GetShapeIdForDelete()
+    //{
+    //    return AnsiConsole.Prompt(
+    //        new TextPrompt<int>("[green]Enter the ID of the shape to delete:[/]")
+    //            .ValidationErrorMessage("[red]Please enter a valid ID[/]"));
+    //}
 
     public bool ConfirmDeletion()
     {
