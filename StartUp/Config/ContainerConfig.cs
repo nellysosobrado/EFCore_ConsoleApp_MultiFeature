@@ -65,7 +65,6 @@ public static class ContainerConfig
         builder.RegisterType<ShapeDisplay>().As<IShapeDisplay>();
         builder.RegisterType<ErrorService>().As<IErrorService>();
         builder.RegisterType<InputService>().As<IInputService>();
-        builder.RegisterType<SpectreShapeMenuService>().As<IShapeMenuService>();
 
         // Register Controllers
         builder.RegisterType<CalculatorController>().AsSelf();

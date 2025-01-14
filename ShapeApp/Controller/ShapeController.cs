@@ -17,7 +17,6 @@ public class ShapeController
     private readonly IShapeDisplay _shapeDisplay;
     private readonly IErrorService _errorService;
     private readonly IInputService _inputService;
-    private readonly IShapeMenuService _shapeMenuService;
 
 
 
@@ -27,8 +26,7 @@ public class ShapeController
         IDeleteShapeService deleteShapeService,
         IShapeDisplay shapeDisplay,
         IErrorService errorService,
-        IInputService inputService,
-        IShapeMenuService shapeMenuService
+        IInputService inputService
         )
     {
         _operationService = operationService;
@@ -37,7 +35,6 @@ public class ShapeController
         _shapeDisplay = shapeDisplay;
         _errorService = errorService;
         _inputService = inputService;
-        _shapeMenuService = shapeMenuService;
     }
 
     public void Start()

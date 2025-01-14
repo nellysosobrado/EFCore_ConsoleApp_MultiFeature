@@ -13,7 +13,6 @@ public class UpdateShapeService : IUpdateShapeService
     private readonly IShapeOperationService _operationService;
     private readonly IShapeDisplay _shapeDisplay;
     private readonly IInputService _inputService;
-    private readonly IShapeMenuService _shapeMenuService;
     private readonly ShapeValidator _shapeValidator;
     private readonly ShapeRepository _shapeRepository;
     private readonly ShapeFactory _shapeFactory;
@@ -22,7 +21,6 @@ public class UpdateShapeService : IUpdateShapeService
         IShapeOperationService operationService,
         IShapeDisplay shapeDisplay,
         IInputService inputService,
-        IShapeMenuService shapeMenuService,
         ShapeValidator shapeValidator,
         ShapeRepository shapeRepository,
         ShapeFactory shapeFactory
@@ -31,7 +29,6 @@ public class UpdateShapeService : IUpdateShapeService
         _operationService = operationService;
         _shapeDisplay = shapeDisplay;
         _inputService = inputService;
-        _shapeMenuService = shapeMenuService;
         _shapeValidator = shapeValidator;
         _shapeRepository = shapeRepository;
         _shapeFactory = shapeFactory;
