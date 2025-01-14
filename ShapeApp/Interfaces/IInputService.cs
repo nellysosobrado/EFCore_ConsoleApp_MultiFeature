@@ -11,5 +11,6 @@ namespace ShapeApp.Interfaces
     {
         double GetNumberInput(string prompt);
         ShapeType GetShapeType();
+        Dictionary<string, double> GetShapeParameters(Dictionary<string, double> requiredParameters);
     }
 }

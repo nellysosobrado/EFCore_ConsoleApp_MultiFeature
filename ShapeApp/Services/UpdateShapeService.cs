@@ -25,7 +25,8 @@ public class UpdateShapeService : IUpdateShapeService
         IShapeMenuService shapeMenuService,
         ShapeValidator shapeValidator,
         ShapeRepository shapeRepository,
-        ShapeFactory shapeFactory)
+        ShapeFactory shapeFactory
+       )
     {
         _operationService = operationService;
         _shapeDisplay = shapeDisplay;
@@ -47,7 +48,7 @@ public class UpdateShapeService : IUpdateShapeService
         {
             shapeType = _inputService.GetShapeType();
             var requiredParameters = _operationService.GetRequiredParameters(shapeType);
-            parameters = _shapeMenuService.GetShapeParameters(requiredParameters);
+            parameters = _inputService.GetShapeParameters(requiredParameters);
         }
         else
         {
@@ -117,7 +118,6 @@ public class UpdateShapeService : IUpdateShapeService
             CalculationDate = DateTime.Now
         };
 
-        // Sätt specifika parametrar baserat på formtyp
         switch (shapeType)
         {
             case ShapeType.Rectangle:
@@ -141,7 +141,6 @@ public class UpdateShapeService : IUpdateShapeService
                 break;
         }
 
-        // Beräkna area och omkrets
         shapeModel.Area = shape.CalculateArea();
         shapeModel.Perimeter = shape.CalculatePerimeter();
 

@@ -10,7 +10,6 @@ namespace ShapeApp.Interfaces
     public interface IShapeMenuService
     {
         string ShowMainMenu();
-        ShapeType GetShapeType();
-        Dictionary<string, double> GetShapeParameters(Dictionary<string, double> requiredParameters);
+        
     }
 }

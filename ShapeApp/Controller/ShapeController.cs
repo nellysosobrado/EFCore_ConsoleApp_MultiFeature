@@ -28,7 +28,8 @@ public class ShapeController
         IShapeDisplay shapeDisplay,
         IErrorService errorService,
         IInputService inputService,
-        IShapeMenuService shapeMenuService)
+        IShapeMenuService shapeMenuService
+        )
     {
         _operationService = operationService;
         _updateShapeService = updateShapeService;
@@ -84,7 +85,7 @@ public class ShapeController
     {
         var shapeType = _inputService.GetShapeType();
         var requiredParameters = _operationService.GetRequiredParameters(shapeType);
-        var parameters = _shapeMenuService.GetShapeParameters(requiredParameters);
+        var parameters = _inputService.GetShapeParameters(requiredParameters);
 
         _operationService.SaveShape(shapeType, parameters);
 
