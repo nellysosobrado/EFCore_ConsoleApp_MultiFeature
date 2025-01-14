@@ -13,16 +13,20 @@ public class ShapeController
     private readonly IShapeOperationService _operationService;
     private readonly IShapeUIService _uiService;
     private readonly IUpdateShapeService _updateShapeService;
+    private readonly IDeleteShapeService _deleteShapeService;
+
 
 
     public ShapeController(
         IShapeOperationService operationService,
         IShapeUIService uiService,
-        IUpdateShapeService updateShapeService)
+        IUpdateShapeService updateShapeService,
+        IDeleteShapeService deleteShapeService)
     {
         _operationService = operationService;
         _uiService = uiService;
         _updateShapeService = updateShapeService;
+        _deleteShapeService = deleteShapeService;
     }
 
     public void Start()
@@ -115,17 +119,17 @@ public class ShapeController
             }
         }
     }
-   
+
+
     private void DeleteShape()
     {
-        ShowShapes();
+        var shapes = _operationService.GetShapeHistory();
+
         var id = _uiService.GetShapeIdForDelete();
 
-        if (_uiService.ConfirmDeletion())
+        if (_deleteShapeService.ConfirmDeletion())
         {
-            _operationService.DeleteShape(id);
-            AnsiConsole.MarkupLine("[green]Shape deleted successfully[/]");
-            _uiService.WaitForKeyPress();
+            _deleteShapeService.DeleteShape(id);
         }
     }
 }

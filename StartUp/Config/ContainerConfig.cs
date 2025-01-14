@@ -58,6 +58,7 @@ public static class ContainerConfig
         builder.RegisterType<SpectreShapeUIService>().As<IShapeUIService>();
         builder.RegisterType<ShapeOperationService>().As<IShapeOperationService>();
         builder.RegisterType<UpdateShapeService>().As<IUpdateShapeService>();
+        builder.RegisterType<DeleteShapeService>().As<IDeleteShapeService>();
 
         // Register Controllers
         builder.RegisterType<CalculatorController>().AsSelf();
