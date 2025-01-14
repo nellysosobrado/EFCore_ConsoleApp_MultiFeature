@@ -12,13 +12,17 @@ public class ShapeController
 {
     private readonly IShapeOperationService _operationService;
     private readonly IShapeUIService _uiService;
+    private readonly IUpdateShapeService _updateShapeService;
+
 
     public ShapeController(
         IShapeOperationService operationService,
-        IShapeUIService uiService)
+        IShapeUIService uiService,
+        IUpdateShapeService updateShapeService)
     {
         _operationService = operationService;
         _uiService = uiService;
+        _updateShapeService = updateShapeService;
     }
 
     public void Start()
@@ -81,44 +85,15 @@ public class ShapeController
         _uiService.ShowShapes(shapes);
         _uiService.WaitForKeyPress();
     }
-
     private void UpdateShape()
     {
         while (true)
         {
             try
             {
-                ShowShapes();
                 var id = _uiService.GetShapeIdForUpdate();
-                var existingShape = _operationService.GetShapeById(id);
+                _updateShapeService.UpdateShape(id);
 
-                var currentParameters = existingShape.GetParameters();
-                ShapeType shapeType = existingShape.ShapeType;
-                Dictionary<string, double> parameters;
-
-                if (_uiService.ShouldChangeShapeType())
-                {
-                    shapeType = _uiService.GetShapeType();
-                    var requiredParameters = _operationService.GetRequiredParameters(shapeType);
-                    parameters = _uiService.GetShapeParameters(requiredParameters);
-                }
-                else
-                {
-                    var selectedUpdates = _uiService.GetSelectedParametersToUpdate(currentParameters);
-                    parameters = new Dictionary<string, double>(currentParameters);
-                    foreach (var update in selectedUpdates)
-                    {
-                        parameters[update.Key] = update.Value;
-                    }
-                }
-
-                _operationService.UpdateShape(id, shapeType, parameters);
-
-                var shapes = _operationService.GetShapeHistory();
-                var updatedShape = shapes.First(s => s.Id == id);
-                _uiService.ShowResult(updatedShape);
-
-                Console.Clear();
                 var option = AnsiConsole.Prompt(
                     new SelectionPrompt<ShapeUpdateMenuOptions>()
                         .Title("[green]What would you like to do next?[/]")
@@ -140,7 +115,7 @@ public class ShapeController
             }
         }
     }
-
+   
     private void DeleteShape()
     {
         ShowShapes();

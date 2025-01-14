@@ -57,6 +57,7 @@ public static class ContainerConfig
         builder.RegisterType<ShapeRepository>().AsSelf();
         builder.RegisterType<SpectreShapeUIService>().As<IShapeUIService>();
         builder.RegisterType<ShapeOperationService>().As<IShapeOperationService>();
+        builder.RegisterType<UpdateShapeService>().As<IUpdateShapeService>();
 
         // Register Controllers
         builder.RegisterType<CalculatorController>().AsSelf();
