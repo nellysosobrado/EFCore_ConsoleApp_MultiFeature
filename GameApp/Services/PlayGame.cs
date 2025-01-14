@@ -12,12 +12,17 @@ namespace GameApp.Services
     public class PlayGame : IPlayGame
     {
         private readonly IGameService _gameService;
-        private readonly IGameUIService _uiService;
+        private readonly IPlayerInput _uiService;
+        private readonly IDisplayRspGame _displayGame;
 
-        public PlayGame(IGameService gameService, IGameUIService uiService)
+        public PlayGame(
+            IGameService gameService,
+            IPlayerInput uiService, 
+            IDisplayRspGame displayGame)
         {
             _gameService = gameService;
             _uiService = uiService;
+            _displayGame = displayGame;
         }
 
 
@@ -41,7 +46,7 @@ namespace GameApp.Services
         {
             _gameService.SaveGame(game);
             var winPercentage = _gameService.CalculateWinPercentage();
-            _uiService.ShowGameResult(game, winPercentage);
+            _displayGame.ShowGameResult(game, winPercentage);
             _uiService.WaitForKeyPress();
         }
 

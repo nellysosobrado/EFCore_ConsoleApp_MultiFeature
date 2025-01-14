@@ -10,9 +10,9 @@ namespace GameApp.Services
 {
     public class GameError : IGameError
     {
-        private readonly IGameUIService _uiService;
+        private readonly IPlayerInput _uiService;
 
-        public GameError(IGameUIService uiService)
+        public GameError(IPlayerInput uiService)
         {
             _uiService = uiService;
         }

@@ -3,10 +3,9 @@ using ClassLibrary.Enums;
 
 namespace GameApp.Interfaces;
 
-public interface IGameUIService
+public interface IPlayerInput
 {
     GameMove GetPlayerMove();
-    void ShowGameResult(Game game, double winPercentage);
-    void ShowGameHistory(IEnumerable<Game> games);
+  
     void WaitForKeyPress(string message = "\nPress any key to continue...");
 }

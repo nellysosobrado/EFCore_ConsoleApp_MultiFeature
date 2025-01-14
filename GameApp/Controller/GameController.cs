@@ -9,16 +9,22 @@ namespace GameApp.Controller;
 public class GameController
 {
     private readonly IGameService _gameService;
-    private readonly IGameUIService _uiService;
+    private readonly IPlayerInput _uiService;
     private readonly IPlayGame _playGame;
     private readonly IGameError _gameError;
+    private readonly IDisplayRspGame _displayGame;
 
-    public GameController(IGameService gameService, IGameUIService uiService, IPlayGame playGame, IGameError gameError)
+    public GameController(IGameService gameService, 
+        IPlayerInput uiService, 
+        IPlayGame playGame, 
+        IGameError gameError, 
+        IDisplayRspGame displayGame)
     {
         _gameService = gameService;
         _uiService = uiService;
         _playGame = playGame;
         _gameError = gameError;
+        _displayGame = displayGame;
     }
 
     public void Start()
@@ -69,7 +75,7 @@ public class GameController
         try
         {
             var history = _gameService.GetGameHistory();
-            _uiService.ShowGameHistory(history);
+            _displayGame.ShowGameHistory(history);
             _uiService.WaitForKeyPress();
         }
         catch (Exception ex)
