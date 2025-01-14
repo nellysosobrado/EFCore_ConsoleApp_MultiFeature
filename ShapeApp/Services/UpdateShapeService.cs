@@ -23,7 +23,7 @@ public class UpdateShapeService : IUpdateShapeService
         ShapeType shapeType = existingShape.ShapeType;
         Dictionary<string, double> parameters;
 
-        if (_uiService.ShouldChangeShapeType())
+        if (ShouldChangeShapeType())
         {
             shapeType = _uiService.GetShapeType();
             var requiredParameters = _operationService.GetRequiredParameters(shapeType);
@@ -50,6 +50,13 @@ public class UpdateShapeService : IUpdateShapeService
         return AnsiConsole.Prompt(
             new TextPrompt<int>("[green]Enter the ID of the shape to update:[/]")
                 .ValidationErrorMessage("[red]Please enter a valid ID[/]"));
+    }
+    public bool ShouldChangeShapeType()
+    {
+        return AnsiConsole.Prompt(
+            new ConfirmationPrompt("Do you want to change the shape type?")
+                .ShowChoices()
+                .ShowDefaultValue());
     }
 
 }

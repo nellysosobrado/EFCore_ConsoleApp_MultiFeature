@@ -256,13 +256,7 @@ public class SpectreShapeUIService : IShapeUIService
   
   
 
-    public bool ShouldChangeShapeType()
-    {
-        return AnsiConsole.Prompt(
-            new ConfirmationPrompt("Do you want to change the shape type?")
-                .ShowChoices()
-                .ShowDefaultValue());
-    }
+    
 
     public Dictionary<string, double> GetSelectedParametersToUpdate(Dictionary<string, double> currentParameters)
     {
