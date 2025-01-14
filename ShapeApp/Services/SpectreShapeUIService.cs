@@ -26,6 +26,7 @@ public class SpectreShapeUIService : IShapeUIService
     public void ShowShapes(IEnumerable<Shape> shapes)
     {
         var pagination = new Pagination<Shape>(shapes, pageSize: 5);
+        var showDeleted = false;
 
         while (true)
         {
@@ -37,11 +38,17 @@ public class SpectreShapeUIService : IShapeUIService
                 .AddColumn(new TableColumn("[blue]Shape[/]").Centered())
                 .AddColumn(new TableColumn("[cyan]Parameters[/]").LeftAligned())
                 .AddColumn(new TableColumn("[magenta]Area[/]").Centered())
-                .AddColumn(new TableColumn("[red]Perimeter[/]").Centered());
+                .AddColumn(new TableColumn("[red]Perimeter[/]").Centered())
+                .AddColumn(new TableColumn("[grey]Status[/]").Centered());
+
+            var filteredShapes = showDeleted ? shapes : shapes.Where(s => !s.IsDeleted);
+            pagination = new Pagination<Shape>(filteredShapes, pageSize: 5);
 
             foreach (var shape in pagination.GetCurrentPage())
             {
                 var parameters = GetParametersString(shape);
+                var statusColor = shape.IsDeleted ? "red" : "green";
+                var status = shape.IsDeleted ? "Deleted" : "Active";
 
                 table.AddRow(
                     $"[yellow]{shape.Id}[/]",
@@ -49,18 +56,46 @@ public class SpectreShapeUIService : IShapeUIService
                     $"[blue]{shape.ShapeType}[/]",
                     $"[cyan]{parameters}[/]",
                     $"[magenta]{shape.Area:F2}[/]",
-                    $"[red]{shape.Perimeter:F2}[/]"
+                    $"[red]{shape.Perimeter:F2}[/]",
+                    $"[{statusColor}]{status}[/]"
                 );
             }
 
             AnsiConsole.Write(table);
 
-            var choice = PaginationRenderer.ShowPaginationControls(pagination);
+            var choices = new List<string>
+        {
+            showDeleted ? "Show Active Only" : "Show All (Including Deleted)",
+            "Next Page",
+            "Previous Page",
+            "Back to Menu"
+        };
 
-            if (choice == "Back to Menu")
-                break;
+            var choice = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("[green]Select an option:[/]")
+                    .AddChoices(choices));
+
+            switch (choice)
+            {
+                case "Show All (Including Deleted)":
+                    showDeleted = true;
+                    break;
+                case "Show Active Only":
+                    showDeleted = false;
+                    break;
+                case "Next Page":
+                    pagination.NextPage();
+                    break;
+                case "Previous Page":
+                    pagination.PreviousPage();
+                    break;
+                case "Back to Menu":
+                    return;
+            }
         }
     }
+
 
 
     private string GetParametersString(Shape shape)

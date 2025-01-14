@@ -14,9 +14,10 @@ public class ShapeRepository
     public List<Shape> GetAllShapes()
     {
         return _context.Shapes
-            .Where(s => !s.IsDeleted)
+            .OrderByDescending(s => s.CalculationDate)
             .ToList();
     }
+
 
     public Shape GetShapeById(int id)
     {
