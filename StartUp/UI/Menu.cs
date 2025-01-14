@@ -2,7 +2,9 @@
 using CalculatorApp.Controllers;
 using ShapeApp.Controllers;
 using Spectre.Console;
-using StartUp.Extensions;
+using ClassLibrary.Extensions;
+using ClassLibrary.Enums;
+using GameApp.Controller;
 
 namespace StartUp.UI;
 
@@ -40,6 +42,11 @@ public class Menu
                 StartShapes();
                 break;
 
+            case MenuOptions.StartGame:
+                StartGame();
+                break;
+
+
             case MenuOptions.Exit:
                 AnsiConsole.MarkupLine("[red]Exiting the application...[/]");
                 Environment.Exit(0);
@@ -62,6 +69,14 @@ public class Menu
         {
             var shapeController = scope.Resolve<ShapeController>();
             shapeController.Start();
+        }
+    }
+    private void StartGame()
+    {
+        using (var scope = _container.BeginLifetimeScope())
+        {
+            var gameController = scope.Resolve<GameController>();
+            gameController.Start();
         }
     }
 }

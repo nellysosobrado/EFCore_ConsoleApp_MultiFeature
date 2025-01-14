@@ -5,7 +5,9 @@ using System.Globalization;
 using ClassLibrary.Enums.CalculatorAppEnums;
 using CalculatorApp.Enums;
 using CalculatorApp.Enums;
-using CalculatorApp.Extensions;
+using ClassLibrary.Extensions;
+
+
 using CalculatorApp.UI;
 
 namespace CalculatorApp.Services;

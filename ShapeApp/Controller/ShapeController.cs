@@ -1,25 +1,35 @@
-﻿using ClassLibrary.Models;
-using Spectre.Console;
-using ClassLibrary.Enums;
-//using ShapeApp.Interfaces;
+﻿using Spectre.Console;
 using ShapeApp.Enums;
-using ShapeApp.Extensions;
+using ClassLibrary.Extensions;
 using ShapeApp.Services;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using ShapeApp.Interfaces;
 
 namespace ShapeApp.Controllers;
 
 public class ShapeController
 {
-    private readonly IShapeOperationService _operationService;
-    private readonly IShapeUIService _uiService;
+    private readonly ISaveShapeService _operationService;
+    private readonly IUpdateShapeService _updateShapeService;
+    private readonly IDeleteShapeService _deleteShapeService;
+    private readonly IShapeDisplay _shapeDisplay;
+    private readonly IErrorService _errorService;
+    private readonly IInputService _inputService;
 
     public ShapeController(
-        IShapeOperationService operationService,
-        IShapeUIService uiService)
+        ISaveShapeService operationService,
+        IUpdateShapeService updateShapeService,
+        IDeleteShapeService deleteShapeService,
+        IShapeDisplay shapeDisplay,
+        IErrorService errorService,
+        IInputService inputService
+        )
     {
         _operationService = operationService;
-        _uiService = uiService;
+        _updateShapeService = updateShapeService;
+        _deleteShapeService = deleteShapeService;
+        _shapeDisplay = shapeDisplay;
+        _errorService = errorService;
+        _inputService = inputService;
     }
 
     public void Start()
@@ -57,101 +67,72 @@ public class ShapeController
             }
             catch (Exception ex)
             {
-                _uiService.ShowError(ex.Message);
-                _uiService.WaitForKeyPress();
+                _errorService.ShowError(ex.Message);
+                _errorService.WaitForKeyPress();
             }
         }
     }
 
     private void CalculateShape()
     {
-        var shapeType = _uiService.GetShapeType();
-        var requiredParameters = _operationService.GetRequiredParameters(shapeType);
-        var parameters = _uiService.GetShapeParameters(requiredParameters);
+        var shapeType = _inputService.GetShapeType();
+        var requiredParameters = _inputService.GetRequiredParameters(shapeType);
+        var parameters = _inputService.GetShapeParameters(requiredParameters);
 
         _operationService.SaveShape(shapeType, parameters);
 
-        var shapes = _operationService.GetShapeHistory();
+        var shapes = _shapeDisplay.GetShapeHistory();
         var latestShape = shapes.First();
-        _uiService.ShowResult(latestShape);
+        _shapeDisplay.ShowResult(latestShape);
     }
 
     private void ShowShapes()
     {
-        var shapes = _operationService.GetShapeHistory();
-        _uiService.ShowShapes(shapes);
-        _uiService.WaitForKeyPress();
+        var shapes = _shapeDisplay.GetShapeHistory();
+        _shapeDisplay.ShowShapes(shapes);
+        _errorService.WaitForKeyPress();
     }
-
     private void UpdateShape()
     {
         while (true)
         {
             try
             {
-                ShowShapes();
-                var id = _uiService.GetShapeIdForUpdate();
-                var existingShape = _operationService.GetShapeById(id);
+                var id = _updateShapeService.GetShapeIdForUpdate();
+                _updateShapeService.UpdateShape(id);
 
-                var currentParameters = existingShape.GetParameters();
-                ShapeType shapeType = existingShape.ShapeType;
-                Dictionary<string, double> parameters;
-
-                if (_uiService.ShouldChangeShapeType())
-                {
-                    shapeType = _uiService.GetShapeType();
-                    var requiredParameters = _operationService.GetRequiredParameters(shapeType);
-                    parameters = _uiService.GetShapeParameters(requiredParameters);
-                }
-                else
-                {
-                    var selectedUpdates = _uiService.GetSelectedParametersToUpdate(currentParameters);
-                    parameters = new Dictionary<string, double>(currentParameters);
-                    foreach (var update in selectedUpdates)
-                    {
-                        parameters[update.Key] = update.Value;
-                    }
-                }
-
-                _operationService.UpdateShape(id, shapeType, parameters);
-
-                var shapes = _operationService.GetShapeHistory();
-                var updatedShape = shapes.First(s => s.Id == id);
-                _uiService.ShowResult(updatedShape);
-
-                Console.Clear();
                 var option = AnsiConsole.Prompt(
-                    new SelectionPrompt<UpdateMenuOptions>()
+                    new SelectionPrompt<ShapeUpdateMenuOptions>()
                         .Title("[green]What would you like to do next?[/]")
                         .UseConverter(option => option.GetDescription())
-                        .AddChoices(Enum.GetValues<UpdateMenuOptions>()));
+                        .AddChoices(Enum.GetValues<ShapeUpdateMenuOptions>()));
 
                 switch (option)
                 {
-                    case UpdateMenuOptions.UpdateCalculation:
+                    case ShapeUpdateMenuOptions.UpdateCalculation:
                         continue;
-                    case UpdateMenuOptions.CalculatorMenu:
+                    case ShapeUpdateMenuOptions.CalculatorMenu:
                         return;
                 }
             }
             catch (Exception ex)
             {
-                _uiService.ShowError(ex.Message);
-                _uiService.WaitForKeyPress();
+                _errorService.ShowError(ex.Message);
+                _errorService.WaitForKeyPress();
             }
         }
     }
 
+
     private void DeleteShape()
     {
-        ShowShapes();
-        var id = _uiService.GetShapeIdForDelete();
+        var shapes = _shapeDisplay.GetShapeHistory();
 
-        if (_uiService.ConfirmDeletion())
+        var id = _deleteShapeService.GetShapeIdForDelete();
+
+        if (_deleteShapeService.ConfirmDeletion())
         {
-            _operationService.DeleteShape(id);
-            AnsiConsole.MarkupLine("[green]Shape deleted successfully[/]");
-            _uiService.WaitForKeyPress();
+            _deleteShapeService.DeleteShape(id);
         }
     }
 }

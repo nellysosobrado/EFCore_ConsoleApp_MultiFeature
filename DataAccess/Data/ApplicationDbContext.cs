@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ClassLibrary.Models;
+using ClassLibrary.Enums;
 
 namespace ClassLibrary.Data;
 
@@ -7,6 +8,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
     public DbSet<Calculator> Calculations { get; set; }
     public DbSet<Shape> Shapes { get; set; }
+    public DbSet<Game> Games { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
@@ -61,5 +63,35 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
             entity.Property(s => s.SideB).HasPrecision(18, 2);
             entity.Property(s => s.SideC).HasPrecision(18, 2);
         });
+
+        modelBuilder.Entity<Game>()
+            .Property(g => g.GameDate)
+            .HasDefaultValueSql("GETDATE()");
+
+        // Game configuration
+        modelBuilder.Entity<Game>()
+            .Property(g => g.PlayerMove)
+            .HasConversion(
+                v => v.ToString(),
+                v => (GameMove)Enum.Parse(typeof(GameMove), v));
+
+        modelBuilder.Entity<Game>()
+            .Property(g => g.ComputerMove)
+            .HasConversion(
+                v => v.ToString(),
+                v => (GameMove)Enum.Parse(typeof(GameMove), v));
+
+        modelBuilder.Entity<Game>()
+            .Property(g => g.Winner)
+            .HasMaxLength(20);
+
+        modelBuilder.Entity<Game>()
+            .Property(g => g.AverageWinRate)
+            .HasColumnType("float");
+
+        modelBuilder.Entity<Game>()
+            .Property(g => g.GameDate)
+            .HasDefaultValueSql("GETDATE()");
+
     }
 }

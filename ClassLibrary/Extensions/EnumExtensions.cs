@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace ShapeApp.Extensions;
+namespace ClassLibrary.Extensions;
 
 public static class EnumExtensions
 {

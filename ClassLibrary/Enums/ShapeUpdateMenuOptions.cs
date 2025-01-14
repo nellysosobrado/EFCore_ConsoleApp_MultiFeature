@@ -2,7 +2,7 @@
 
 namespace ShapeApp.Enums;
 
-public enum UpdateMenuOptions
+public enum ShapeUpdateMenuOptions
 {
     [Description("Update Another Shape")]
     UpdateCalculation,
