@@ -19,6 +19,47 @@ namespace ShapeApp.Services
         {
             _uiService = uiService;
         }
+        public void ShowResult(Shape shape)
+        {
+            Console.Clear();
+            var table = new Table()
+                .Border(TableBorder.Rounded)
+                .AddColumn(new TableColumn("[blue]Property[/]").LeftAligned())
+                .AddColumn(new TableColumn("[green]Value[/]").RightAligned());
+
+            table.AddRow("[blue]Shape Type[/]", $"[white]{shape.ShapeType}[/]");
+
+            switch (shape.ShapeType)
+            {
+                case ShapeType.Rectangle:
+                    table.AddRow("[cyan]Width[/]", $"[white]{shape.Width:F2}[/]");
+                    table.AddRow("[cyan]Height[/]", $"[white]{shape.Height:F2}[/]");
+                    break;
+                case ShapeType.Parallelogram:
+                    table.AddRow("[cyan]Base[/]", $"[white]{shape.BaseLength:F2}[/]");
+                    table.AddRow("[cyan]Height[/]", $"[white]{shape.Height:F2}[/]");
+                    table.AddRow("[cyan]Side[/]", $"[white]{shape.Side:F2}[/]");
+                    break;
+                case ShapeType.Triangle:
+                    table.AddRow("[cyan]Side A[/]", $"[white]{shape.SideA:F2}[/]");
+                    table.AddRow("[cyan]Side B[/]", $"[white]{shape.SideB:F2}[/]");
+                    table.AddRow("[cyan]Side C[/]", $"[white]{shape.SideC:F2}[/]");
+                    table.AddRow("[cyan]Height[/]", $"[white]{shape.Height:F2}[/]");
+                    break;
+                case ShapeType.Rhombus:
+                    table.AddRow("[cyan]Side[/]", $"[white]{shape.Side:F2}[/]");
+                    table.AddRow("[cyan]Height[/]", $"[white]{shape.Height:F2}[/]");
+                    break;
+            }
+
+            // Lägg till area och omkrets
+            table.AddRow("[magenta]Area[/]", $"[white]{shape.Area:F2}[/]");
+            table.AddRow("[red]Perimeter[/]", $"[white]{shape.Perimeter:F2}[/]");
+
+            AnsiConsole.Write(table);
+            _uiService.WaitForKeyPress();
+        }
+
         private string GetParametersString(Shape shape)
         {
             var parameters = new List<string>();

@@ -10,5 +10,6 @@ namespace ShapeApp.Interfaces
     public interface IShapeDisplay
     {
         void ShowShapes(IEnumerable<Shape> shapes);
+        void ShowResult(Shape shape);
     }
 }

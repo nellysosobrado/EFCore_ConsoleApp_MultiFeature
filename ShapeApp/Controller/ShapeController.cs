@@ -84,7 +84,7 @@ public class ShapeController
 
         var shapes = _operationService.GetShapeHistory();
         var latestShape = shapes.First();
-        _uiService.ShowResult(latestShape);
+        _shapeDisplay.ShowResult(latestShape);
     }
 
     private void ShowShapes()

@@ -1,4 +1,5 @@
 ﻿using ClassLibrary.Enums;
+using ShapeApp.Interfaces;
 using Spectre.Console;
 
 namespace ShapeApp.Services;
@@ -7,13 +8,16 @@ public class UpdateShapeService : IUpdateShapeService
 {
     private readonly IShapeOperationService _operationService;
     private readonly IShapeUIService _uiService;
+    private readonly IShapeDisplay _shapeDisplay;
 
     public UpdateShapeService(
         IShapeOperationService operationService,
-        IShapeUIService uiService)
+        IShapeUIService uiService,
+        IShapeDisplay shapeDisplay)
     {
         _operationService = operationService;
         _uiService = uiService;
+        _shapeDisplay = shapeDisplay;
     }
 
     public void UpdateShape(int id)
@@ -43,7 +47,7 @@ public class UpdateShapeService : IUpdateShapeService
 
         var shapes = _operationService.GetShapeHistory();
         var updatedShape = shapes.First(s => s.Id == id);
-        _uiService.ShowResult(updatedShape);
+        _shapeDisplay.ShowResult(updatedShape);
     }
     public int GetShapeIdForUpdate()
     {
