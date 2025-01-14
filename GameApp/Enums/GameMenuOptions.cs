@@ -4,12 +4,12 @@ namespace GameApp.Enums;
 
 public enum GameMenuOptions
 {
-    [Description("1. Play Game")]
+    [Description("Play Game")]
     PlayGame,
 
-    [Description("2. View History")]
+    [Description("View History")]
     ViewHistory,
 
-    [Description("3. Main Menu")]
+    [Description("Main Menu")]
     MainMenu
 }

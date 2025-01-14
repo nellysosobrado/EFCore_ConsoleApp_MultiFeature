@@ -22,6 +22,7 @@ public class GameController
     {
         while (true)
         {
+            Console.Clear();
             var option = AnsiConsole.Prompt(
                 new SelectionPrompt<GameMenuOptions>()
                     .Title("[green]Rock Paper Scissors Menu[/]")
@@ -41,7 +42,6 @@ public class GameController
             }
         }
     }
-
     private void PlayGame()
     {
         try
@@ -62,6 +62,20 @@ public class GameController
             var winPercentage = _gameService.CalculateWinPercentage();
             _uiService.ShowGameResult(game, winPercentage);
             _uiService.WaitForKeyPress();
+
+            Console.Clear();
+            var playAgain = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    //.Title("[green]What would you like to do?[/]")
+                    .AddChoices(new[] {
+                        "Play Again",
+                        "Back to Game Menu"
+                    }));
+
+            if (playAgain == "Back to Game Menu")
+            {
+                return;
+            }
         }
         catch (Exception ex)
         {
