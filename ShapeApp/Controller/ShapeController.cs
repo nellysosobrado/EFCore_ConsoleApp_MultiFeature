@@ -1,9 +1,8 @@
 ﻿using ClassLibrary.Models;
 using Spectre.Console;
 using ClassLibrary.Enums;
-//using ShapeApp.Interfaces;
 using ShapeApp.Enums;
-using ShapeApp.Extensions;
+using ClassLibrary.Extensions;
 using ShapeApp.Services;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 

@@ -2,7 +2,7 @@
 using ClassLibrary.Models;
 using ClassLibrary.Enums;
 using ShapeApp.Validators;
-using ShapeApp.Extensions;
+using ClassLibrary.Extensions;
 
 namespace ShapeApp.Services;
 
