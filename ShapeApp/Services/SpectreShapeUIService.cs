@@ -82,15 +82,45 @@ public class SpectreShapeUIService : IShapeUIService
 
     public void ShowResult(Shape shape)
     {
-        var parameters = GetParametersString(shape);
+        Console.Clear();
+        var table = new Table()
+            .Border(TableBorder.Rounded)
+            .AddColumn(new TableColumn("[blue]Property[/]").LeftAligned())
+            .AddColumn(new TableColumn("[green]Value[/]").RightAligned());
 
-        AnsiConsole.MarkupLine($"\n[blue]Shape Type:[/] {shape.ShapeType}");
-        AnsiConsole.MarkupLine($"[cyan]Parameters:[/]\n{parameters}");
-        AnsiConsole.MarkupLine($"[magenta]Area:[/] {shape.Area:F2}");
-        AnsiConsole.MarkupLine($"[red]Perimeter:[/] {shape.Perimeter:F2}");
+        table.AddRow("[blue]Shape Type[/]", $"[white]{shape.ShapeType}[/]");
 
+        switch (shape.ShapeType)
+        {
+            case ShapeType.Rectangle:
+                table.AddRow("[cyan]Width[/]", $"[white]{shape.Width:F2}[/]");
+                table.AddRow("[cyan]Height[/]", $"[white]{shape.Height:F2}[/]");
+                break;
+            case ShapeType.Parallelogram:
+                table.AddRow("[cyan]Base[/]", $"[white]{shape.BaseLength:F2}[/]");
+                table.AddRow("[cyan]Height[/]", $"[white]{shape.Height:F2}[/]");
+                table.AddRow("[cyan]Side[/]", $"[white]{shape.Side:F2}[/]");
+                break;
+            case ShapeType.Triangle:
+                table.AddRow("[cyan]Side A[/]", $"[white]{shape.SideA:F2}[/]");
+                table.AddRow("[cyan]Side B[/]", $"[white]{shape.SideB:F2}[/]");
+                table.AddRow("[cyan]Side C[/]", $"[white]{shape.SideC:F2}[/]");
+                table.AddRow("[cyan]Height[/]", $"[white]{shape.Height:F2}[/]");
+                break;
+            case ShapeType.Rhombus:
+                table.AddRow("[cyan]Side[/]", $"[white]{shape.Side:F2}[/]");
+                table.AddRow("[cyan]Height[/]", $"[white]{shape.Height:F2}[/]");
+                break;
+        }
+
+        // Lägg till area och omkrets
+        table.AddRow("[magenta]Area[/]", $"[white]{shape.Area:F2}[/]");
+        table.AddRow("[red]Perimeter[/]", $"[white]{shape.Perimeter:F2}[/]");
+
+        AnsiConsole.Write(table);
         WaitForKeyPress();
     }
+
 
     public ShapeType GetShapeType()
     {
@@ -100,82 +130,20 @@ public class SpectreShapeUIService : IShapeUIService
                 .UseConverter(type => type.ToString())
                 .AddChoices(Enum.GetValues<ShapeType>()));
     }
-
     public Dictionary<string, double> GetShapeParameters(Dictionary<string, double> requiredParameters)
     {
         var parameters = new Dictionary<string, double>();
 
-        AnsiConsole.Clear();
-        AnsiConsole.Write(new Rule("[yellow]Shape Parameters Input[/]").RuleStyle("grey"));
+        RenderParameterTable(requiredParameters, parameters);
 
-        var table = new Table()
-            .Border(TableBorder.Rounded)
-            .AddColumn(new TableColumn("[blue]Parameter[/]").Centered())
-            .AddColumn(new TableColumn("[green]Value[/]").Centered())
-            .AddColumn(new TableColumn("[grey]Status[/]").Centered());
-
-        // Först visa alla parametrar som "Pending"
         foreach (var param in requiredParameters)
         {
-            table.AddRow(
-                param.Key,
-                "-",
-                "[yellow]Pending[/]"
-            );
-        }
-
-        AnsiConsole.Write(table);
-
-        // Nu samla in värden och uppdatera tabellen efter varje inmatning
-        foreach (var param in requiredParameters)
-        {
-            var value = AnsiConsole.Prompt(
-                new TextPrompt<double>($"\n[green]Enter {param.Key}:[/]")
-                    .PromptStyle("blue")
-                    .ValidationErrorMessage("[red]Please enter a valid number greater than 0[/]")
-                    .Validate(number =>
-                    {
-                        if (number <= 0)
-                            return ValidationResult.Error("[red]Value must be greater than 0[/]");
-                        return ValidationResult.Success();
-                    }));
-
+            var value = GetNumberInput($"\n[white]Enter[/] [green]{param.Key}[/]");
             parameters[param.Key] = value;
 
-            // Rensa skärmen och rita om tabellen med uppdaterade värden
-            AnsiConsole.Clear();
-            AnsiConsole.Write(new Rule("[yellow]Shape Parameters Input[/]").RuleStyle("grey"));
-
-            table = new Table()
-                .Border(TableBorder.Rounded)
-                .AddColumn(new TableColumn("[blue]Parameter[/]").Centered())
-                .AddColumn(new TableColumn("[green]Value[/]").Centered())
-                .AddColumn(new TableColumn("[grey]Status[/]").Centered());
-
-            foreach (var p in requiredParameters)
-            {
-                if (parameters.ContainsKey(p.Key))
-                {
-                    table.AddRow(
-                        p.Key,
-                        $"{parameters[p.Key]:F2}",
-                        "[green]Completed[/]"
-                    );
-                }
-                else
-                {
-                    table.AddRow(
-                        p.Key,
-                        "-",
-                        "[yellow]Pending[/]"
-                    );
-                }
-            }
-
-            AnsiConsole.Write(table);
+            RenderParameterTable(requiredParameters, parameters);
         }
 
-        // Visa slutlig bekräftelse
         if (!AnsiConsole.Confirm("\n[yellow]Are these values correct?[/]"))
         {
             return GetShapeParameters(requiredParameters);
@@ -184,7 +152,30 @@ public class SpectreShapeUIService : IShapeUIService
         return parameters;
     }
 
+    private void RenderParameterTable(Dictionary<string, double> requiredParameters, Dictionary<string, double> currentValues)
+    {
+        AnsiConsole.Clear();
 
+        var table = new Table()
+            .Border(TableBorder.Rounded)
+            .AddColumn(new TableColumn("[blue]Parameter[/]").Centered())
+            .AddColumn(new TableColumn("[green]Value[/]").Centered());
+
+        foreach (var param in requiredParameters)
+        {
+            table.AddRow(
+                param.Key,
+                currentValues.ContainsKey(param.Key)
+                    ? $"{currentValues[param.Key]:F2}"
+                    : "-"
+            );
+        }
+
+        AnsiConsole.Write(table);
+    }
+
+
+   
     public double GetNumberInput(string prompt)
     {
         while (true)
