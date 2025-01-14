@@ -66,5 +66,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         modelBuilder.Entity<Game>()
             .Property(g => g.GameDate)
             .HasDefaultValueSql("GETDATE()");
+
+
     }
 }

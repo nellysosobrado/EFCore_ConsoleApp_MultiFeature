@@ -2,7 +2,8 @@
 using CalculatorApp.Controllers;
 using ShapeApp.Controllers;
 using Spectre.Console;
-using StartUp.Extensions;
+using ClassLibrary.Extensions;
+using ClassLibrary.Enums;
 using GameApp.Controller;
 
 namespace StartUp.UI;

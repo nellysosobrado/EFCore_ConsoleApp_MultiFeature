@@ -1,18 +1,18 @@
-﻿using System.ComponentModel;
+﻿//using System.ComponentModel;
 
-namespace StartUp.UI;
+//namespace StartUp.UI;
 
-public enum MenuOptions
-{
-    [Description("Start Calculator App")]
-    StartCalculator,
+//public enum MenuOptions
+//{
+//    [Description("Calculator")]
+//    StartCalculator,
 
-    [Description("Start Shapes App")]
-    StartShapes,
+//    [Description("Shapes")]
+//    StartShapes,
 
-    [Description("Start Rock Paper Scissors")]
-    StartGame,
+//    [Description("Rock Paper Scissors")]
+//    StartGame,
 
-    [Description("Exit Application")]
-    Exit
-}
+//    [Description("Exit Application")]
+//    Exit
+//}

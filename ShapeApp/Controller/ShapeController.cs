@@ -120,16 +120,16 @@ public class ShapeController
 
                 Console.Clear();
                 var option = AnsiConsole.Prompt(
-                    new SelectionPrompt<UpdateMenuOptions>()
+                    new SelectionPrompt<ShapeUpdateMenuOptions>()
                         .Title("[green]What would you like to do next?[/]")
                         .UseConverter(option => option.GetDescription())
-                        .AddChoices(Enum.GetValues<UpdateMenuOptions>()));
+                        .AddChoices(Enum.GetValues<ShapeUpdateMenuOptions>()));
 
                 switch (option)
                 {
-                    case UpdateMenuOptions.UpdateCalculation:
+                    case ShapeUpdateMenuOptions.UpdateCalculation:
                         continue;
-                    case UpdateMenuOptions.CalculatorMenu:
+                    case ShapeUpdateMenuOptions.CalculatorMenu:
                         return;
                 }
             }

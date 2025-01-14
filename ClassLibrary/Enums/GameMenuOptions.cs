@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace GameApp.Enums;
+namespace ClassLibrary.Enums;
 
 public enum GameMenuOptions
 {

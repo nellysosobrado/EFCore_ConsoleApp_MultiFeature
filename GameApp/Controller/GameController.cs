@@ -1,8 +1,7 @@
 ﻿using GameApp.Services;
 using ClassLibrary.Models;
-using ClassLibrary.Enums;
 using ClassLibrary.Extensions;
-using GameApp.Enums;
+using ClassLibrary.Enums;
 using Spectre.Console;
 
 namespace GameApp.Controller;
