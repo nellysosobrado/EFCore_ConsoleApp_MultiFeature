@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShapeApp", "ShapeApp\ShapeApp.csproj", "{D7F7A8DB-4D6C-4EFD-BFC5-60B44AE1DBDA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameApp", "GameApp\GameApp.csproj", "{D58DFF7D-1DD5-402A-90E1-5F1D0C490C83}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{D7F7A8DB-4D6C-4EFD-BFC5-60B44AE1DBDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7F7A8DB-4D6C-4EFD-BFC5-60B44AE1DBDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7F7A8DB-4D6C-4EFD-BFC5-60B44AE1DBDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D58DFF7D-1DD5-402A-90E1-5F1D0C490C83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D58DFF7D-1DD5-402A-90E1-5F1D0C490C83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D58DFF7D-1DD5-402A-90E1-5F1D0C490C83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D58DFF7D-1DD5-402A-90E1-5F1D0C490C83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
