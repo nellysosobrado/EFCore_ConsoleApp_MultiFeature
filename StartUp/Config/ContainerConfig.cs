@@ -3,6 +3,7 @@ using CalculatorApp.Services;
 using CalculatorApp.Validators;
 using CalculatorApp.Controllers;
 using ClassLibrary.Data;
+using GameApp.Controller;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +12,6 @@ using ClassLibrary.Repositories.CalculatorAppRepository;
 using ClassLibrary.Repositories.ShapeAppRepository;
 using ShapeApp.Controllers;
 using GameApp.Services;
-using GameApp.Controller;
 using ShapeApp.Services;
 using ShapeApp.Validators;
 using Microsoft.Extensions.Options;

@@ -1,6 +1,9 @@
 ﻿using GameApp.Services;
 using ClassLibrary.Models;
 using ClassLibrary.Enums;
+using GameApp.Enums;
+using GameApp.Extensions;
+using Spectre.Console;
 
 namespace GameApp.Controller;
 
@@ -19,38 +22,66 @@ public class GameController
     {
         while (true)
         {
-            try
+            var option = AnsiConsole.Prompt(
+                new SelectionPrompt<GameMenuOptions>()
+                    .Title("[green]Rock Paper Scissors Menu[/]")
+                    .UseConverter(option => option.GetDescription())
+                    .AddChoices(Enum.GetValues<GameMenuOptions>()));
+
+            switch (option)
             {
-                var playerMove = _uiService.GetPlayerMove();
-                var computerMove = _gameService.GetComputerMove();
-                var result = _gameService.DetermineWinner(playerMove, computerMove);
-
-                var game = new Game
-                {
-                    PlayerMove = playerMove,
-                    ComputerMove = computerMove,
-                    Result = result,
-                    GameDate = DateTime.Now
-                };
-
-                _gameService.SaveGame(game);
-                var winPercentage = _gameService.CalculateWinPercentage();
-                _uiService.ShowGameResult(game, winPercentage);
-
-                _uiService.WaitForKeyPress("\nPress Enter to play again or Esc to view history...");
-
-                if (Console.ReadKey(true).Key == ConsoleKey.Escape)
-                {
-                    var history = _gameService.GetGameHistory();
-                    _uiService.ShowGameHistory(history);
-                    _uiService.WaitForKeyPress();
-                }
+                case GameMenuOptions.PlayGame:
+                    PlayGame();
+                    break;
+                case GameMenuOptions.ViewHistory:
+                    ShowHistory();
+                    break;
+                case GameMenuOptions.MainMenu:
+                    return;
             }
-            catch (Exception ex)
+        }
+    }
+
+    private void PlayGame()
+    {
+        try
+        {
+            var playerMove = _uiService.GetPlayerMove();
+            var computerMove = _gameService.GetComputerMove();
+            var result = _gameService.DetermineWinner(playerMove, computerMove);
+
+            var game = new ClassLibrary.Models.Game
             {
-                _uiService.ShowError(ex.Message);
-                _uiService.WaitForKeyPress();
-            }
+                PlayerMove = playerMove,
+                ComputerMove = computerMove,
+                Result = result,
+                GameDate = DateTime.Now
+            };
+
+            _gameService.SaveGame(game);
+            var winPercentage = _gameService.CalculateWinPercentage();
+            _uiService.ShowGameResult(game, winPercentage);
+            _uiService.WaitForKeyPress();
+        }
+        catch (Exception ex)
+        {
+            _uiService.ShowError(ex.Message);
+            _uiService.WaitForKeyPress();
+        }
+    }
+
+    private void ShowHistory()
+    {
+        try
+        {
+            var history = _gameService.GetGameHistory();
+            _uiService.ShowGameHistory(history);
+            _uiService.WaitForKeyPress();
+        }
+        catch (Exception ex)
+        {
+            _uiService.ShowError(ex.Message);
+            _uiService.WaitForKeyPress();
         }
     }
 }
