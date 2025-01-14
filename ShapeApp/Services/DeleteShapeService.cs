@@ -23,9 +23,9 @@ public class DeleteShapeService : IDeleteShapeService
         _errorService = errorService;
     }
 
-    public void DeleteShape(int id)
+    public void SoftDeleteShape(int id)
     {
-        _operationService.DeleteShape(id);
+        DeleteShape(id);
         AnsiConsole.MarkupLine("[green]Shape deleted successfully[/]");
         _errorService.WaitForKeyPress();
     }
@@ -62,5 +62,9 @@ public class DeleteShapeService : IDeleteShapeService
             new ConfirmationPrompt("Are you sure you want to delete this shape?")
                 .ShowChoices()
                 .ShowDefaultValue());
+    }
+    public void DeleteShape(int id)
+    {
+        _shapeRepository.SoftDeleteShape(id);
     }
 }
