@@ -16,6 +16,7 @@ using ShapeApp.Services;
 using ShapeApp.Validators;
 using Microsoft.Extensions.Options;
 using CalculatorApp.UI;
+using ShapeApp.Interfaces;
 
 
 namespace StartUp.Config;
@@ -59,6 +60,7 @@ public static class ContainerConfig
         builder.RegisterType<ShapeOperationService>().As<IShapeOperationService>();
         builder.RegisterType<UpdateShapeService>().As<IUpdateShapeService>();
         builder.RegisterType<DeleteShapeService>().As<IDeleteShapeService>();
+        builder.RegisterType<ShapeDisplay>().As<IShapeDisplay>();
 
         // Register Controllers
         builder.RegisterType<CalculatorController>().AsSelf();

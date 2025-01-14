@@ -10,11 +10,9 @@ public interface IShapeUIService
     ShapeType GetShapeType();
     Dictionary<string, double> GetShapeParameters(Dictionary<string, double> requiredParameters);
 
-   // bool ShouldChangeShapeType();
     Dictionary<string, double> GetSelectedParametersToUpdate(Dictionary<string, double> currentParameters);
 
     double GetNumberInput(string prompt);
-    void ShowShapes(IEnumerable<Shape> shapes);
     void ShowResult(Shape shape);
 
     void ShowError(string message);

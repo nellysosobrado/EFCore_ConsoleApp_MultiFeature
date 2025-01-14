@@ -1,5 +1,6 @@
 ﻿using ClassLibrary.Models;
 using ClassLibrary.Repositories.ShapeAppRepository;
+using ShapeApp.Interfaces;
 using Spectre.Console;
 
 namespace ShapeApp.Services;
@@ -9,12 +10,14 @@ public class DeleteShapeService : IDeleteShapeService
     private readonly IShapeOperationService _operationService;
     private readonly IShapeUIService _uiService;
     private readonly ShapeRepository _shapeRepository;
+    private readonly IShapeDisplay _shapeDisplay;
 
-    public DeleteShapeService(IShapeOperationService operationService, IShapeUIService uiService, ShapeRepository shapeRepository)
+    public DeleteShapeService(IShapeOperationService operationService, IShapeUIService uiService, ShapeRepository shapeRepository,IShapeDisplay shapeDisplay)
     {
         _operationService = operationService;
         _uiService = uiService;
         _shapeRepository = shapeRepository;
+        _shapeDisplay = shapeDisplay;
     }
 
     public void DeleteShape(int id)
@@ -26,7 +29,7 @@ public class DeleteShapeService : IDeleteShapeService
 
     public void ShowShapes(IEnumerable<Shape> shapes)
     {
-        _uiService.ShowShapes(shapes);
+        _shapeDisplay.ShowShapes(shapes);
     }
     public int GetShapeIdForDelete()
     {
@@ -39,7 +42,6 @@ public class DeleteShapeService : IDeleteShapeService
                     new TextPrompt<int>("[green]Enter the ID of the shape to delete:[/]")
                         .ValidationErrorMessage("[red]Please enter a valid ID[/]"));
 
-                // Verify that the shape exists and isn't already deleted
                 _shapeRepository.GetShapeById(id);
                 return id;
             }

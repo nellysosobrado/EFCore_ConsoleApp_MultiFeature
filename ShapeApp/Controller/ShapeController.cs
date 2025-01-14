@@ -5,6 +5,7 @@ using ShapeApp.Enums;
 using ClassLibrary.Extensions;
 using ShapeApp.Services;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using ShapeApp.Interfaces;
 
 namespace ShapeApp.Controllers;
 
@@ -14,6 +15,7 @@ public class ShapeController
     private readonly IShapeUIService _uiService;
     private readonly IUpdateShapeService _updateShapeService;
     private readonly IDeleteShapeService _deleteShapeService;
+    private readonly IShapeDisplay _shapeDisplay;
 
 
 
@@ -21,12 +23,14 @@ public class ShapeController
         IShapeOperationService operationService,
         IShapeUIService uiService,
         IUpdateShapeService updateShapeService,
-        IDeleteShapeService deleteShapeService)
+        IDeleteShapeService deleteShapeService,
+        IShapeDisplay shapeDisplay)
     {
         _operationService = operationService;
         _uiService = uiService;
         _updateShapeService = updateShapeService;
         _deleteShapeService = deleteShapeService;
+        _shapeDisplay = shapeDisplay;
     }
 
     public void Start()
@@ -86,7 +90,7 @@ public class ShapeController
     private void ShowShapes()
     {
         var shapes = _operationService.GetShapeHistory();
-        _uiService.ShowShapes(shapes);
+        _shapeDisplay.ShowShapes(shapes);
         _uiService.WaitForKeyPress();
     }
     private void UpdateShape()
