@@ -59,7 +59,7 @@ public static class ContainerConfig
 
         // Register Shape Services
         builder.RegisterType<ShapeRepository>().AsSelf();
-        builder.RegisterType<ShapeOperationService>().As<IShapeOperationService>();
+        builder.RegisterType<SaveShapeService>().As<ISaveShapeService>();
         builder.RegisterType<UpdateShapeService>().As<IUpdateShapeService>();
         builder.RegisterType<DeleteShapeService>().As<IDeleteShapeService>();
         builder.RegisterType<ShapeDisplay>().As<IShapeDisplay>();

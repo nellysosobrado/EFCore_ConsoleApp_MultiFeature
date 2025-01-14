@@ -7,13 +7,13 @@ using ClassLibrary.Enums;
 
 namespace ShapeApp.Services;
 
-public class ShapeOperationService : IShapeOperationService
+public class SaveShapeService : ISaveShapeService
 {
     private readonly ShapeRepository _shapeRepository;
     private readonly ShapeValidator _validator;
     private readonly IShapeFactory _shapeFactory;
 
-    public ShapeOperationService(
+    public SaveShapeService(
         ShapeRepository shapeRepository,
         ShapeValidator validator,
         IShapeFactory shapeFactory)
@@ -37,7 +37,6 @@ public class ShapeOperationService : IShapeOperationService
             CalculationDate = DateTime.Now
         };
 
-        // Sätt specifika parametrar baserat på formtyp
         switch (shapeType)
         {
             case ShapeType.Rectangle:
@@ -61,7 +60,6 @@ public class ShapeOperationService : IShapeOperationService
                 break;
         }
 
-        // Beräkna area och omkrets
         shapeModel.Area = shape.CalculateArea();
         shapeModel.Perimeter = shape.CalculatePerimeter();
 

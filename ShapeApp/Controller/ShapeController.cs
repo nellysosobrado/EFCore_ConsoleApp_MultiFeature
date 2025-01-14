@@ -1,27 +1,22 @@
-﻿using ClassLibrary.Models;
-using Spectre.Console;
-using ClassLibrary.Enums;
+﻿using Spectre.Console;
 using ShapeApp.Enums;
 using ClassLibrary.Extensions;
 using ShapeApp.Services;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ShapeApp.Interfaces;
 
 namespace ShapeApp.Controllers;
 
 public class ShapeController
 {
-    private readonly IShapeOperationService _operationService;
+    private readonly ISaveShapeService _operationService;
     private readonly IUpdateShapeService _updateShapeService;
     private readonly IDeleteShapeService _deleteShapeService;
     private readonly IShapeDisplay _shapeDisplay;
     private readonly IErrorService _errorService;
     private readonly IInputService _inputService;
 
-
-
     public ShapeController(
-        IShapeOperationService operationService,
+        ISaveShapeService operationService,
         IUpdateShapeService updateShapeService,
         IDeleteShapeService deleteShapeService,
         IShapeDisplay shapeDisplay,

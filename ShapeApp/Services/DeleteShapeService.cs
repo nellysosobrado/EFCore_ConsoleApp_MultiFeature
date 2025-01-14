@@ -7,12 +7,12 @@ namespace ShapeApp.Services;
 
 public class DeleteShapeService : IDeleteShapeService
 {
-    private readonly IShapeOperationService _operationService;
+    private readonly ISaveShapeService _operationService;
     private readonly ShapeRepository _shapeRepository;
     private readonly IShapeDisplay _shapeDisplay;
     private readonly IErrorService _errorService;
 
-    public DeleteShapeService(IShapeOperationService operationService,
+    public DeleteShapeService(ISaveShapeService operationService,
         ShapeRepository shapeRepository,
         IShapeDisplay shapeDisplay,
         IErrorService errorService)

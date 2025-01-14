@@ -3,8 +3,7 @@ using ClassLibrary.Enums;
 
 namespace ShapeApp.Services;
 
-public interface IShapeOperationService
+public interface ISaveShapeService
 {
     void SaveShape(ShapeType shapeType, Dictionary<string, double> parameters);
-    //Dictionary<string, double> GetRequiredParameters(ShapeType shapeType);
 }
