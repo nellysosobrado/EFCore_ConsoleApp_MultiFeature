@@ -95,6 +95,7 @@ public class CalculatorController
     }
     private void HandleAfterUpdateChoice()
     {
+        Console.Clear();
         var choice = AnsiConsole.Prompt(
             new SelectionPrompt<CalculatorMenuOptions>()
                 .Title("[green]What would you like to do next?[/]")
@@ -106,12 +107,20 @@ public class CalculatorController
             case CalculatorMenuOptions.Calculate:
                 UpdateCalculation();
                 break;
-            
+            case CalculatorMenuOptions.History:
+                CalculationHistory();
+                break;
+            case CalculatorMenuOptions.UpdateCalculation:
+                UpdateCalculation();
+                break;
+            case CalculatorMenuOptions.DeleteCalculation:
+                DeleteCalculation();
+                break;
             case CalculatorMenuOptions.MainMenu:
                 return;
             default:
                 _uiService.ShowError("Invalid choice. Returning to calculator menu...");
-                return;
+                break;
         }
     }
 
