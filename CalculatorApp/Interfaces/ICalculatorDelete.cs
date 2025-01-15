@@ -10,5 +10,6 @@ namespace CalculatorApp.Interfaces
     {
         int GetCalculationIdForDelete();
         bool ConfirmDeletion();
+        void DeleteCalculation(int id);
     }
 }

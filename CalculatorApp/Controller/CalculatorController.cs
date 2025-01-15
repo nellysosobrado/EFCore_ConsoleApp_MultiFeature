@@ -22,6 +22,7 @@ public class CalculatorController
     private readonly SquareRootCalculator _squareRootCalculator;
     private readonly IDisplayCalculator _displayCalculator;
     private readonly ICalculatorDelete _calculatorDelete;
+    private readonly ICalculatorUpdate _calculatorUpdate;
 
 
 
@@ -34,7 +35,8 @@ public class CalculatorController
         ICalculationInputService calculationInputService,
         SquareRootCalculator squareRootCalculator,
         IDisplayCalculator displayCalculator,
-        ICalculatorDelete calculatorDelete
+        ICalculatorDelete calculatorDelete,
+        ICalculatorUpdate calculatorUpdate
 
 
         )
@@ -47,6 +49,7 @@ public class CalculatorController
         _squareRootCalculator = squareRootCalculator;
         _displayCalculator = displayCalculator;
         _calculatorDelete = calculatorDelete;
+        _calculatorUpdate = calculatorUpdate;
     }
 
     public void Start()
@@ -108,7 +111,7 @@ public class CalculatorController
             }
 
             var result = _calculationProcessor.Calculate(firstNumber, secondNumber, operatorInput).result;
-            _calculationProcessor.UpdateCalculation(id, firstNumber, secondNumber, calculatorOperator, result);
+            _calculatorUpdate.UpdateCalculation(id, firstNumber, secondNumber, calculatorOperator, result);
 
             _uiService.ShowResultSimple(firstNumber, secondNumber, operatorInput, result);
             _uiService.ShowMessage("\n[green]Calculation updated successfully![/]");
@@ -150,7 +153,7 @@ public class CalculatorController
                 {
                     try
                     {
-                        _operationService.DeleteCalculation(id);
+                        _calculatorDelete.DeleteCalculation(id);
                         Console.Clear();
                         _uiService.ShowMessage("Calculation deleted successfully");
                     }

@@ -50,8 +50,5 @@ public class CalculationProcessor
         return _operationService.TryParseOperator(input, out calculatorOperator);
     }
 
-    public void UpdateCalculation(int id, double operand1, double operand2, CalculatorOperator calculatorOperator, double result)
-    {
-        _operationService.UpdateCalculation(id, operand1, operand2, calculatorOperator);
-    }
+   
 }
