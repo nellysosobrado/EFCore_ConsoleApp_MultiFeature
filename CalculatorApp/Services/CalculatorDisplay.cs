@@ -176,7 +176,6 @@ public class CalculatorDisplay : ICalculatorDisplay
 
             if (totalPages <= 1 && !_showDeleteButton)
             {
-                WaitForKeyPress("\nPress any key to return to menu...");
                 break;
             }
 
