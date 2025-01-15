@@ -1,6 +1,6 @@
 ﻿using CalculatorApp.Interfaces;
 using CalculatorApp.Validators;
-using ClassLibrary.Enums.CalculatorAppEnums;
+using ClassLibrary.Enums.CalculatorAppEnums.CalculatorEnums;
 using ClassLibrary.Repositories.CalculatorAppRepository;
 using FluentValidation;
 using Spectre.Console;

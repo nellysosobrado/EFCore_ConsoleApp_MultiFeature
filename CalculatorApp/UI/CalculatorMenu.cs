@@ -1,7 +1,6 @@
 ﻿using Spectre.Console;
-using CalculatorApp.Enums;
 using ClassLibrary.Extensions;
-using ClassLibrary.Enums.CalculatorAppEnums;
+using ClassLibrary.Enums.CalculatorAppEnums.MenuEnums;
 
 namespace CalculatorApp.UI;
 

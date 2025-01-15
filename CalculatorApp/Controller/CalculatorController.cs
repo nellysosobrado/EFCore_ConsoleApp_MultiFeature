@@ -2,9 +2,8 @@
 using FluentValidation;
 using Spectre.Console;
 using CalculatorApp.UI;
-using CalculatorApp.Enums;
 using CalculatorApp.Interfaces;
-using ClassLibrary.Enums.CalculatorAppEnums;
+using ClassLibrary.Enums.CalculatorAppEnums.MenuEnums;
 
 
 namespace CalculatorApp.Controller;

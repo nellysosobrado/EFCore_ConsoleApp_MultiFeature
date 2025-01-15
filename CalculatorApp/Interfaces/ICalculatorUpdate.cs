@@ -1,4 +1,4 @@
-﻿using ClassLibrary.Enums.CalculatorAppEnums;
+﻿using ClassLibrary.Enums.CalculatorAppEnums.CalculatorEnums;
 
 public interface ICalculatorUpdate
 {

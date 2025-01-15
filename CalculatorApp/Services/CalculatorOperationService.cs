@@ -1,8 +1,8 @@
 ﻿using CalculatorApp.Validators;
 using FluentValidation;
-using ClassLibrary.Enums.CalculatorAppEnums;
 using ClassLibrary.Repositories.CalculatorAppRepository;
 using CalculatorApp.Interfaces;
+using ClassLibrary.Enums.CalculatorAppEnums.CalculatorEnums;
 
 namespace CalculatorApp.Services;
 
