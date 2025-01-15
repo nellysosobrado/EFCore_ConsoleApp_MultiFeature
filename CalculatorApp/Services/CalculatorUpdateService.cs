@@ -20,13 +20,13 @@ namespace CalculatorApp.Services
         private readonly CalculatorRepository _calculatorRepository;    
         private readonly CalculatorValidator _validator;    
         private readonly CalculatorOperationService _calculatorOperationService;
-        private readonly ICalculatorUIService _calculatorUIService;
+        private readonly ICalculatorDisplay _calculatorUIService;
         private bool _operatorChanged = false;
         private string _newOperator = string.Empty;
 
 
         public CalculatorUpdateService(CalculatorRepository calculatorRepository, CalculatorValidator validator, CalculatorOperationService calculatorOperationService,
-            ICalculatorUIService calculatorUIService)
+            ICalculatorDisplay calculatorUIService)
         {
             _calculatorRepository = calculatorRepository;
             _validator = validator;

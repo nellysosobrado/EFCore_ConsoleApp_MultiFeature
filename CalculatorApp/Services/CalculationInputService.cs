@@ -8,12 +8,12 @@ namespace CalculatorApp.Services;
 
 public class CalculationInputService : ICalculationInputService
 {
-    private readonly ICalculatorUIService _uiService;
+    private readonly ICalculatorDisplay _uiService;
     private readonly CalculatorTable _table;
     private readonly CalculatorOperationService _operationService;
     private readonly CalculatorRepository _calculatorRepository;
 
-    public CalculationInputService(ICalculatorUIService uiService, 
+    public CalculationInputService(ICalculatorDisplay uiService, 
         CalculatorTable calculatorTable,
         CalculatorOperationService operationService,
         CalculatorRepository calculatorRepository)

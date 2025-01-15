@@ -11,7 +11,7 @@ using CalculatorApp.UI;
 
 namespace CalculatorApp.Services;
 
-public class SpectreCalculatorUI : ICalculatorUIService
+public class CalculatorDisplay : ICalculatorDisplay
 {
     private readonly CalculatorTable _table;
     private bool _showDeleteButton;
@@ -21,7 +21,7 @@ public class SpectreCalculatorUI : ICalculatorUIService
 
     private readonly InputValidator _inputValidator;
 
-    public SpectreCalculatorUI(InputValidator inputValidator, CalculatorMenu calculatorMenu, CalculatorTable calculatorTable)
+    public CalculatorDisplay(InputValidator inputValidator, CalculatorMenu calculatorMenu, CalculatorTable calculatorTable)
     {
         _inputValidator = inputValidator;
         _table = calculatorTable;

@@ -5,7 +5,7 @@ using ClassLibrary.Enums.CalculatorAppEnums;
 
 namespace CalculatorApp.Services;
 
-public interface ICalculatorUIService
+public interface ICalculatorDisplay
 {
 
     double GetNumberInput(string prompt);

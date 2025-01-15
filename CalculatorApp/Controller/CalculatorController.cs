@@ -14,7 +14,7 @@ namespace CalculatorApp.Controller;
 
 public class CalculatorController
 {
-    private readonly ICalculatorUIService _uiService;
+    private readonly ICalculatorDisplay _uiService;
     private readonly CalculatorMenu _calculatorMenu;
     private readonly CalculationProcessor _calculationProcessor;
     private readonly ICalculationInputService _inputService;
@@ -26,7 +26,7 @@ public class CalculatorController
 
 
     public CalculatorController(
-        ICalculatorUIService uiService,
+        ICalculatorDisplay uiService,
         ICalculatorOperationService operationService,
         CalculatorMenu calculatorMenu,
         CalculationProcessor calculationProcessor,
