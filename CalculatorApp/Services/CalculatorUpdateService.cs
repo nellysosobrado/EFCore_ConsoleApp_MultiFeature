@@ -1,6 +1,7 @@
 ﻿using CalculatorApp.Interfaces;
 using CalculatorApp.Validators;
 using ClassLibrary.Enums.CalculatorAppEnums;
+using ClassLibrary.Extensions;
 using ClassLibrary.Repositories.CalculatorAppRepository;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ using System.Threading.Tasks;
 using FluentValidation.Results;
 using FluentValidation;
 using Spectre.Console;
+using CalculatorApp.UI;
+using CalculatorApp.Enums;
 
 
 
@@ -21,17 +24,22 @@ namespace CalculatorApp.Services
         private readonly CalculatorValidator _validator;    
         private readonly CalculatorOperationService _calculatorOperationService;
         private readonly ICalculatorDisplay _calculatorDisplay;
+        private readonly ICalculatorParser _calculatorParser;
         private bool _operatorChanged = false;
         private string _newOperator = string.Empty;
 
 
-        public CalculatorUpdateService(CalculatorRepository calculatorRepository, CalculatorValidator validator, CalculatorOperationService calculatorOperationService,
+        public CalculatorUpdateService(CalculatorRepository calculatorRepository, 
+            CalculatorValidator validator, 
+            CalculatorOperationService calculatorOperationService,
+            ICalculatorParser calculatorParser,
             ICalculatorDisplay calculatorUIService)
         {
             _calculatorRepository = calculatorRepository;
             _validator = validator;
             _calculatorOperationService = calculatorOperationService;
-            _calculatorDisplay = calculatorUIService; 
+            _calculatorDisplay = calculatorUIService;
+            _calculatorParser = calculatorParser;
         }
         public Dictionary<string, double> GetSelectedInputsToUpdate(Dictionary<string, double> currentInputs)
         {
@@ -135,6 +143,53 @@ namespace CalculatorApp.Services
         {
             UpdateCalculation(id, operand1, operand2, calculatorOperator);
         }
+        //
+        public Calculator GetUpdatedCalculationValues(int id)
+        {
+            var calculation = _calculatorRepository.GetCalculationById(id);
+
+            var currentParameters = new Dictionary<string, double>
+    {
+        { "First Number", calculation.FirstNumber },
+        { "Second Number", calculation.SecondNumber }
+    };
+
+            var (updatedParameters, newOperator) = GetSelectedParametersToUpdate(currentParameters);
+            if (updatedParameters == null) return null;
+
+            calculation.FirstNumber = updatedParameters.TryGetValue("First Number", out var first) ? first : calculation.FirstNumber;
+            calculation.SecondNumber = updatedParameters.TryGetValue("Second Number", out var second) ? second : calculation.SecondNumber;
+
+            if (!string.IsNullOrEmpty(newOperator))
+            {
+                if (!_calculatorParser.TryParseOperator(newOperator, out var calculatorOperator))
+                {
+                    throw new InvalidOperationException("Invalid operator");
+                }
+                calculation.Operator = calculatorOperator;
+            }
+
+            return calculation;
+        }
+
+        public void ProcessAndSaveCalculation(Calculator calc)
+        {
+            var operatorSymbol = _calculatorDisplay.GetOperatorSymbol(calc.Operator);
+            var result = _calculatorOperationService.Calculate(calc.FirstNumber, calc.SecondNumber, calc.Operator); 
+            calc.Result = result;
+            calc.CalculationDate = DateTime.Now;
+            UpdateCalculation(calc.Id, calc.FirstNumber, calc.SecondNumber, calc.Operator, calc.Result);
+        }
+
+
+        public void DisplayResults(Calculator calc)
+        {
+            var operatorSymbol = _calculatorDisplay.GetOperatorSymbol(calc.Operator);
+            _calculatorDisplay.ShowResultSimple(calc.FirstNumber, calc.SecondNumber, operatorSymbol, calc.Result);
+            _calculatorDisplay.ShowMessage("\n[green]Calculation updated successfully![/]");
+        }
+       
+
 
     }
 }

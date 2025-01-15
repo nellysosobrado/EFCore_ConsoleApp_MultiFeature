@@ -81,59 +81,63 @@ public class CalculatorController
         try
         {
             var id = _inputService.GetCalculationIdForUpdate();
-            var calculation = _inputService.GetCalculationById(id);
+            var updatedCalc = _calculatorUpdate.GetUpdatedCalculationValues(id);
+            if (updatedCalc == null) return;
 
-            var currentParameters = new Dictionary<string, double>
-            {
-                { "First Number", calculation.FirstNumber },
-                { "Second Number", calculation.SecondNumber }
-            };
-
-            var (updatedParameters, newOperator) = _calculatorUpdate.GetSelectedParametersToUpdate(currentParameters);
-
-            if (updatedParameters == null)
-            {
-                return;
-            }
-
-            var firstNumber = updatedParameters.TryGetValue("First Number", out var first) ? first : calculation.FirstNumber;
-            var secondNumber = updatedParameters.TryGetValue("Second Number", out var second) ? second : calculation.SecondNumber;
-
-            var operatorInput = !string.IsNullOrEmpty(newOperator) ? newOperator : GetOperatorSymbol(calculation.Operator);
-            if (!_calculationProcessor.TryParseOperator(operatorInput, out var calculatorOperator))
-            {
-                throw new InvalidOperationException("Invalid operator");
-            }
-
-            var result = _calculationProcessor.Calculate(firstNumber, secondNumber, operatorInput).result;
-            _calculatorUpdate.UpdateCalculation(id, firstNumber, secondNumber, calculatorOperator, result);
-
-            _uiService.ShowResultSimple(firstNumber, secondNumber, operatorInput, result);
-            _uiService.ShowMessage("\n[green]Calculation updated successfully![/]");
-
-            var choice = _calculatorMenu.ShowMenuAfterUpdate();
-            if (choice == "Update Calculation")
-                UpdateCalculation();
+            _calculatorUpdate.ProcessAndSaveCalculation(updatedCalc);
+            _calculatorUpdate.DisplayResults(updatedCalc);
+            HandleAfterUpdateChoice();
         }
         catch (Exception ex)
         {
-            _uiService.ShowError(ex.Message);
-            _uiService.WaitForKeyPress();
+            HandleError(ex);
         }
     }
-    private string GetOperatorSymbol(CalculatorOperator op)
+    private void HandleAfterUpdateChoice()
     {
-        return op switch
+        var choice = AnsiConsole.Prompt(
+            new SelectionPrompt<CalculatorMenuOptions>()
+                .Title("[green]What would you like to do next?[/]")
+                .UseConverter(opt => opt.GetDescription())
+                .AddChoices(Enum.GetValues<CalculatorMenuOptions>()));
+
+        switch (choice)
         {
-            CalculatorOperator.Add => "+",
-            CalculatorOperator.Subtract => "-",
-            CalculatorOperator.Multiply => "*",
-            CalculatorOperator.Divide => "/",
-            CalculatorOperator.Modulus => "%",
-            CalculatorOperator.SquareRoot => "√",
-            _ => throw new InvalidOperationException("Invalid operator")
-        };
+            case CalculatorMenuOptions.Calculate:
+                UpdateCalculation();
+                break;
+            
+            case CalculatorMenuOptions.MainMenu:
+                return;
+            default:
+                _uiService.ShowError("Invalid choice. Returning to calculator menu...");
+                return;
+        }
     }
+
+    private void HandleError(Exception ex)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine($"An error occurred: {ex.Message}");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine("\nPress any key to continue...");
+        Console.ReadKey();
+        _calculatorMenu.ShowMainMenu();
+    }
+
+    //private string GetOperatorSymbol(CalculatorOperator op)
+    //{
+    //    return op switch
+    //    {
+    //        CalculatorOperator.Add => "+",
+    //        CalculatorOperator.Subtract => "-",
+    //        CalculatorOperator.Multiply => "*",
+    //        CalculatorOperator.Divide => "/",
+    //        CalculatorOperator.Modulus => "%",
+    //        CalculatorOperator.SquareRoot => "√",
+    //        _ => throw new InvalidOperationException("Invalid operator")
+    //    };
+    //}
     private void DeleteCalculation()
     {
         while (true)
