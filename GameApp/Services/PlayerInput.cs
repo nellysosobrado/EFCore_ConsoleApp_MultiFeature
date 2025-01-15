@@ -1,7 +1,7 @@
 ﻿using Spectre.Console;
 using ClassLibrary.Models;
 using ClassLibrary.Enums;
-using ClassLibrary.Pagination;
+using ClassLibrary.UITool;
 using GameApp.Interfaces;
 
 namespace GameApp.Services;

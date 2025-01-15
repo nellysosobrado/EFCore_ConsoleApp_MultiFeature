@@ -1,6 +1,7 @@
 ﻿using ClassLibrary.Models;
 using ClassLibrary.Enums;
 using Microsoft.EntityFrameworkCore;
+using ClassLibrary.Interface;
 
 namespace ClassLibrary.Repositories.RpsGameRepository;
 

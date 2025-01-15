@@ -1,7 +1,7 @@
 ﻿using ClassLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ClassLibrary;
+namespace ClassLibrary.Interface;
 
 public interface IApplicationDbContext
 {

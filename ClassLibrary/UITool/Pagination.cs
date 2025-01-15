@@ -1,6 +1,6 @@
 ﻿using Spectre.Console;
 
-namespace ClassLibrary.Pagination;
+namespace ClassLibrary.UITool;
 
 
 public class Pagination<T>

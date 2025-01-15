@@ -1,4 +1,5 @@
-﻿using ClassLibrary.Models;
+﻿using ClassLibrary.Interface;
+using ClassLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClassLibrary.Repositories.CalculatorAppRepository;
