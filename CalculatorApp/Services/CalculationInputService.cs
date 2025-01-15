@@ -63,6 +63,7 @@ public class CalculationInputService : ICalculationInputService
 {
     while (true)
     {
+            Console.Clear();
         var id = AnsiConsole.Prompt(
             new TextPrompt<int>("[green]Enter the ID of the calculation to update:[/]")
                 .ValidationErrorMessage("[red]Please enter a valid ID[/]"));
@@ -72,13 +73,15 @@ public class CalculationInputService : ICalculationInputService
         if (calculation == null)
         {
             _displayCalculator.ShowError("No calculation found with that ID.");
+                _displayCalculator.WaitForKeyPress();
             continue;
         }
 
         if (calculation.IsDeleted)
         {
             _displayCalculator.ShowError("Cannot update a deleted calculation.");
-            continue;
+                _displayCalculator.WaitForKeyPress();
+                continue;
         }
 
         return id;

@@ -27,6 +27,6 @@ public interface ICalculatorDisplay
     void ShowResultSimple(double operand1, double operand2, string operatorSymbol, double result);
     void CalculationHistory(IEnumerable<Calculator> calculations, bool showDeleteButton = false);
     void DisplayCalculationsPage(List<Calculator> calculations, int page);
-
+    void HandleError(Exception ex);
 
 }

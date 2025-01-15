@@ -14,6 +14,7 @@ namespace CalculatorApp.Services;
 public class CalculatorDisplay : ICalculatorDisplay
 {
     private readonly CalculatorTable _table;
+    private readonly CalculatorMenu _calculatorMenu;
     private bool _showDeleteButton;
     private bool _operatorChanged = false;
     private string _newOperator = string.Empty;
@@ -21,10 +22,22 @@ public class CalculatorDisplay : ICalculatorDisplay
 
     private readonly InputValidator _inputValidator;
 
-    public CalculatorDisplay(InputValidator inputValidator, CalculatorMenu calculatorMenu, CalculatorTable calculatorTable)
+    public CalculatorDisplay(InputValidator inputValidator,
+        CalculatorMenu calculatorMenu,
+        CalculatorTable calculatorTable)
     {
         _inputValidator = inputValidator;
         _table = calculatorTable;
+        _calculatorMenu = calculatorMenu;
+    }
+    public void HandleError(Exception ex)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine($"An error occurred: {ex.Message}");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine("\nPress any key to continue...");
+        Console.ReadKey();
+        _calculatorMenu.ShowMainMenu();
     }
     public void DisplayResult(double result)
     {

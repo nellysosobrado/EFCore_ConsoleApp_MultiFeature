@@ -14,7 +14,7 @@ namespace CalculatorApp.Controller;
 
 public class CalculatorController
 {
-    private readonly ICalculatorDisplay _uiService;
+    private readonly ICalculatorDisplay _calculatorDisplay;
     private readonly CalculatorMenu _calculatorMenu;
     private readonly CalculationProcessor _calculationProcessor;
     private readonly ICalculationInputService _inputService;
@@ -38,7 +38,7 @@ public class CalculatorController
 
         )
     {
-        _uiService = uiService;
+        _calculatorDisplay = uiService;
         _calculatorMenu = calculatorMenu;
         _calculationProcessor = calculationProcessor;
         _inputService = calculationInputService;
@@ -80,6 +80,7 @@ public class CalculatorController
     {
         try
         {
+            Console.Clear();
             var id = _inputService.GetCalculationIdForUpdate();
             var updatedCalc = _calculatorUpdate.GetUpdatedCalculationValues(id);
             if (updatedCalc == null) return;
@@ -90,18 +91,10 @@ public class CalculatorController
         }
         catch (Exception ex)
         {
-            HandleError(ex);
+            _calculatorDisplay.HandleError(ex);
         }
     }
-    private void HandleError(Exception ex)
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine($"An error occurred: {ex.Message}");
-        Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine("\nPress any key to continue...");
-        Console.ReadKey();
-        _calculatorMenu.ShowMainMenu();
-    }
+    
 
   
     private void DeleteCalculation()
@@ -111,7 +104,7 @@ public class CalculatorController
             try
             {
                 var calculations = _inputService.GetCalculationHistory();
-                _uiService.CalculationHistory(calculations, showDeleteButton: true);
+                _calculatorDisplay.CalculationHistory(calculations, showDeleteButton: true);
 
                 var id = _calculatorDelete.GetCalculationIdForDelete();
                 if (_calculatorDelete.ConfirmDeletion())
@@ -120,13 +113,13 @@ public class CalculatorController
                     {
                         _calculatorDelete.DeleteCalculation(id);
                         Console.Clear();
-                        _uiService.ShowMessage("Calculation deleted successfully");
+                        _calculatorDisplay.ShowMessage("Calculation deleted successfully");
                     }
                     catch (InvalidOperationException ex)
                     {
                         Console.Clear();
-                        _uiService.ShowError(ex.Message);
-                        _uiService.WaitForKeyPress();
+                        _calculatorDisplay.ShowError(ex.Message);
+                        _calculatorDisplay.WaitForKeyPress();
                         continue;
                     }
                 }
@@ -142,8 +135,8 @@ public class CalculatorController
             }
             catch (Exception ex)
             {
-                _uiService.ShowError(ex.Message);
-                _uiService.WaitForKeyPress();
+                _calculatorDisplay.ShowError(ex.Message);
+                _calculatorDisplay.WaitForKeyPress();
             }
         }
     }
@@ -153,7 +146,7 @@ public class CalculatorController
         {
             try
             {
-                _uiService.ClearTable();
+                _calculatorDisplay.ClearTable();
                 var (operand1, operand2, operatorInput) = _inputService.GetUserInput();
 
                 try
@@ -163,13 +156,13 @@ public class CalculatorController
                     if (isSquareRoot)
                     {
                         var (firstRoot, secondRoot) = _squareRootCalculator.CalculateRoots(operand1, operand2);
-                        _uiService.DisplaySquareRootResults(firstRoot, secondRoot);
-                        _uiService.WaitForKeyPress();
+                        _calculatorDisplay.DisplaySquareRootResults(firstRoot, secondRoot);
+                        _calculatorDisplay.WaitForKeyPress();
                     }
                     else
                     {
-                            _uiService.DisplayResult(result);
-                        _uiService.WaitForKeyPress();
+                            _calculatorDisplay.DisplayResult(result);
+                        _calculatorDisplay.WaitForKeyPress();
                     }
 
                     _calculationProcessor.SaveCalculation(operand1, operand2, operatorInput, result);
@@ -178,26 +171,26 @@ public class CalculatorController
                     var choice = _calculatorMenu.ShowMenuAfterCalc();
                     if (choice == "Calculator Menu") return;
 
-                    _uiService.ClearTable();
+                    _calculatorDisplay.ClearTable();
                 }
                 catch (DivideByZeroException)
                 {
-                    _uiService.ShowError("Cannot divide by zero");
-                    _uiService.WaitForKeyPress();
-                    _uiService.ClearTable();
+                    _calculatorDisplay.ShowError("Cannot divide by zero");
+                    _calculatorDisplay.WaitForKeyPress();
+                    _calculatorDisplay.ClearTable();
                 }
             }
             catch (ValidationException ex)
             {
-                _uiService.ShowError(ex.Message);
-                _uiService.WaitForKeyPress();
-                _uiService.ClearTable();
+                _calculatorDisplay.ShowError(ex.Message);
+                _calculatorDisplay.WaitForKeyPress();
+                _calculatorDisplay.ClearTable();
             }
             catch (InvalidOperationException ex)
             {
-                _uiService.ShowError(ex.Message);
-                _uiService.WaitForKeyPress();
-                _uiService.ClearTable();
+                _calculatorDisplay.ShowError(ex.Message);
+                _calculatorDisplay.WaitForKeyPress();
+                _calculatorDisplay.ClearTable();
             }
         }
     }
@@ -205,8 +198,8 @@ public class CalculatorController
     private void CalculationHistory()
     {
         var calculations = _inputService.GetCalculationHistory();
-        _uiService.CalculationHistory(calculations);
+        _calculatorDisplay.CalculationHistory(calculations);
 
-        _uiService.WaitForKeyPress();
+        _calculatorDisplay.WaitForKeyPress();
     }
 }
