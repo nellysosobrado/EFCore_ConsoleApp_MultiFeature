@@ -89,7 +89,7 @@ public class ShapeController
     private void ShapeHistory()
     {
         var shapes = _shapeDisplay.GetShapeHistory();
-        _shapeDisplay.ShowShapes(shapes);
+        _shapeDisplay.ShapeHistoryDisplay(shapes);
         _errorService.WaitForKeyPress();
     }
     private void UpdateShape()

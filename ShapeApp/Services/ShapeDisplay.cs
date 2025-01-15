@@ -86,11 +86,9 @@ namespace ShapeApp.Services
 
             return string.Join("\n", parameters);
         }
-
-        public void ShowShapes(IEnumerable<Shape> shapes)
+        public void ShapeHistoryDisplay(IEnumerable<Shape> shapes)
         {
             var pagination = new Pagination<Shape>(shapes, pageSize: 5);
-            var showDeleted = false;
 
             while (true)
             {
@@ -105,22 +103,19 @@ namespace ShapeApp.Services
                     .AddColumn(new TableColumn("[red]Perimeter[/]").Centered())
                     .AddColumn(new TableColumn("[grey]Status[/]").Centered());
 
-                var filteredShapes = showDeleted ? shapes : shapes.Where(s => !s.IsDeleted);
-                pagination = new Pagination<Shape>(filteredShapes, pageSize: 5);
-
                 foreach (var shape in pagination.GetCurrentPage())
                 {
                     var parameters = GetParametersString(shape);
                     var statusColor = shape.IsDeleted ? "red" : "green";
-                    var status = shape.IsDeleted ? "Deleted" : "Not deleted";
+                    var status = shape.IsDeleted ? "Deleted" : "Active";
 
                     table.AddRow(
-                        $"[yellow]{shape.Id}[/]",
-                        $"[green]{shape.CalculationDate:yyyy-MM-dd HH:mm:ss}[/]",
-                        $"[blue]{shape.ShapeType}[/]",
-                        $"[cyan]{parameters}[/]",
-                        $"[magenta]{shape.Area:F2}[/]",
-                        $"[red]{shape.Perimeter:F2}[/]",
+                        $"[white]{shape.Id}[/]",
+                        $"[white]{shape.CalculationDate:yyyy-MM-dd HH:mm:ss}[/]",
+                        $"[white]{shape.ShapeType}[/]",
+                        $"[white]{parameters}[/]",
+                        $"[white]{shape.Area:F2}[/]",
+                        $"[white]{shape.Perimeter:F2}[/]",
                         $"[{statusColor}]{status}[/]"
                     );
                 }
@@ -129,7 +124,6 @@ namespace ShapeApp.Services
 
                 var choices = new List<string>
         {
-            showDeleted ? "Show Active Only" : "Show All (Including Deleted)",
             "Next Page",
             "Previous Page",
             "Back to Menu"
@@ -142,12 +136,6 @@ namespace ShapeApp.Services
 
                 switch (choice)
                 {
-                    case "Show All (Including Deleted)":
-                        showDeleted = true;
-                        break;
-                    case "Show Active Only":
-                        showDeleted = false;
-                        break;
                     case "Next Page":
                         pagination.NextPage();
                         break;
@@ -159,6 +147,7 @@ namespace ShapeApp.Services
                 }
             }
         }
+       
         public IEnumerable<Shape> GetShapeHistory()
         {
             return _shapeRepository.GetAllShapes()

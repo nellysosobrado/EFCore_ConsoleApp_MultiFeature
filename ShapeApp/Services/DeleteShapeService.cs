@@ -32,7 +32,7 @@ public class DeleteShapeService : IDeleteShapeService
 
     public void ShowShapes(IEnumerable<Shape> shapes)
     {
-        _shapeDisplay.ShowShapes(shapes);
+        _shapeDisplay.ShapeHistoryDisplay(shapes);
     }
     public int GetShapeIdForDelete()
     {
