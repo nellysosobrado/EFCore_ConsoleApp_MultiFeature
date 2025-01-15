@@ -222,6 +222,9 @@ public class CalculatorDisplay : ICalculatorDisplay
     {
         while (true)
         {
+            Console.Clear();
+            _table.Display();
+
             var input = AnsiConsole.Ask<string>($"Enter the [green]{prompt}[/] number:");
 
             var validationResult = _inputValidator.Validate(input);
@@ -231,6 +234,7 @@ public class CalculatorDisplay : ICalculatorDisplay
             }
 
             AnsiConsole.MarkupLine($"[red]{validationResult.Errors[0].ErrorMessage}[/]");
+            WaitForKeyPress();
         }
     }
 
