@@ -3,11 +3,7 @@ using ClassLibrary.Models;
 using ClassLibrary.Repositories.ShapeAppRepository;
 using ShapeApp.Interfaces;
 using Spectre.Console;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ShapeApp.Services
 {

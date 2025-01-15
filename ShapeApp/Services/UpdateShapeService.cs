@@ -10,7 +10,6 @@ namespace ShapeApp.Services;
 
 public class UpdateShapeService : IUpdateShapeService
 {
-    private readonly ISaveShapeService _operationService;
     private readonly IShapeDisplay _shapeDisplay;
     private readonly IInputService _inputService;
     private readonly ShapeValidator _shapeValidator;
@@ -18,7 +17,6 @@ public class UpdateShapeService : IUpdateShapeService
     private readonly ShapeFactory _shapeFactory;
 
     public UpdateShapeService(
-        ISaveShapeService operationService,
         IShapeDisplay shapeDisplay,
         IInputService inputService,
         ShapeValidator shapeValidator,
@@ -26,7 +24,6 @@ public class UpdateShapeService : IUpdateShapeService
         ShapeFactory shapeFactory
        )
     {
-        _operationService = operationService;
         _shapeDisplay = shapeDisplay;
         _inputService = inputService;
         _shapeValidator = shapeValidator;

@@ -4,11 +4,7 @@ using ClassLibrary.Pagination;
 using ClassLibrary.Repositories.ShapeAppRepository;
 using ShapeApp.Interfaces;
 using Spectre.Console;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ShapeApp.Services
 {
@@ -54,7 +50,6 @@ namespace ShapeApp.Services
                     break;
             }
 
-            // Lägg till area och omkrets
             table.AddRow("[magenta]Area[/]", $"[white]{shape.Area:F2}[/]");
             table.AddRow("[red]Perimeter[/]", $"[white]{shape.Perimeter:F2}[/]");
 
