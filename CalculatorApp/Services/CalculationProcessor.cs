@@ -1,6 +1,5 @@
-﻿
-using ClassLibrary.Enums.CalculatorAppEnums;
-using CalculatorApp.Interfaces;
+﻿using CalculatorApp.Interfaces;
+using ClassLibrary.Enums.CalculatorAppEnums.CalculatorEnums;
 
 namespace CalculatorApp.Services;
 

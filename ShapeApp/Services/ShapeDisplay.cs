@@ -1,6 +1,6 @@
 ﻿using ClassLibrary.Enums;
 using ClassLibrary.Models;
-using ClassLibrary.Pagination;
+using ClassLibrary.UITool;
 using ClassLibrary.Repositories.ShapeAppRepository;
 using ShapeApp.Interfaces;
 using Spectre.Console;

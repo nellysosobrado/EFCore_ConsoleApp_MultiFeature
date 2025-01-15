@@ -1,8 +1,8 @@
 ﻿using Spectre.Console;
 using System.Globalization;
-using ClassLibrary.Enums.CalculatorAppEnums;
 
 using CalculatorApp.UI;
+using ClassLibrary.Enums.CalculatorAppEnums.CalculatorEnums;
 
 namespace CalculatorApp.Services;
 
@@ -176,7 +176,6 @@ public class CalculatorDisplay : ICalculatorDisplay
 
             if (totalPages <= 1 && !_showDeleteButton)
             {
-                WaitForKeyPress("\nPress any key to return to menu...");
                 break;
             }
 
@@ -222,9 +221,7 @@ public class CalculatorDisplay : ICalculatorDisplay
     {
         while (true)
         {
-            Console.Clear();
             _table.Display();
-
             var input = AnsiConsole.Ask<string>($"Enter the [green]{prompt}[/] number:");
 
             var validationResult = _inputValidator.Validate(input);
@@ -235,6 +232,8 @@ public class CalculatorDisplay : ICalculatorDisplay
 
             AnsiConsole.MarkupLine($"[red]{validationResult.Errors[0].ErrorMessage}[/]");
             WaitForKeyPress();
+
+           Console.Clear();
         }
     }
 
@@ -243,6 +242,7 @@ public class CalculatorDisplay : ICalculatorDisplay
         return AnsiConsole.Prompt(
             new SelectionPrompt<string>()
                 .Title("Choose an [green]operator[/]")
+                .WrapAround(true)
                 .PageSize(6)
                 .AddChoices(new[] { "+", "-", "*", "/", "%", "√" }));
     }
@@ -324,7 +324,7 @@ public class CalculatorDisplay : ICalculatorDisplay
 
     public void WaitForKeyPress(string message = "\nPress any key to continue...")
     {
-        AnsiConsole.MarkupLine(message);
+        AnsiConsole.MarkupLine($"[grey]{message}[/]");
         Console.ReadKey();
     }
 

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using ClassLibrary.Enums;
+using ClassLibrary.Enums.RpsGameEnums;
 
 namespace ClassLibrary.Models;
 

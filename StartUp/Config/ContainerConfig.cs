@@ -13,7 +13,6 @@ using CalculatorApp.Interfaces;
 
 //Classlibr
 using ClassLibrary.Data;
-using ClassLibrary;
 using ClassLibrary.Repositories.CalculatorAppRepository;
 using ClassLibrary.Repositories.ShapeAppRepository;
 using ClassLibrary.Repositories.RpsGameRepository;
@@ -26,6 +25,7 @@ using ShapeApp.Interfaces;
 using GameApp.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using ClassLibrary.Interface;
 
 
 

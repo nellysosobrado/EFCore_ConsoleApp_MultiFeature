@@ -1,8 +1,8 @@
 ﻿using Spectre.Console;
-using ShapeApp.Enums;
 using ClassLibrary.Extensions;
 using ShapeApp.Services;
 using ShapeApp.Interfaces;
+using ClassLibrary.Enums.ShapeAppEnums;
 
 namespace ShapeApp.Controllers;
 

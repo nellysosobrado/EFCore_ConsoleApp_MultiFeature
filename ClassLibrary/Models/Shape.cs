@@ -34,15 +34,15 @@ public class Shape
     [Precision(18, 2)]
     public double? Height { get; set; }
 
-    // Parallelogram & Rhombus parameters
+
     [Precision(18, 2)]
     public double? Side { get; set; }
 
     [Column("Base")]
     [Precision(18, 2)]
-    public double? BaseLength { get; set; }  // Named BaseLength since Base is a reserved word
+    public double? BaseLength { get; set; }  
 
-    // Triangle parameters
+ 
     [Precision(18, 2)]
     public double? SideA { get; set; }
 

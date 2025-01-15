@@ -1,8 +1,8 @@
 ﻿using ClassLibrary.Models;
 using ClassLibrary.Extensions;
-using ClassLibrary.Enums;
 using Spectre.Console;
 using GameApp.Interfaces;
+using ClassLibrary.Enums.RpsGameEnums;
 
 namespace GameApp.Controller;
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace ClassLibrary.Enums;
+namespace ClassLibrary.Enums.StartUpEnums;
 
 public enum MenuOptions
 {

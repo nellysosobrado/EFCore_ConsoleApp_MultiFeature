@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClassLibrary.Enums.CalculatorAppEnums
+namespace ClassLibrary.Enums.CalculatorAppEnums.CalculatorEnums
 {
     public enum CalculatorOperator
     {

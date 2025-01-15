@@ -1,5 +1,6 @@
 ﻿using ClassLibrary.Models;
 using ClassLibrary.Enums;
+using ClassLibrary.Interface;
 
 namespace ClassLibrary.Repositories.ShapeAppRepository;
 

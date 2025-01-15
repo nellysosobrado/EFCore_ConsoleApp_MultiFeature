@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel;
 
-namespace ShapeApp.Enums;
+namespace ClassLibrary.Enums.CalculatorAppEnums.MenuEnums;
 
-public enum ShapeMenuOptions
+public enum CalculatorMenuOptions
 {
-    [Description("New Calculation")]
-    NewCalculation,
+    [Description("Calculate")]
+    Calculate,
 
-    [Description("View History")]
-    ViewHistory,
+    [Description("History")]
+    History,
 
     [Description("Update Calculation")]
     UpdateCalculation,
@@ -17,5 +17,8 @@ public enum ShapeMenuOptions
     DeleteCalculation,
 
     [Description("Main Menu")]
-    MainMenu
+    MainMenu,
+
+
+
 }

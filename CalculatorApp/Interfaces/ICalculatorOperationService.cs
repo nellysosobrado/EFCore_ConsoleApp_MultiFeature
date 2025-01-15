@@ -1,5 +1,5 @@
 ﻿using ClassLibrary.Enums;
-using ClassLibrary.Enums.CalculatorAppEnums;
+using ClassLibrary.Enums.CalculatorAppEnums.CalculatorEnums;
 using ClassLibrary.Models;
 
 namespace CalculatorApp.Services;

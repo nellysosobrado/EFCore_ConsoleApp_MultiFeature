@@ -1,6 +1,7 @@
 ﻿using ClassLibrary.Models;
 using ClassLibrary.Enums;
 using Microsoft.EntityFrameworkCore;
+using ClassLibrary.Interface;
 
 namespace ClassLibrary.Repositories.RpsGameRepository;
 
@@ -35,7 +36,7 @@ public class RpsGameRepository
     public int GetTotalGamesPlayed()
     {
         return _context.Games
-            .IgnoreQueryFilters() // Include all games, even if soft-deleted
+            .IgnoreQueryFilters() 
             .Count();
     }
 

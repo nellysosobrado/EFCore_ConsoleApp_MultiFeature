@@ -1,6 +1,6 @@
 ﻿using Autofac;
-using ClassLibrary;
 using ClassLibrary.Data;
+using ClassLibrary.Interface;
 using ClassLibrary.Repositories.ShapeAppRepository;
 using Microsoft.EntityFrameworkCore;
 using Spectre.Console;

@@ -2,14 +2,14 @@
 using Microsoft.Extensions.Configuration;
 using ClassLibrary.Data;
 
-namespace ClassLibrary.DataAccess;
+namespace DAL.Data;
 
 public class AccessDatabase
 {
     public ApplicationDbContext GetDbContext()
     {
         var builder = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory) 
+            .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
         var config = builder.Build();
