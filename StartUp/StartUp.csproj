@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CalculatorApp\CalculatorApp.csproj" />
-    <ProjectReference Include="..\DataAccess\DataAccesLayer.csproj" />
+    <ProjectReference Include="..\DataAccess\DAL.csproj" />
     <ProjectReference Include="..\GameApp\GameApp.csproj" />
     <ProjectReference Include="..\ShapeApp\ShapeApp.csproj" />
   </ItemGroup>
