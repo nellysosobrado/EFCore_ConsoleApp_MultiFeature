@@ -1,8 +1,8 @@
 ﻿using Spectre.Console;
 using ClassLibrary.Models;
-using ClassLibrary.Enums;
 using ClassLibrary.UITool;
 using GameApp.Interfaces;
+using ClassLibrary.Enums.RpsGameEnums;
 
 namespace GameApp.Services;
 

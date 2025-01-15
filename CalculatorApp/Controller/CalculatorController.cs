@@ -4,6 +4,7 @@ using Spectre.Console;
 using CalculatorApp.UI;
 using CalculatorApp.Enums;
 using CalculatorApp.Interfaces;
+using ClassLibrary.Enums.CalculatorAppEnums;
 
 
 namespace CalculatorApp.Controller;

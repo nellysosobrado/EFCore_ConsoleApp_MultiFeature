@@ -1,7 +1,7 @@
 ﻿using ClassLibrary.Models;
-using ClassLibrary.Enums;
 using ClassLibrary.Repositories.RpsGameRepository;
 using GameApp.Interfaces;
+using ClassLibrary.Enums.RpsGameEnums;
 
 namespace GameApp.Services;
 

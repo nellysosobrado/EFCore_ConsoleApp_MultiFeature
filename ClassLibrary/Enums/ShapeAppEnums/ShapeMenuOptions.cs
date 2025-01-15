@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace ShapeApp.Enums;
+namespace ClassLibrary.Enums.ShapeAppEnums;
 
 public enum ShapeMenuOptions
 {

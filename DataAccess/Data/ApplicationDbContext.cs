@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ClassLibrary.Models;
-using ClassLibrary.Enums;
 using ClassLibrary.Interface;
+using ClassLibrary.Enums.RpsGameEnums;
 
 namespace ClassLibrary.Data;
 

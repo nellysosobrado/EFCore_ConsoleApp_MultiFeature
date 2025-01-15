@@ -1,5 +1,5 @@
 ﻿using ClassLibrary.Models;
-using ClassLibrary.Enums;
+using ClassLibrary.Enums.RpsGameEnums;
 
 namespace GameApp.Interfaces;
 

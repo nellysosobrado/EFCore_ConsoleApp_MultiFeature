@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace CalculatorApp.Enums;
+namespace ClassLibrary.Enums.CalculatorAppEnums;
 
 public enum CalculatorMenuOptions
 {

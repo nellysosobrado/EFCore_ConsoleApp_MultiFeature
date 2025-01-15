@@ -1,4 +1,4 @@
-﻿namespace ClassLibrary.Enums;
+﻿namespace ClassLibrary.Enums.RpsGameEnums;
 
 public enum GameMove
 {
