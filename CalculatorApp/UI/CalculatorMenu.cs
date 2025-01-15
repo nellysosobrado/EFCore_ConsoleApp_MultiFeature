@@ -32,17 +32,17 @@ public class CalculatorMenu
         
     //}
 
-    public string ShowMenuAfterUpdate()
-    {
-        return AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-                .Title("[green]What would you like to do next?[/]")
-                .AddChoices(new[]
-                {
-                    "Update Calculation",
-                    "Calculator Menu"
-                }));
-    }
+    //public string ShowMenuAfterUpdate()
+    //{
+    //    return AnsiConsole.Prompt(
+    //        new SelectionPrompt<string>()
+    //            .Title("[green]What would you like to do next?[/]")
+    //            .AddChoices(new[]
+    //            {
+    //                "Update Calculation",
+    //                "Calculator Menu"
+    //            }));
+    //}
 
     //public string ShowMenuAfterDelete()
     //{
@@ -69,6 +69,14 @@ public class CalculatorMenu
                 .Title("[green]What would you like to do next?[/]")
                 .UseConverter(opt => opt.GetDescription())
                 .AddChoices(Enum.GetValues<PerformMenuOptions>()));
+    }
+    public UpdateMenuOptions ShowMenuAfterUpdate()
+    {
+        return AnsiConsole.Prompt(
+            new SelectionPrompt<UpdateMenuOptions>()
+                .Title("[green]What would you like to do next?[/]")
+                .UseConverter(opt => opt.GetDescription())
+                .AddChoices(Enum.GetValues<UpdateMenuOptions>()));
     }
 
 }

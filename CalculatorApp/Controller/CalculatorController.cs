@@ -87,7 +87,11 @@ public class CalculatorController
 
             _calculatorUpdate.ProcessAndSaveCalculation(updatedCalc);
             _calculatorUpdate.DisplayResults(updatedCalc);
-            _calculatorMenu.ShowMenuAfterUpdate();
+            var choice = _calculatorMenu.ShowMenuAfterUpdate();
+            if (choice == UpdateMenuOptions.UpdateAgain)
+            {
+                UpdateCalculation();
+            }
         }
         catch (Exception ex)
         {
