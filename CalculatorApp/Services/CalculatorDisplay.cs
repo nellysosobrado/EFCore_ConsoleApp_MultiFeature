@@ -221,6 +221,7 @@ public class CalculatorDisplay : ICalculatorDisplay
     {
         while (true)
         {
+            _table.Display();
             var input = AnsiConsole.Ask<string>($"Enter the [green]{prompt}[/] number:");
 
             var validationResult = _inputValidator.Validate(input);
@@ -230,6 +231,9 @@ public class CalculatorDisplay : ICalculatorDisplay
             }
 
             AnsiConsole.MarkupLine($"[red]{validationResult.Errors[0].ErrorMessage}[/]");
+            WaitForKeyPress();
+
+           Console.Clear();
         }
     }
 
@@ -238,6 +242,7 @@ public class CalculatorDisplay : ICalculatorDisplay
         return AnsiConsole.Prompt(
             new SelectionPrompt<string>()
                 .Title("Choose an [green]operator[/]")
+                .WrapAround(true)
                 .PageSize(6)
                 .AddChoices(new[] { "+", "-", "*", "/", "%", "√" }));
     }
@@ -319,7 +324,7 @@ public class CalculatorDisplay : ICalculatorDisplay
 
     public void WaitForKeyPress(string message = "\nPress any key to continue...")
     {
-        AnsiConsole.MarkupLine(message);
+        AnsiConsole.MarkupLine($"[grey]{message}[/]");
         Console.ReadKey();
     }
 
