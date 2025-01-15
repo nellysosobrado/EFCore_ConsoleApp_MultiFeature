@@ -59,7 +59,7 @@ public static class ContainerConfig
         builder.RegisterType<CalculatorMenu>().AsSelf();
         builder.RegisterType<CalculationProcessor>().AsSelf();
         builder.RegisterType<CalculationInputService>().AsSelf();
-        builder.RegisterType<SquareRootCalculator>().AsSelf();
+        builder.RegisterType<SquareRootCalculator>().As<ISquareRootCalculator>();
         builder.RegisterType<CalculatorDelete>().As<ICalculatorDelete>();
         builder.RegisterType<CalculatorUpdateService>().As<ICalculatorUpdate>();
         builder.RegisterType<CalculatorParser>().As<ICalculatorParser>();

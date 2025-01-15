@@ -18,7 +18,7 @@ public class CalculatorController
     private readonly CalculatorMenu _calculatorMenu;
     private readonly CalculationProcessor _calculationProcessor;
     private readonly ICalculationInputService _inputService;
-    private readonly SquareRootCalculator _squareRootCalculator;
+    private readonly ISquareRootCalculator _squareRootCalculator;
     private readonly ICalculatorDelete _calculatorDelete;
     private readonly ICalculatorUpdate _calculatorUpdate;
 
@@ -31,7 +31,7 @@ public class CalculatorController
         CalculatorMenu calculatorMenu,
         CalculationProcessor calculationProcessor,
         ICalculationInputService calculationInputService,
-        SquareRootCalculator squareRootCalculator,
+        ISquareRootCalculator squareRootCalculator,
         ICalculatorDelete calculatorDelete,
         ICalculatorUpdate calculatorUpdate
 

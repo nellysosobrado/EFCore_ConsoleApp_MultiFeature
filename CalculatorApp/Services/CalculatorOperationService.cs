@@ -3,6 +3,7 @@ using CalculatorApp.Validators;
 using FluentValidation;
 using ClassLibrary.Enums.CalculatorAppEnums;
 using ClassLibrary.Repositories.CalculatorAppRepository;
+using CalculatorApp.Interfaces;
 
 namespace CalculatorApp.Services;
 
@@ -10,23 +11,21 @@ public class CalculatorOperationService : ICalculatorOperationService
 {
     private readonly CalculatorRepository _calculatorRepository;
     private readonly CalculatorValidator _validator;
+    private readonly ISquareRootCalculator _squareRootCalculator;
 
-    public CalculatorOperationService(CalculatorRepository calculatorRepository)
+    public CalculatorOperationService(
+        CalculatorRepository calculatorRepository,
+        ISquareRootCalculator squareRootCalculator,
+        CalculatorValidator calculatorValidator
+        )
     {
+        _validator = calculatorValidator;
         _calculatorRepository = calculatorRepository;
-        _validator = new CalculatorValidator();
+        _squareRootCalculator = squareRootCalculator;
     }
 
    
 
-    public (double firstResult, double secondResult)? CalculateSquareRoots(double operand1, double operand2)
-    {
-        if (operand1 < 0 || operand2 < 0)
-        {
-            throw new InvalidOperationException("Cannot calculate square root of negative numbers");
-        }
-        return (Math.Sqrt(operand1), Math.Sqrt(operand2));
-    }
 
     public double Calculate(double operand1, double operand2, CalculatorOperator calculatorOperator)
     {
@@ -37,7 +36,7 @@ public class CalculatorOperationService : ICalculatorOperationService
 
         if (calculatorOperator == CalculatorOperator.SquareRoot)
         {
-            var results = CalculateSquareRoots(operand1, operand2);
+            var results = _squareRootCalculator.CalculateSquareRoots(operand1, operand2);
             return results?.firstResult ?? 0; 
         }
 
@@ -68,11 +67,5 @@ public class CalculatorOperationService : ICalculatorOperationService
 
         _calculatorRepository.AddCalculation(calculation);
     }
-
-
-   
-
-   
-    
   
 }
