@@ -8,7 +8,7 @@ namespace CalculatorApp.Services;
 
 public class CalculationInputService : ICalculationInputService
 {
-    private readonly ICalculatorDisplay _uiService;
+    private readonly ICalculatorDisplay _displayCalculator;
     private readonly CalculatorTable _table;
     private readonly CalculatorOperationService _operationService;
     private readonly CalculatorRepository _calculatorRepository;
@@ -18,7 +18,7 @@ public class CalculationInputService : ICalculationInputService
         CalculatorOperationService operationService,
         CalculatorRepository calculatorRepository)
     {
-        _uiService = uiService;
+        _displayCalculator = uiService;
         _table = calculatorTable;
         _operationService = operationService;
         _calculatorRepository = calculatorRepository;
@@ -28,15 +28,15 @@ public class CalculationInputService : ICalculationInputService
     {
         _table.Display();
 
-        var operand1 = _uiService.GetNumberInput("first");
+        var operand1 = _displayCalculator.GetNumberInput("first");
         _table.UpdateFirstNumber(operand1.ToString());
         _table.Display();
 
-        var operand2 = _uiService.GetNumberInput("second");
+        var operand2 = _displayCalculator.GetNumberInput("second");
         _table.UpdateSecondNumber(operand2.ToString());
         _table.Display();
 
-        var operatorInput = _uiService.GetOperatorInput();
+        var operatorInput = _displayCalculator.GetOperatorInput();
         _table.UpdateOperator(operatorInput);
         _table.Display();
 
@@ -59,10 +59,31 @@ public class CalculationInputService : ICalculationInputService
                 .Title("[yellow]Would you like to change the operator?[/]")
                 .AddChoices("Yes", "No")) == "Yes";
     }
-    public int GetCalculationIdForUpdate()
+   public int GetCalculationIdForUpdate()
+{
+    while (true)
     {
-        return AnsiConsole.Ask<int>("Enter the [green]ID[/] of the calculation to update:");
+        var id = AnsiConsole.Prompt(
+            new TextPrompt<int>("[green]Enter the ID of the calculation to update:[/]")
+                .ValidationErrorMessage("[red]Please enter a valid ID[/]"));
+
+        var calculation = _calculatorRepository.GetCalculationById(id);
+        
+        if (calculation == null)
+        {
+            _displayCalculator.ShowError("No calculation found with that ID.");
+            continue;
+        }
+
+        if (calculation.IsDeleted)
+        {
+            _displayCalculator.ShowError("Cannot update a deleted calculation.");
+            continue;
+        }
+
+        return id;
     }
+}
 
     
 
