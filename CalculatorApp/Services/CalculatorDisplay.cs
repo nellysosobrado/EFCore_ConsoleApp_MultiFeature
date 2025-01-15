@@ -1,11 +1,6 @@
 ﻿using Spectre.Console;
-using ClassLibrary.Models;
-using CalculatorApp.Validators;
 using System.Globalization;
 using ClassLibrary.Enums.CalculatorAppEnums;
-using CalculatorApp.Enums;
-using ClassLibrary.Extensions;
-
 
 using CalculatorApp.UI;
 
@@ -328,14 +323,6 @@ public class CalculatorDisplay : ICalculatorDisplay
         AnsiConsole.MarkupLine(message);
         Console.ReadKey();
     }
-
-    
-    
-
-  
-
-  
-    
 
     public void ShowCurrentParameters(Dictionary<string, double> current, Dictionary<string, double> updated)
     {

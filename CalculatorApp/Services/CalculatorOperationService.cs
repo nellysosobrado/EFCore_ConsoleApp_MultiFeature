@@ -1,5 +1,4 @@
-﻿using ClassLibrary.Models;
-using CalculatorApp.Validators;
+﻿using CalculatorApp.Validators;
 using FluentValidation;
 using ClassLibrary.Enums.CalculatorAppEnums;
 using ClassLibrary.Repositories.CalculatorAppRepository;
@@ -23,9 +22,6 @@ public class CalculatorOperationService : ICalculatorOperationService
         _calculatorRepository = calculatorRepository;
         _squareRootCalculator = squareRootCalculator;
     }
-
-
-
 
     public double Calculate(double operand1, double operand2, CalculatorOperator calculatorOperator)
     {

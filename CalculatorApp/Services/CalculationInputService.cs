@@ -1,6 +1,5 @@
 ﻿using CalculatorApp.Interfaces;
 using CalculatorApp.UI;
-using ClassLibrary.Enums;
 using ClassLibrary.Repositories.CalculatorAppRepository;
 using Spectre.Console;
 
@@ -10,17 +9,14 @@ public class CalculationInputService : ICalculationInputService
 {
     private readonly ICalculatorDisplay _displayCalculator;
     private readonly CalculatorTable _table;
-    private readonly CalculatorOperationService _operationService;
     private readonly CalculatorRepository _calculatorRepository;
 
     public CalculationInputService(ICalculatorDisplay uiService, 
         CalculatorTable calculatorTable,
-        CalculatorOperationService operationService,
         CalculatorRepository calculatorRepository)
     {
         _displayCalculator = uiService;
         _table = calculatorTable;
-        _operationService = operationService;
         _calculatorRepository = calculatorRepository;
     }
 

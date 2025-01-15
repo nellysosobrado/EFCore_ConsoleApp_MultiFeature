@@ -1,12 +1,8 @@
-﻿using ClassLibrary.Enums;
-using ClassLibrary.Models;
-using CalculatorApp.Services;
+﻿using CalculatorApp.Services;
 using FluentValidation;
-using ClassLibrary.Enums.CalculatorAppEnums;
 using Spectre.Console;
 using CalculatorApp.UI;
 using CalculatorApp.Enums;
-using ClassLibrary.Extensions;
 using CalculatorApp.Interfaces;
 
 
@@ -22,9 +18,6 @@ public class CalculatorController
     private readonly ICalculatorDelete _calculatorDelete;
     private readonly ICalculatorUpdate _calculatorUpdate;
 
-
-
-
     public CalculatorController(
         ICalculatorDisplay uiService,
         ICalculatorOperationService operationService,
@@ -34,7 +27,6 @@ public class CalculatorController
         ISquareRootCalculator squareRootCalculator,
         ICalculatorDelete calculatorDelete,
         ICalculatorUpdate calculatorUpdate
-
 
         )
     {
@@ -46,7 +38,6 @@ public class CalculatorController
         _calculatorDelete = calculatorDelete;
         _calculatorUpdate = calculatorUpdate;
     }
-
     public void Start()
     {
         while (true)
@@ -99,7 +90,6 @@ public class CalculatorController
         }
     }
     
-
   
     private void DeleteCalculation()
     {
