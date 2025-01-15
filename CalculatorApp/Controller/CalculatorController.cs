@@ -165,7 +165,7 @@ public class CalculatorController
 
                     AnsiConsole.WriteLine();
                     var choice = _calculatorMenu.ShowMenuAfterCalc();
-                    if (choice == "Calculator Menu") return;
+                    if (choice == PerformMenuOptions.CalculatorMenu) return;
 
                     _calculatorDisplay.ClearTable();
                 }
