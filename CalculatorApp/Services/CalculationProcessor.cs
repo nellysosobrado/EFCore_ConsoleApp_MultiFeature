@@ -1,32 +1,37 @@
 ﻿using ClassLibrary.Models;
 using ClassLibrary.Enums;
 using ClassLibrary.Enums.CalculatorAppEnums;
+using CalculatorApp.Interfaces;
 
 namespace CalculatorApp.Services;
 
 public class CalculationProcessor
 {
-    private readonly ICalculatorOperationService _operationService;
+    private readonly ICalculatorParser _calculatorParser;
+    private readonly CalculatorOperationService _calculatorOperationService;
 
-    public CalculationProcessor(ICalculatorOperationService operationService)
+
+    public CalculationProcessor(
+        ICalculatorParser calculatorParser, CalculatorOperationService calculatorOperationService)
     {
-        _operationService = operationService;
+        _calculatorParser = calculatorParser;
+        _calculatorOperationService = calculatorOperationService;
     }
 
     public (double result, bool isSquareRoot) Calculate(double operand1, double operand2, string operatorInput)
     {
-        if (!_operationService.TryParseOperator(operatorInput, out CalculatorOperator calculatorOperator))
+        if (!_calculatorParser.TryParseOperator(operatorInput, out CalculatorOperator calculatorOperator))
         {
             throw new InvalidOperationException("Invalid operator");
         }
 
-        var result = _operationService.Calculate(operand1, operand2, calculatorOperator);
+        var result = _calculatorOperationService.Calculate(operand1, operand2, calculatorOperator);
         return (Math.Round(result, 2), calculatorOperator == CalculatorOperator.SquareRoot);
     }
 
     public void SaveCalculation(double operand1, double operand2, string operatorInput, double result)
     {
-        if (!_operationService.TryParseOperator(operatorInput, out CalculatorOperator calculatorOperator))
+        if (!_calculatorParser.TryParseOperator(operatorInput, out CalculatorOperator calculatorOperator))
         {
             throw new InvalidOperationException("Invalid operator");
         }
@@ -40,14 +45,14 @@ public class CalculationProcessor
             CalculationDate = DateTime.Now
         };
 
-        _operationService.SaveCalculation(calculation);
+        _calculatorOperationService.SaveCalculation(calculation);
     }
 
    
 
     public bool TryParseOperator(string input, out CalculatorOperator calculatorOperator)
     {
-        return _operationService.TryParseOperator(input, out calculatorOperator);
+        return _calculatorParser.TryParseOperator(input, out calculatorOperator);
     }
 
    

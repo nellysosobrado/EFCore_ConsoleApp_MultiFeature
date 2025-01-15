@@ -20,7 +20,7 @@ namespace CalculatorApp.Services
         private readonly CalculatorRepository _calculatorRepository;    
         private readonly CalculatorValidator _validator;    
         private readonly CalculatorOperationService _calculatorOperationService;
-        private readonly ICalculatorDisplay _calculatorUIService;
+        private readonly ICalculatorDisplay _calculatorDisplay;
         private bool _operatorChanged = false;
         private string _newOperator = string.Empty;
 
@@ -31,7 +31,30 @@ namespace CalculatorApp.Services
             _calculatorRepository = calculatorRepository;
             _validator = validator;
             _calculatorOperationService = calculatorOperationService;
-            _calculatorUIService = calculatorUIService; 
+            _calculatorDisplay = calculatorUIService; 
+        }
+        public Dictionary<string, double> GetSelectedInputsToUpdate(Dictionary<string, double> currentInputs)
+        {
+            var updatedInputs = new Dictionary<string, double>();
+            var inputs = currentInputs.Keys.ToList();
+            inputs.Add("[green]Confirm[/]");
+            inputs.Add("[red]Cancel[/]");
+
+            while (true)
+            {
+                var choice = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .Title("[green]Select input to update:[/]")
+                        .AddChoices(inputs));
+
+                if (choice == "[green]Confirm[/]")
+                    return updatedInputs;
+
+                if (choice == "[red]Cancel[/]")
+                    return currentInputs;
+
+                updatedInputs[choice] = _calculatorDisplay.GetNumberInput(choice);
+            }
         }
         public (Dictionary<string, double> parameters, string newOperator) GetSelectedParametersToUpdate(Dictionary<string, double> currentParameters)
         {
@@ -44,7 +67,7 @@ namespace CalculatorApp.Services
             while (true)
             {
                 AnsiConsole.Clear();
-                _calculatorUIService.ShowCurrentParameters(currentParameters, updatedParameters);
+                _calculatorDisplay.ShowCurrentParameters(currentParameters, updatedParameters);
                 if (_operatorChanged)
                 {
                     AnsiConsole.MarkupLine($"\n[blue]New operator:[/] {_newOperator}");
@@ -72,13 +95,13 @@ namespace CalculatorApp.Services
 
                 if (choice == "Change Operator")
                 {
-                    _newOperator = _calculatorUIService.GetOperatorInput();
+                    _newOperator = _calculatorDisplay.GetOperatorInput();
                     _operatorChanged = true;
                     parameters.Remove("Change Operator");
                     continue;
                 }
 
-                var newValue = _calculatorUIService.GetNumberInput($"Enter new value for {choice}");
+                var newValue = _calculatorDisplay.GetNumberInput($"Enter new value for {choice}");
                 updatedParameters[choice] = newValue;
             }
         }

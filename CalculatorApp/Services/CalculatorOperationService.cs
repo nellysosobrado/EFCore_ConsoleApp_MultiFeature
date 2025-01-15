@@ -17,33 +17,7 @@ public class CalculatorOperationService : ICalculatorOperationService
         _validator = new CalculatorValidator();
     }
 
-    public bool TryParseOperator(string input, out CalculatorOperator calculatorOperator)
-    {
-        switch (input)
-        {
-            case "+":
-                calculatorOperator = CalculatorOperator.Add;
-                return true;
-            case "-":
-                calculatorOperator = CalculatorOperator.Subtract;
-                return true;
-            case "*":
-                calculatorOperator = CalculatorOperator.Multiply;
-                return true;
-            case "/":
-                calculatorOperator = CalculatorOperator.Divide;
-                return true;
-            case "%":
-                calculatorOperator = CalculatorOperator.Modulus;
-                return true;
-            case "√":
-                calculatorOperator = CalculatorOperator.SquareRoot;
-                return true;
-            default:
-                calculatorOperator = default;
-                return false;
-        }
-    }
+   
 
     public (double firstResult, double secondResult)? CalculateSquareRoots(double operand1, double operand2)
     {

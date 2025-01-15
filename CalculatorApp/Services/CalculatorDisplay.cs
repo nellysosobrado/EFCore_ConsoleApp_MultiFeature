@@ -323,29 +323,7 @@ public class CalculatorDisplay : ICalculatorDisplay
 
   
 
-    public Dictionary<string, double> GetSelectedInputsToUpdate(Dictionary<string, double> currentInputs)
-    {
-        var updatedInputs = new Dictionary<string, double>();
-        var inputs = currentInputs.Keys.ToList();
-        inputs.Add("[green]Confirm[/]");
-        inputs.Add("[red]Cancel[/]");
-
-        while (true)
-        {
-            var choice = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                    .Title("[green]Select input to update:[/]")
-                    .AddChoices(inputs));
-
-            if (choice == "[green]Confirm[/]")
-                return updatedInputs;
-
-            if (choice == "[red]Cancel[/]")
-                return currentInputs;
-
-            updatedInputs[choice] = GetNumberInput(choice);
-        }
-    }
+  
     
 
     public void ShowCurrentParameters(Dictionary<string, double> current, Dictionary<string, double> updated)

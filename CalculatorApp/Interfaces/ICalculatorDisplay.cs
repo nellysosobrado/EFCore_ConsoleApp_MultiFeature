@@ -12,7 +12,6 @@ public interface ICalculatorDisplay
     string GetOperatorInput();
     string GetOperatorSymbol(CalculatorOperator op);
     void SearchById(List<Calculator> calculations);
-    Dictionary<string, double> GetSelectedInputsToUpdate(Dictionary<string, double> currentInputs);
 
     void ShowMessage(string message);
     void ShowError(string message);
