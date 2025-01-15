@@ -16,10 +16,7 @@ public interface ICalculatorUIService
     void ShowMessage(string message);
     void ShowError(string message);
     void WaitForKeyPress(string message = "\nPress any key to continue...");
-    int GetCalculationIdForUpdate();
-    int GetCalculationIdForDelete();
-    bool ConfirmDeletion();
-    bool ShouldChangeOperator();
+    
     Dictionary<string, double> GetSelectedInputsToUpdate(Dictionary<string, double> currentInputs);
     (Dictionary<string, double> parameters, string newOperator) GetSelectedParametersToUpdate(Dictionary<string, double> currentParameters);
 }

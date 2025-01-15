@@ -10,5 +10,9 @@ namespace CalculatorApp.Interfaces
     {
         Calculator GetCalculationById(int id);
         (double operand1, double operand2, string operatorInput) GetUserInput();
+        IEnumerable<Calculator> GetCalculationHistory();
+        bool ShouldChangeOperator();
+        int GetCalculationIdForUpdate();
+
     }
 }

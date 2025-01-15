@@ -61,6 +61,7 @@ public static class ContainerConfig
         builder.RegisterType<CalculationInputService>().AsSelf();
         builder.RegisterType<SquareRootCalculator>().AsSelf();
         builder.RegisterType<DisplayCalculator>().As<IDisplayCalculator>();
+        builder.RegisterType<CalculatorDelete>().As<ICalculatorDelete>();
        
 
 

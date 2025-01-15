@@ -96,10 +96,7 @@ public class CalculatorOperationService : ICalculatorOperationService
     }
 
 
-    public IEnumerable<Calculator> GetCalculationHistory()
-    {
-        return _calculatorRepository.GetAllCalculations();
-    }
+   
 
     public void UpdateCalculation(int id, double operand1, double operand2, CalculatorOperator calculatorOperator)
     {

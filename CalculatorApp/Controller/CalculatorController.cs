@@ -20,7 +20,8 @@ public class CalculatorController
     private readonly CalculationProcessor _calculationProcessor;
     private readonly ICalculationInputService _inputService;
     private readonly SquareRootCalculator _squareRootCalculator;
-    private readonly IDisplayCalculator _displayCalculator; 
+    private readonly IDisplayCalculator _displayCalculator;
+    private readonly ICalculatorDelete _calculatorDelete;
 
 
 
@@ -32,7 +33,8 @@ public class CalculatorController
         CalculationProcessor calculationProcessor,
         ICalculationInputService calculationInputService,
         SquareRootCalculator squareRootCalculator,
-        IDisplayCalculator displayCalculator
+        IDisplayCalculator displayCalculator,
+        ICalculatorDelete calculatorDelete
 
 
         )
@@ -44,6 +46,7 @@ public class CalculatorController
         _inputService = calculationInputService;
         _squareRootCalculator = squareRootCalculator;
         _displayCalculator = displayCalculator;
+        _calculatorDelete = calculatorDelete;
     }
 
     public void Start()
@@ -79,7 +82,7 @@ public class CalculatorController
     {
         try
         {
-            var id = _uiService.GetCalculationIdForUpdate();
+            var id = _inputService.GetCalculationIdForUpdate();
             var calculation = _inputService.GetCalculationById(id);
 
             var currentParameters = new Dictionary<string, double>
@@ -139,11 +142,11 @@ public class CalculatorController
         {
             try
             {
-                var calculations = _operationService.GetCalculationHistory();
+                var calculations = _inputService.GetCalculationHistory();
                 _uiService.CalculationHistory(calculations, showDeleteButton: true);
 
-                var id = _uiService.GetCalculationIdForDelete();
-                if (_uiService.ConfirmDeletion())
+                var id = _calculatorDelete.GetCalculationIdForDelete();
+                if (_calculatorDelete.ConfirmDeletion())
                 {
                     try
                     {
@@ -233,7 +236,7 @@ public class CalculatorController
 
     private void CalculationHistory()
     {
-        var calculations = _operationService.GetCalculationHistory();
+        var calculations = _inputService.GetCalculationHistory();
         _uiService.CalculationHistory(calculations);
 
         _uiService.WaitForKeyPress();

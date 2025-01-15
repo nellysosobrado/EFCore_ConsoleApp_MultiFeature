@@ -27,13 +27,7 @@ public class SpectreCalculatorUI : ICalculatorUIService
         _calculatorMenu = calculatorMenu;
     }
 
-    public bool ShouldChangeOperator()
-    {
-        return AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-                .Title("[yellow]Would you like to change the operator?[/]")
-                .AddChoices("Yes", "No")) == "Yes";
-    }
+   
 
     public void ShowMessage(string message)
     {
@@ -305,22 +299,9 @@ public class SpectreCalculatorUI : ICalculatorUIService
     }
 
     
-    public int GetCalculationIdForUpdate()
-    {
-        return AnsiConsole.Ask<int>("Enter the [green]ID[/] of the calculation to update:");
-    }
+    
 
-    public int GetCalculationIdForDelete()
-    {
-        return AnsiConsole.Ask<int>("Enter the [green]ID[/] of the calculation to delete:");
-    }
-
-    public bool ConfirmDeletion()
-    {
-        Console.Clear();
-        return AnsiConsole.Confirm("Are you sure you want to delete this calculation?");
-    }
-
+  
 
     public Dictionary<string, double> GetSelectedInputsToUpdate(Dictionary<string, double> currentInputs)
     {

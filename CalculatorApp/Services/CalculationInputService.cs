@@ -2,6 +2,7 @@
 using CalculatorApp.UI;
 using ClassLibrary.Enums;
 using ClassLibrary.Repositories.CalculatorAppRepository;
+using Spectre.Console;
 
 namespace CalculatorApp.Services;
 
@@ -47,5 +48,23 @@ public class CalculationInputService : ICalculationInputService
         return _calculatorRepository.GetCalculationById(id);
     }
 
+    public IEnumerable<Calculator> GetCalculationHistory()
+    {
+        return _calculatorRepository.GetAllCalculations();
+    }
+    public bool ShouldChangeOperator()
+    {
+        return AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("[yellow]Would you like to change the operator?[/]")
+                .AddChoices("Yes", "No")) == "Yes";
+    }
+    public int GetCalculationIdForUpdate()
+    {
+        return AnsiConsole.Ask<int>("Enter the [green]ID[/] of the calculation to update:");
+    }
+
     
+
+
 }
