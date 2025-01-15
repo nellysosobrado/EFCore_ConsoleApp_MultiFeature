@@ -113,7 +113,7 @@ public class CalculatorController
             var result = _calculationProcessor.Calculate(firstNumber, secondNumber, operatorInput).result;
             _calculatorUpdate.UpdateCalculation(id, firstNumber, secondNumber, calculatorOperator, result);
 
-            _uiService.ShowResultSimple(firstNumber, secondNumber, operatorInput, result);
+            _displayCalculator.ShowResultSimple(firstNumber, secondNumber, operatorInput, result);
             _uiService.ShowMessage("\n[green]Calculation updated successfully![/]");
 
             var choice = _calculatorMenu.ShowMenuAfterUpdate();
@@ -146,7 +146,7 @@ public class CalculatorController
             try
             {
                 var calculations = _inputService.GetCalculationHistory();
-                _uiService.CalculationHistory(calculations, showDeleteButton: true);
+                _displayCalculator.CalculationHistory(calculations, showDeleteButton: true);
 
                 var id = _calculatorDelete.GetCalculationIdForDelete();
                 if (_calculatorDelete.ConfirmDeletion())
@@ -240,7 +240,7 @@ public class CalculatorController
     private void CalculationHistory()
     {
         var calculations = _inputService.GetCalculationHistory();
-        _uiService.CalculationHistory(calculations);
+        _displayCalculator.CalculationHistory(calculations);
 
         _uiService.WaitForKeyPress();
     }
