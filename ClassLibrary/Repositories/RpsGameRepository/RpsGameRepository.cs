@@ -35,7 +35,7 @@ public class RpsGameRepository
     public int GetTotalGamesPlayed()
     {
         return _context.Games
-            .IgnoreQueryFilters() // Include all games, even if soft-deleted
+            .IgnoreQueryFilters() 
             .Count();
     }
 
