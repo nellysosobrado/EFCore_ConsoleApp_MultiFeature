@@ -22,7 +22,5 @@ public class CalculatorValidator : AbstractValidator<Calculator>
         RuleFor(x => x.Operator)
             .IsInEnum()
             .WithMessage("Invalid operator");
-
-  
     }
 }

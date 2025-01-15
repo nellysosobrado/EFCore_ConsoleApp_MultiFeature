@@ -1,5 +1,4 @@
 ﻿using CalculatorApp.Interfaces;
-using ClassLibrary.Enums;
 
 namespace CalculatorApp.Services;
 

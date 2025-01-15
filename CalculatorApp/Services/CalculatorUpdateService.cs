@@ -1,18 +1,9 @@
 ﻿using CalculatorApp.Interfaces;
 using CalculatorApp.Validators;
 using ClassLibrary.Enums.CalculatorAppEnums;
-using ClassLibrary.Extensions;
 using ClassLibrary.Repositories.CalculatorAppRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation.Results;
 using FluentValidation;
 using Spectre.Console;
-using CalculatorApp.UI;
-using CalculatorApp.Enums;
 
 
 
