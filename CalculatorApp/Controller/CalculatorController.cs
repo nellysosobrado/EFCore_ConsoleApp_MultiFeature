@@ -94,7 +94,7 @@ public class CalculatorController
                 { "Second Number", calculation.SecondNumber }
             };
 
-            var (updatedParameters, newOperator) = _uiService.GetSelectedParametersToUpdate(currentParameters);
+            var (updatedParameters, newOperator) = _calculatorUpdate.GetSelectedParametersToUpdate(currentParameters);
 
             if (updatedParameters == null)
             {

@@ -16,7 +16,7 @@ public interface ICalculatorUIService
     void WaitForKeyPress(string message = "\nPress any key to continue...");
     
     Dictionary<string, double> GetSelectedInputsToUpdate(Dictionary<string, double> currentInputs);
-    (Dictionary<string, double> parameters, string newOperator) GetSelectedParametersToUpdate(Dictionary<string, double> currentParameters);
     string GetOperatorSymbol(CalculatorOperator op);
     void SearchById(List<Calculator> calculations);
+    void ShowCurrentParameters(Dictionary<string, double> current, Dictionary<string, double> updated);
 }

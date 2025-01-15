@@ -11,5 +11,6 @@ namespace CalculatorApp.Interfaces
     {
         void UpdateCalculation(int id, double operand1, double operand2, CalculatorOperator calculatorOperator);
         void UpdateCalculation(int id, double operand1, double operand2, CalculatorOperator calculatorOperator, double result);
+        (Dictionary<string, double> parameters, string newOperator) GetSelectedParametersToUpdate(Dictionary<string, double> currentParameters);
     }
 }

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentValidation.Results;
 using FluentValidation;
+using Spectre.Console;
 
 
 
@@ -18,13 +19,68 @@ namespace CalculatorApp.Services
     {
         private readonly CalculatorRepository _calculatorRepository;    
         private readonly CalculatorValidator _validator;    
-        private readonly CalculatorOperationService _calculatorOperationService;    
+        private readonly CalculatorOperationService _calculatorOperationService;
+        private readonly ICalculatorUIService _calculatorUIService;
+        private bool _operatorChanged = false;
+        private string _newOperator = string.Empty;
 
-        public CalculatorUpdateService(CalculatorRepository calculatorRepository, CalculatorValidator validator, CalculatorOperationService calculatorOperationService)
+
+        public CalculatorUpdateService(CalculatorRepository calculatorRepository, CalculatorValidator validator, CalculatorOperationService calculatorOperationService,
+            ICalculatorUIService calculatorUIService)
         {
             _calculatorRepository = calculatorRepository;
             _validator = validator;
             _calculatorOperationService = calculatorOperationService;
+            _calculatorUIService = calculatorUIService; 
+        }
+        public (Dictionary<string, double> parameters, string newOperator) GetSelectedParametersToUpdate(Dictionary<string, double> currentParameters)
+        {
+            var updatedParameters = new Dictionary<string, double>();
+            var parameters = currentParameters.Keys.ToList();
+            if (!_operatorChanged) parameters.Add("Change Operator");
+            parameters.Add("[green]Confirm[/]");
+            parameters.Add("[red]Cancel[/]");
+
+            while (true)
+            {
+                AnsiConsole.Clear();
+                _calculatorUIService.ShowCurrentParameters(currentParameters, updatedParameters);
+                if (_operatorChanged)
+                {
+                    AnsiConsole.MarkupLine($"\n[blue]New operator:[/] {_newOperator}");
+                }
+
+                var choice = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .Title("[green]Select parameter to update:[/]")
+                        .AddChoices(parameters));
+
+                if (choice == "[green]Confirm[/]")
+                {
+                    var returnOperator = _operatorChanged ? _newOperator : string.Empty;
+                    _operatorChanged = false;
+                    _newOperator = string.Empty;
+                    return (updatedParameters.Count > 0 ? updatedParameters : currentParameters, returnOperator);
+                }
+
+                if (choice == "[red]Cancel[/]")
+                {
+                    _operatorChanged = false;
+                    _newOperator = string.Empty;
+                    return (null, string.Empty);
+                }
+
+                if (choice == "Change Operator")
+                {
+                    _newOperator = _calculatorUIService.GetOperatorInput();
+                    _operatorChanged = true;
+                    parameters.Remove("Change Operator");
+                    continue;
+                }
+
+                var newValue = _calculatorUIService.GetNumberInput($"Enter new value for {choice}");
+                updatedParameters[choice] = newValue;
+            }
         }
 
         public void UpdateCalculation(int id, double operand1, double operand2, CalculatorOperator calculatorOperator)

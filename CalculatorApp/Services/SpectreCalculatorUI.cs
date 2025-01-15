@@ -169,7 +169,7 @@ public class SpectreCalculatorUI : ICalculatorUIService
     }
     
 
-    private void ShowCurrentParameters(Dictionary<string, double> current, Dictionary<string, double> updated)
+    public void ShowCurrentParameters(Dictionary<string, double> current, Dictionary<string, double> updated)
     {
         var table = new Table()
             .Border(TableBorder.Rounded)
@@ -189,53 +189,6 @@ public class SpectreCalculatorUI : ICalculatorUIService
         AnsiConsole.Write(table);
         AnsiConsole.WriteLine();
     }
-    public (Dictionary<string, double> parameters, string newOperator) GetSelectedParametersToUpdate(Dictionary<string, double> currentParameters)
-    {
-        var updatedParameters = new Dictionary<string, double>();
-        var parameters = currentParameters.Keys.ToList();
-        if (!_operatorChanged) parameters.Add("Change Operator");
-        parameters.Add("[green]Confirm[/]");
-        parameters.Add("[red]Cancel[/]");
-
-        while (true)
-        {
-            AnsiConsole.Clear();
-            ShowCurrentParameters(currentParameters, updatedParameters);
-            if (_operatorChanged)
-            {
-                AnsiConsole.MarkupLine($"\n[blue]New operator:[/] {_newOperator}");
-            }
-
-            var choice = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                    .Title("[green]Select parameter to update:[/]")
-                    .AddChoices(parameters));
-
-            if (choice == "[green]Confirm[/]")
-            {
-                var returnOperator = _operatorChanged ? _newOperator : string.Empty;
-                _operatorChanged = false;
-                _newOperator = string.Empty;
-                return (updatedParameters.Count > 0 ? updatedParameters : currentParameters, returnOperator);
-            }
-
-            if (choice == "[red]Cancel[/]")
-            {
-                _operatorChanged = false;
-                _newOperator = string.Empty;
-                return (null, string.Empty); 
-            }
-
-            if (choice == "Change Operator")
-            {
-                _newOperator = GetOperatorInput();
-                _operatorChanged = true;
-                parameters.Remove("Change Operator");
-                continue;
-            }
-
-            var newValue = GetNumberInput($"Enter new value for {choice}");
-            updatedParameters[choice] = newValue;
-        }
-    }
+    
+    
 }
