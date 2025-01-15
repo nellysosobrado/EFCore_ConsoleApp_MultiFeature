@@ -11,6 +11,7 @@ namespace StartUp.UI;
 public class Menu
 {
     private readonly IContainer _container;
+    private bool _isRunning = true;
 
     public Menu(IContainer container)
     {
@@ -19,15 +20,17 @@ public class Menu
 
     public void Show()
     {
-        Console.Clear();
+        while (_isRunning)
+        {
+            Console.Clear();
+            var option = AnsiConsole.Prompt(
+                new SelectionPrompt<MenuOptions>()
+                    .Title("[green]Choose an option:[/]")
+                    .UseConverter(option => option.GetDescription())
+                    .AddChoices(Enum.GetValues<MenuOptions>()));
 
-        var option = AnsiConsole.Prompt(
-            new SelectionPrompt<MenuOptions>()
-                .Title("[green]Choose an option:[/]")
-                .UseConverter(option => option.GetDescription())
-                .AddChoices(Enum.GetValues<MenuOptions>()));
-
-        HandleMenuOption(option);
+            HandleMenuOption(option);
+        }
     }
 
     private void HandleMenuOption(MenuOptions option)
