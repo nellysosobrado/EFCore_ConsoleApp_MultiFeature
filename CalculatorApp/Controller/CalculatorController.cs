@@ -15,12 +15,10 @@ namespace CalculatorApp.Controller;
 public class CalculatorController
 {
     private readonly ICalculatorUIService _uiService;
-    private readonly ICalculatorOperationService _operationService;
     private readonly CalculatorMenu _calculatorMenu;
     private readonly CalculationProcessor _calculationProcessor;
     private readonly ICalculationInputService _inputService;
     private readonly SquareRootCalculator _squareRootCalculator;
-    private readonly IDisplayCalculator _displayCalculator;
     private readonly ICalculatorDelete _calculatorDelete;
     private readonly ICalculatorUpdate _calculatorUpdate;
 
@@ -34,7 +32,6 @@ public class CalculatorController
         CalculationProcessor calculationProcessor,
         ICalculationInputService calculationInputService,
         SquareRootCalculator squareRootCalculator,
-        IDisplayCalculator displayCalculator,
         ICalculatorDelete calculatorDelete,
         ICalculatorUpdate calculatorUpdate
 
@@ -42,12 +39,10 @@ public class CalculatorController
         )
     {
         _uiService = uiService;
-        _operationService = operationService;
         _calculatorMenu = calculatorMenu;
         _calculationProcessor = calculationProcessor;
         _inputService = calculationInputService;
         _squareRootCalculator = squareRootCalculator;
-        _displayCalculator = displayCalculator;
         _calculatorDelete = calculatorDelete;
         _calculatorUpdate = calculatorUpdate;
     }
@@ -113,7 +108,7 @@ public class CalculatorController
             var result = _calculationProcessor.Calculate(firstNumber, secondNumber, operatorInput).result;
             _calculatorUpdate.UpdateCalculation(id, firstNumber, secondNumber, calculatorOperator, result);
 
-            _displayCalculator.ShowResultSimple(firstNumber, secondNumber, operatorInput, result);
+            _uiService.ShowResultSimple(firstNumber, secondNumber, operatorInput, result);
             _uiService.ShowMessage("\n[green]Calculation updated successfully![/]");
 
             var choice = _calculatorMenu.ShowMenuAfterUpdate();
@@ -146,7 +141,7 @@ public class CalculatorController
             try
             {
                 var calculations = _inputService.GetCalculationHistory();
-                _displayCalculator.CalculationHistory(calculations, showDeleteButton: true);
+                _uiService.CalculationHistory(calculations, showDeleteButton: true);
 
                 var id = _calculatorDelete.GetCalculationIdForDelete();
                 if (_calculatorDelete.ConfirmDeletion())
@@ -188,7 +183,7 @@ public class CalculatorController
         {
             try
             {
-                _displayCalculator.ClearTable();
+                _uiService.ClearTable();
                 var (operand1, operand2, operatorInput) = _inputService.GetUserInput();
 
                 try
@@ -198,12 +193,12 @@ public class CalculatorController
                     if (isSquareRoot)
                     {
                         var (firstRoot, secondRoot) = _squareRootCalculator.CalculateRoots(operand1, operand2);
-                        _displayCalculator.DisplaySquareRootResults(firstRoot, secondRoot);
+                        _uiService.DisplaySquareRootResults(firstRoot, secondRoot);
                         _uiService.WaitForKeyPress();
                     }
                     else
                     {
-                        _displayCalculator.DisplayResult(result);
+                            _uiService.DisplayResult(result);
                         _uiService.WaitForKeyPress();
                     }
 
@@ -213,26 +208,26 @@ public class CalculatorController
                     var choice = _calculatorMenu.ShowMenuAfterCalc();
                     if (choice == "Calculator Menu") return;
 
-                    _displayCalculator.ClearTable();
+                    _uiService.ClearTable();
                 }
                 catch (DivideByZeroException)
                 {
                     _uiService.ShowError("Cannot divide by zero");
                     _uiService.WaitForKeyPress();
-                    _displayCalculator.ClearTable();
+                    _uiService.ClearTable();
                 }
             }
             catch (ValidationException ex)
             {
                 _uiService.ShowError(ex.Message);
                 _uiService.WaitForKeyPress();
-                _displayCalculator.ClearTable();
+                _uiService.ClearTable();
             }
             catch (InvalidOperationException ex)
             {
                 _uiService.ShowError(ex.Message);
                 _uiService.WaitForKeyPress();
-                _displayCalculator.ClearTable();
+                _uiService.ClearTable();
             }
         }
     }
@@ -240,7 +235,7 @@ public class CalculatorController
     private void CalculationHistory()
     {
         var calculations = _inputService.GetCalculationHistory();
-        _displayCalculator.CalculationHistory(calculations);
+        _uiService.CalculationHistory(calculations);
 
         _uiService.WaitForKeyPress();
     }
