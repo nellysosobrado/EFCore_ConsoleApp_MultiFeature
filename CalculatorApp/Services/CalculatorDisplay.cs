@@ -168,9 +168,8 @@ public class CalculatorDisplay : ICalculatorDisplay
     }
 
 
-    public void CalculationHistory(IEnumerable<Calculator> calculations, bool showDeleteButton = false)
+    public void CalculationHistory(IEnumerable<Calculator> calculations )
     {
-        _showDeleteButton = showDeleteButton;
         var allCalculations = calculations.ToList();
         var totalPages = (int)Math.Ceiling(allCalculations.Count / (double)PageSize);
         var currentPage = 1;
@@ -187,7 +186,6 @@ public class CalculatorDisplay : ICalculatorDisplay
             }
 
             var choices = new List<string> { "Search by ID" };
-            if (_showDeleteButton) choices.Add("[red]Delete Calculation[/]");
             if (currentPage > 1) choices.Add("Previous Page");
             if (currentPage < totalPages) choices.Add("Next Page");
             choices.Add("Return to Menu");

@@ -17,48 +17,10 @@ public class CalculatorMenu
                 .UseConverter(opt => opt.GetDescription())
                 .AddChoices(Enum.GetValues<CalculatorMenuOptions>()));
     }
-
-    //public string ShowMenuAfterCalc()
-    //{
-    //    Console.Clear();
-        
-    //    return AnsiConsole.Prompt(
-    //        new SelectionPrompt<string>()
-    //            .AddChoices(new[]
-    //            {
-    //                "New Calculation",
-    //                "Calculator Menu"
-    //            }));
-        
-    //}
-
-    //public string ShowMenuAfterUpdate()
-    //{
-    //    return AnsiConsole.Prompt(
-    //        new SelectionPrompt<string>()
-    //            .Title("[green]What would you like to do next?[/]")
-    //            .AddChoices(new[]
-    //            {
-    //                "Update Calculation",
-    //                "Calculator Menu"
-    //            }));
-    //}
-
-    //public string ShowMenuAfterDelete()
-    //{
-    //    return AnsiConsole.Prompt(
-    //        new SelectionPrompt<string>()
-    //            .AddChoices(new[]
-    //            {
-    //                "Back",
-    //                "Calculator Menu"
-    //            }));
-    //}
     public DeleteMenuOptions ShowMenuAfterDelete()
     {
         return AnsiConsole.Prompt(
             new SelectionPrompt<DeleteMenuOptions>()
-                .Title("[green]What would you like to do next?[/]")
                 .UseConverter(opt => opt.GetDescription())
                 .AddChoices(Enum.GetValues<DeleteMenuOptions>()));
     }
@@ -67,7 +29,6 @@ public class CalculatorMenu
         Console.Clear();
         return AnsiConsole.Prompt(
             new SelectionPrompt<PerformMenuOptions>()
-             //   .Title("[green]What would you like to do next?[/]")
                 .UseConverter(opt => opt.GetDescription())
                 .AddChoices(Enum.GetValues<PerformMenuOptions>()));
     }
@@ -75,7 +36,6 @@ public class CalculatorMenu
     {
         return AnsiConsole.Prompt(
             new SelectionPrompt<UpdateMenuOptions>()
-                .Title("[green]What would you like to do next?[/]")
                 .UseConverter(opt => opt.GetDescription())
                 .AddChoices(Enum.GetValues<UpdateMenuOptions>()));
     }
