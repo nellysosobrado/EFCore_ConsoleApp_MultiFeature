@@ -24,7 +24,7 @@ public class CalculatorOperationService : ICalculatorOperationService
         _squareRootCalculator = squareRootCalculator;
     }
 
-   
+
 
 
     public double Calculate(double operand1, double operand2, CalculatorOperator calculatorOperator)
@@ -34,10 +34,15 @@ public class CalculatorOperationService : ICalculatorOperationService
             throw new DivideByZeroException("Cannot divide by zero");
         }
 
+        if (calculatorOperator == CalculatorOperator.Modulus && operand2 == 0)
+        {
+            throw new DivideByZeroException("Cannot calculate modulus with zero");
+        }
+
         if (calculatorOperator == CalculatorOperator.SquareRoot)
         {
             var results = _squareRootCalculator.CalculateSquareRoots(operand1, operand2);
-            return results?.firstResult ?? 0; 
+            return results?.firstResult ?? 0;
         }
 
         return calculatorOperator switch

@@ -64,9 +64,10 @@ public class CalculatorMenu
     }
     public PerformMenuOptions ShowMenuAfterCalc()
     {
+        Console.Clear();
         return AnsiConsole.Prompt(
             new SelectionPrompt<PerformMenuOptions>()
-                .Title("[green]What would you like to do next?[/]")
+             //   .Title("[green]What would you like to do next?[/]")
                 .UseConverter(opt => opt.GetDescription())
                 .AddChoices(Enum.GetValues<PerformMenuOptions>()));
     }
