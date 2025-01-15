@@ -43,10 +43,7 @@ public class CalculationProcessor
         _operationService.SaveCalculation(calculation);
     }
 
-    public Calculator GetCalculationById(int id)
-    {
-        return _operationService.GetCalculationById(id);
-    }
+   
 
     public bool TryParseOperator(string input, out CalculatorOperator calculatorOperator)
     {

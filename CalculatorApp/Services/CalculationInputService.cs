@@ -1,17 +1,26 @@
-﻿using CalculatorApp.UI;
+﻿using CalculatorApp.Interfaces;
+using CalculatorApp.UI;
 using ClassLibrary.Enums;
+using ClassLibrary.Repositories.CalculatorAppRepository;
 
 namespace CalculatorApp.Services;
 
-public class CalculationInputService
+public class CalculationInputService : ICalculationInputService
 {
     private readonly ICalculatorUIService _uiService;
     private readonly CalculatorTable _table;
+    private readonly CalculatorOperationService _operationService;
+    private readonly CalculatorRepository _calculatorRepository;
 
-    public CalculationInputService(ICalculatorUIService uiService)
+    public CalculationInputService(ICalculatorUIService uiService, 
+        CalculatorTable calculatorTable,
+        CalculatorOperationService operationService,
+        CalculatorRepository calculatorRepository)
     {
         _uiService = uiService;
-        _table = new CalculatorTable();
+        _table = calculatorTable;
+        _operationService = operationService;
+        _calculatorRepository = calculatorRepository;
     }
 
     public (double operand1, double operand2, string operatorInput) GetUserInput()
@@ -33,21 +42,10 @@ public class CalculationInputService
         return (operand1, operand2, operatorInput);
     }
 
-    public void DisplayResult(double result)
+    public Calculator GetCalculationById(int id)
     {
-        _table.UpdateResult(result.ToString());
-        _table.Display();
+        return _calculatorRepository.GetCalculationById(id);
     }
 
-    public void DisplaySquareRootResults(double sqrtResult1, double sqrtResult2)
-    {
-        _table.UpdateResult($"√{sqrtResult1}, √{sqrtResult2}");
-        _table.Display();
-    }
-
-    public void ClearTable()
-    {
-        _table.Clear();
-        _table.Display();
-    }
+    
 }

@@ -12,5 +12,4 @@ public interface ICalculatorOperationService
     IEnumerable<Calculator> GetCalculationHistory();
     void UpdateCalculation(int id, double operand1, double operand2, CalculatorOperator calculatorOperator);
     void DeleteCalculation(int id);
-    Calculator GetCalculationById(int id);
 }

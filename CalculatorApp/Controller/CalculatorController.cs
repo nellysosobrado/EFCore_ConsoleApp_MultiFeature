@@ -7,6 +7,7 @@ using Spectre.Console;
 using CalculatorApp.UI;
 using CalculatorApp.Enums;
 using ClassLibrary.Extensions;
+using CalculatorApp.Interfaces;
 
 
 namespace CalculatorApp.Controller;
@@ -17,8 +18,9 @@ public class CalculatorController
     private readonly ICalculatorOperationService _operationService;
     private readonly CalculatorMenu _calculatorMenu;
     private readonly CalculationProcessor _calculationProcessor;
-    private readonly CalculationInputService _inputService;
+    private readonly ICalculationInputService _inputService;
     private readonly SquareRootCalculator _squareRootCalculator;
+    private readonly IDisplayCalculator _displayCalculator; 
 
 
 
@@ -28,8 +30,12 @@ public class CalculatorController
         ICalculatorOperationService operationService,
         CalculatorMenu calculatorMenu,
         CalculationProcessor calculationProcessor,
-        CalculationInputService calculationInputService,
-        SquareRootCalculator squareRootCalculator)
+        ICalculationInputService calculationInputService,
+        SquareRootCalculator squareRootCalculator,
+        IDisplayCalculator displayCalculator
+
+
+        )
     {
         _uiService = uiService;
         _operationService = operationService;
@@ -37,6 +43,7 @@ public class CalculatorController
         _calculationProcessor = calculationProcessor;
         _inputService = calculationInputService;
         _squareRootCalculator = squareRootCalculator;
+        _displayCalculator = displayCalculator;
     }
 
     public void Start()
@@ -73,7 +80,7 @@ public class CalculatorController
         try
         {
             var id = _uiService.GetCalculationIdForUpdate();
-            var calculation = _calculationProcessor.GetCalculationById(id);
+            var calculation = _inputService.GetCalculationById(id);
 
             var currentParameters = new Dictionary<string, double>
             {
@@ -175,7 +182,7 @@ public class CalculatorController
         {
             try
             {
-                _inputService.ClearTable();
+                _displayCalculator.ClearTable();
                 var (operand1, operand2, operatorInput) = _inputService.GetUserInput();
 
                 try
@@ -185,12 +192,12 @@ public class CalculatorController
                     if (isSquareRoot)
                     {
                         var (firstRoot, secondRoot) = _squareRootCalculator.CalculateRoots(operand1, operand2);
-                        _inputService.DisplaySquareRootResults(firstRoot, secondRoot);
+                        _displayCalculator.DisplaySquareRootResults(firstRoot, secondRoot);
                         _uiService.WaitForKeyPress();
                     }
                     else
                     {
-                        _inputService.DisplayResult(result);
+                        _displayCalculator.DisplayResult(result);
                         _uiService.WaitForKeyPress();
                     }
 
@@ -200,26 +207,26 @@ public class CalculatorController
                     var choice = _calculatorMenu.ShowMenuAfterCalc();
                     if (choice == "Calculator Menu") return;
 
-                    _inputService.ClearTable();
+                    _displayCalculator.ClearTable();
                 }
                 catch (DivideByZeroException)
                 {
                     _uiService.ShowError("Cannot divide by zero");
                     _uiService.WaitForKeyPress();
-                    _inputService.ClearTable();
+                    _displayCalculator.ClearTable();
                 }
             }
             catch (ValidationException ex)
             {
                 _uiService.ShowError(ex.Message);
                 _uiService.WaitForKeyPress();
-                _inputService.ClearTable();
+                _displayCalculator.ClearTable();
             }
             catch (InvalidOperationException ex)
             {
                 _uiService.ShowError(ex.Message);
                 _uiService.WaitForKeyPress();
-                _inputService.ClearTable();
+                _displayCalculator.ClearTable();
             }
         }
     }

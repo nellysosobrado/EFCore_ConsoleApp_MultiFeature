@@ -18,6 +18,7 @@ using CalculatorApp.UI;
 using ShapeApp.Interfaces;
 using GameApp.Interfaces;
 using CalculatorApp.Controller;
+using CalculatorApp.Interfaces;
 
 
 namespace StartUp.Config;
@@ -43,10 +44,16 @@ public static class ContainerConfig
         .As<IApplicationDbContext>()
         .InstancePerLifetimeScope();
 
+        builder.RegisterType<CalculatorOperationService>()
+    .AsSelf()  
+    .As<ICalculatorOperationService>(); 
+
+
         //repository
         builder.RegisterType<CalculatorRepository>().AsSelf();
         // Register Calculator Services
-
+        builder.RegisterType<CalculationInputService>().As<ICalculationInputService>();
+        builder.RegisterType<CalculatorTable>().AsSelf().SingleInstance();
         builder.RegisterType<SpectreCalculatorUI>().As<ICalculatorUIService>();
         builder.RegisterType<CalculatorOperationService>().As<ICalculatorOperationService>();
         builder.RegisterType<CalculatorMenu>().AsSelf();
@@ -54,6 +61,7 @@ public static class ContainerConfig
         builder.RegisterType<CalculationInputService>().AsSelf();
         builder.RegisterType<SquareRootCalculator>().AsSelf();
         builder.RegisterType<DisplayCalculator>().As<IDisplayCalculator>();
+       
 
 
         //shape factory
