@@ -22,9 +22,6 @@ public class SaveShapeService : ISaveShapeService
         _shapeFactory = shapeFactory;
     }
     
-
-   
-
     public void SaveShape(ShapeType shapeType, Dictionary<string, double> parameters)
     {
         var shape = _shapeFactory.CreateShape(shapeType);

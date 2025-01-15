@@ -103,7 +103,6 @@ public class ShapeController
 
                 var option = AnsiConsole.Prompt(
                     new SelectionPrompt<ShapeUpdateMenuOptions>()
-                        .Title("[green]What would you like to do next?[/]")
                         .UseConverter(option => option.GetDescription())
                         .AddChoices(Enum.GetValues<ShapeUpdateMenuOptions>()));
 
