@@ -1,24 +1,36 @@
 ﻿using Autofac;
+//GAME
+using GameApp.Controller;
+using GameApp.Services;
+using GameApp.Interfaces;
+
+//CALC
 using CalculatorApp.Services;
 using CalculatorApp.Validators;
-using ClassLibrary.Data;
-using GameApp.Controller;
+using CalculatorApp.UI;
+using CalculatorApp.Controller;
+using CalculatorApp.Interfaces;
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+//Classlibr
+using ClassLibrary.Data;
 using ClassLibrary;
 using ClassLibrary.Repositories.CalculatorAppRepository;
 using ClassLibrary.Repositories.ShapeAppRepository;
+
+//SHAPE
 using ShapeApp.Controllers;
-using GameApp.Services;
 using ShapeApp.Services;
 using ShapeApp.Validators;
-using Microsoft.Extensions.Options;
-using CalculatorApp.UI;
 using ShapeApp.Interfaces;
-using GameApp.Interfaces;
-using CalculatorApp.Controller;
-using CalculatorApp.Interfaces;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+
+
+
+
+
+
 
 
 namespace StartUp.Config;
