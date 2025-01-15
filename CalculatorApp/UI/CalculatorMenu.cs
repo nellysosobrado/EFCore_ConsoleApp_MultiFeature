@@ -44,14 +44,23 @@ public class CalculatorMenu
                 }));
     }
 
-    public string ShowMenuAfterDelete()
+    //public string ShowMenuAfterDelete()
+    //{
+    //    return AnsiConsole.Prompt(
+    //        new SelectionPrompt<string>()
+    //            .AddChoices(new[]
+    //            {
+    //                "Back",
+    //                "Calculator Menu"
+    //            }));
+    //}
+    public DeleteMenuOptions ShowMenuAfterDelete()
     {
         return AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-                .AddChoices(new[]
-                {
-                    "Back",
-                    "Calculator Menu"
-                }));
+            new SelectionPrompt<DeleteMenuOptions>()
+                .Title("[green]What would you like to do next?[/]")
+                .UseConverter(opt => opt.GetDescription())
+                .AddChoices(Enum.GetValues<DeleteMenuOptions>()));
     }
+
 }

@@ -63,6 +63,7 @@ public static class ContainerConfig
         builder.RegisterType<CalculatorDelete>().As<ICalculatorDelete>();
         builder.RegisterType<CalculatorUpdateService>().As<ICalculatorUpdate>();
         builder.RegisterType<CalculatorParser>().As<ICalculatorParser>();
+
        
 
 

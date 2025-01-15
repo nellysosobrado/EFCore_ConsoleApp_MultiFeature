@@ -104,7 +104,6 @@ public class CalculatorController
             try
             {
                 var calculations = _inputService.GetCalculationHistory();
-                _calculatorDisplay.CalculationHistory(calculations, showDeleteButton: true);
 
                 var id = _calculatorDelete.GetCalculationIdForDelete();
                 if (_calculatorDelete.ConfirmDeletion())
@@ -123,15 +122,12 @@ public class CalculatorController
                         continue;
                     }
                 }
-
                 var choice = _calculatorMenu.ShowMenuAfterDelete();
-                switch (choice)
+                if (choice == DeleteMenuOptions.CalculatorMenu)
                 {
-                    case "Back":
-                        continue;
-                    case "Calculator Menu":
-                        return;
+                    return;
                 }
+
             }
             catch (Exception ex)
             {
