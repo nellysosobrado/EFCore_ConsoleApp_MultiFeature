@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using CalculatorApp.Services;
 using CalculatorApp.Validators;
-using CalculatorApp.Controllers;
 using ClassLibrary.Data;
 using GameApp.Controller;
 
@@ -18,6 +17,7 @@ using Microsoft.Extensions.Options;
 using CalculatorApp.UI;
 using ShapeApp.Interfaces;
 using GameApp.Interfaces;
+using CalculatorApp.Controller;
 
 
 namespace StartUp.Config;

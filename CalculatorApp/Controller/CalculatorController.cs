@@ -9,7 +9,7 @@ using CalculatorApp.Enums;
 using ClassLibrary.Extensions;
 
 
-namespace CalculatorApp.Controllers;
+namespace CalculatorApp.Controller;
 
 public class CalculatorController
 {
@@ -17,14 +17,14 @@ public class CalculatorController
     private readonly ICalculatorOperationService _operationService;
     private readonly CalculatorMenu _calculatorMenu;
     private readonly CalculationProcessor _calculationProcessor;
-    private readonly CalculationInputService _inputService; 
+    private readonly CalculationInputService _inputService;
     private readonly SquareRootCalculator _squareRootCalculator;
 
 
 
 
     public CalculatorController(
-        ICalculatorUIService uiService, 
+        ICalculatorUIService uiService,
         ICalculatorOperationService operationService,
         CalculatorMenu calculatorMenu,
         CalculationProcessor calculationProcessor,
@@ -223,7 +223,7 @@ public class CalculatorController
             }
         }
     }
- 
+
     private void CalculationHistory()
     {
         var calculations = _operationService.GetCalculationHistory();

@@ -1,10 +1,10 @@
 ﻿using Autofac;
-using CalculatorApp.Controllers;
 using ShapeApp.Controllers;
 using Spectre.Console;
 using ClassLibrary.Extensions;
 using ClassLibrary.Enums;
 using GameApp.Controller;
+using CalculatorApp.Controller;
 
 namespace StartUp.UI;
 
