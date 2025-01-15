@@ -2,7 +2,6 @@
 
 namespace ClassLibrary.Pagination;
 
-// ClassLibrary/Pagination/Pagination.cs
 
 public class Pagination<T>
 {

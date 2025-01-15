@@ -14,58 +14,83 @@ namespace GameApp.Services
     {
         public void ShowGameResult(Game game, double winPercentage)
         {
+            Console.Clear();
+
+            var table = new Table()
+                .Border(TableBorder.Rounded)
+                .AddColumn("Player Move")
+                .AddColumn("Computer Move")
+                .AddColumn("Result");
+
             var resultColor = game.Winner switch
             {
-                "Player" => "green",
-                "Computer" => "red",
+                "Win" => "green",
+                "Loss" => "red",
                 _ => "yellow"
             };
 
-            AnsiConsole.MarkupLine($"\nYour move: [blue]{game.PlayerMove}[/]");
-            AnsiConsole.MarkupLine($"Computer's move: [blue]{game.ComputerMove}[/]");
-            AnsiConsole.MarkupLine($"Winner: [{resultColor}]{game.Winner}[/]");
-            AnsiConsole.MarkupLine($"Current win percentage: [cyan]{winPercentage:F2}%[/]");
-            AnsiConsole.MarkupLine($"Average win rate: [cyan]{game.AverageWinRate:F2}%[/]");
+            table.AddRow(
+                game.PlayerMove.ToString(),
+                game.ComputerMove.ToString(),
+                $"[{resultColor}]{game.Winner}[/]"
+            );
+
+            AnsiConsole.Write(table);
+            AnsiConsole.MarkupLine($"\nWin Rate (all games): [blue]{winPercentage:F1}%[/]");
         }
-        public void ShowGameHistory(IEnumerable<Game> games)
+
+        public void HandleGameError(Exception ex)
         {
-            var pagination = new Pagination<Game>(games, pageSize: 5);
+            AnsiConsole.MarkupLine($"[red]Error: {ex.Message}[/]");
+            AnsiConsole.MarkupLine("[grey]Press any key to continue...[/]");
+            Console.ReadKey(true);
+        }
+        public void ShowGameHistory(IEnumerable<Game> history)
+        {
+            var pagination = new Pagination<Game>(history, pageSize: 5);
 
             while (true)
             {
                 Console.Clear();
                 var table = new Table()
                     .Border(TableBorder.Rounded)
-                    .AddColumn(new TableColumn("[yellow]Date[/]").Centered())
-                    .AddColumn(new TableColumn("[blue]Your Move[/]").Centered())
-                    .AddColumn(new TableColumn("[blue]Computer's Move[/]").Centered())
-                    .AddColumn(new TableColumn("[green]Winner[/]").Centered())
-                    .AddColumn(new TableColumn("[cyan]Avg Win Rate[/]").Centered());
+                    .AddColumn(new TableColumn("[yellow]ID[/]").Centered())
+                    .AddColumn(new TableColumn("[green]Date[/]").Centered())
+                    .AddColumn(new TableColumn("[blue]Player[/]").Centered())
+                    .AddColumn(new TableColumn("[cyan]Computer[/]").Centered())
+                    .AddColumn(new TableColumn("[magenta]Result[/]").Centered());
 
                 foreach (var game in pagination.GetCurrentPage())
                 {
                     var resultColor = game.Winner switch
                     {
-                        "Player" => "green",
-                        "Computer" => "red",
+                        "Win" => "green",
+                        "Loss" => "red",
                         _ => "yellow"
                     };
 
                     table.AddRow(
-                        game.GameDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                        game.PlayerMove.ToString(),
-                        game.ComputerMove.ToString(),
-                        $"[{resultColor}]{game.Winner}[/]",
-                        $"{game.AverageWinRate:F2}%"
+                        $"[white]{game.Id}[/]",
+                        $"[white]{game.GameDate:yyyy-MM-dd HH:mm:ss}[/]",
+                        $"[white]{game.PlayerMove}[/]",
+                        $"[white]{game.ComputerMove}[/]",
+                        $"[{resultColor}]{game.Winner}[/]"
                     );
                 }
 
                 AnsiConsole.Write(table);
 
-                var choice = PaginationRenderer.ShowPaginationControls(pagination);
+                var currentWinRate = history.Any()
+                    ? history.First().AverageWinRate
+                    : 0;
 
+                AnsiConsole.MarkupLine($"\nWin Rate (all games): [blue]{currentWinRate:F1}%[/]");
+
+                var choice = PaginationRenderer.ShowPaginationControls(pagination);
                 if (choice == "Back to Menu")
+                {
                     break;
+                }
             }
         }
     }

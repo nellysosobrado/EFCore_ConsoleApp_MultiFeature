@@ -1,24 +1,28 @@
 ﻿using Autofac;
+//GAME
+using GameApp.Controller;
+using GameApp.Services;
+using GameApp.Interfaces;
+
+//CALC
 using CalculatorApp.Services;
 using CalculatorApp.Validators;
-using CalculatorApp.Controllers;
-using ClassLibrary.Data;
-using GameApp.Controller;
+using CalculatorApp.UI;
+using CalculatorApp.Controller;
+using CalculatorApp.Interfaces;
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+//Classlibr
+using ClassLibrary.Data;
 using ClassLibrary;
 using ClassLibrary.Repositories.CalculatorAppRepository;
 using ClassLibrary.Repositories.ShapeAppRepository;
+
+//SHAPE
 using ShapeApp.Controllers;
-using GameApp.Services;
 using ShapeApp.Services;
 using ShapeApp.Validators;
-using Microsoft.Extensions.Options;
-using CalculatorApp.UI;
 using ShapeApp.Interfaces;
 using GameApp.Interfaces;
-using ClassLibrary.Repositories.RpsGameRepository;
 
 
 
@@ -69,9 +73,10 @@ public static class ContainerConfig
 
        
 
-
+        //SHAPE ======================
         //shape factory
         builder.RegisterType<ShapeFactory>().AsSelf();
+        builder.RegisterType<ShapeFactory>().As<IShapeFactory>();
 
         // Register Shape Services
         builder.RegisterType<ShapeRepository>().AsSelf();
@@ -82,25 +87,28 @@ public static class ContainerConfig
         builder.RegisterType<ErrorService>().As<IErrorService>();
         builder.RegisterType<InputService>().As<IInputService>();
 
-        // Register Controllers
+        //Calculators ======================
+
+        //  Controllers
         builder.RegisterType<CalculatorController>().AsSelf();
         builder.RegisterType<ShapeController>().AsSelf();
         builder.RegisterType<GameController>().AsSelf();
 
-        // Register Validators
+        // Validators
         builder.RegisterType<CalculatorValidator>().AsSelf();
         builder.RegisterType<InputValidator>().AsSelf();
         builder.RegisterType<ShapeValidator>().AsSelf();
 
-        // Register Game Services
+        //RpsGame ======================
+
+        //Services
         builder.RegisterType<GameService>().As<IGameService>();
         builder.RegisterType<PlayerInput>().As<IPlayerInput>();
         builder.RegisterType<PlayGame>().As<IPlayGame>();
         builder.RegisterType<GameError>().As<IGameError>();
         builder.RegisterType<DisplayRspGame>().As<IDisplayRspGame>();
-
-        // Registrera ShapeFactory
-        builder.RegisterType<ShapeFactory>().As<IShapeFactory>();
+        builder.RegisterType<RpsGameRepository>().AsSelf();
+   
 
 
         return builder.Build();

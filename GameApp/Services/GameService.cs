@@ -1,19 +1,18 @@
 ﻿using ClassLibrary.Models;
 using ClassLibrary.Enums;
-using ClassLibrary;
+using ClassLibrary.Repositories.RpsGameRepository;
 using GameApp.Interfaces;
 
 namespace GameApp.Services;
 
 public class GameService : IGameService
 {
-    private readonly IApplicationDbContext _context;
-    private readonly Random _random;
+    private readonly RpsGameRepository _repository;
+    private readonly Random _random = new();
 
-    public GameService(IApplicationDbContext context)
+    public GameService(RpsGameRepository repository)
     {
-        _context = context;
-        _random = new Random();
+        _repository = repository;
     }
 
     public GameMove GetComputerMove()
@@ -28,47 +27,26 @@ public class GameService : IGameService
 
         return (playerMove, computerMove) switch
         {
-            (GameMove.Rock, GameMove.Scissors) => "Player",
-            (GameMove.Paper, GameMove.Rock) => "Player",
-            (GameMove.Scissors, GameMove.Paper) => "Player",
-            _ => "Computer"
+            (GameMove.Rock, GameMove.Scissors) => "Win",
+            (GameMove.Paper, GameMove.Rock) => "Win",
+            (GameMove.Scissors, GameMove.Paper) => "Win",
+            _ => "Loss"
         };
     }
 
     public void SaveGame(Game game)
     {
-        var totalGames = _context.Games.Count();
-        var playerWins = _context.Games.Count(g => g.Winner == "Player");
-
-        if (totalGames == 0)
-        {
-            game.AverageWinRate = game.Winner == "Player" ? 100.0 : 0.0;
-        }
-        else
-        {
-            if (game.Winner == "Player")
-                playerWins++;
-
-            game.AverageWinRate = (double)playerWins / (totalGames + 1) * 100;
-        }
-
-        _context.Games.Add(game);
-        _context.SaveChanges();
+        game.AverageWinRate = CalculateWinPercentage();
+        _repository.AddGame(game);
     }
 
     public IEnumerable<Game> GetGameHistory()
     {
-        return _context.Games
-            .OrderByDescending(g => g.GameDate)
-            .ToList();
+        return _repository.GetAllGames();
     }
 
     public double CalculateWinPercentage()
     {
-        var totalGames = _context.Games.Count();
-        if (totalGames == 0) return 0;
-
-        var wins = _context.Games.Count(g => g.Winner == "Player");
-        return (double)wins / totalGames * 100;
+        return _repository.CalculateWinPercentage();
     }
 }
