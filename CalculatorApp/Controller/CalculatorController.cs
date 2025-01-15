@@ -86,44 +86,13 @@ public class CalculatorController
 
             _calculatorUpdate.ProcessAndSaveCalculation(updatedCalc);
             _calculatorUpdate.DisplayResults(updatedCalc);
-            HandleAfterUpdateChoice();
+            _calculatorMenu.ShowMenuAfterUpdate();
         }
         catch (Exception ex)
         {
             HandleError(ex);
         }
     }
-    private void HandleAfterUpdateChoice()
-    {
-        Console.Clear();
-        var choice = AnsiConsole.Prompt(
-            new SelectionPrompt<CalculatorMenuOptions>()
-                .Title("[yellow]What would you like to do next?[/]")
-                .UseConverter(opt => opt.GetDescription())
-                .AddChoices(Enum.GetValues<CalculatorMenuOptions>()));
-
-        switch (choice)
-        {
-            case CalculatorMenuOptions.Calculate:
-                UpdateCalculation();
-                break;
-            case CalculatorMenuOptions.History:
-                CalculationHistory();
-                break;
-            case CalculatorMenuOptions.UpdateCalculation:
-                UpdateCalculation();
-                break;
-            case CalculatorMenuOptions.DeleteCalculation:
-                DeleteCalculation();
-                break;
-            case CalculatorMenuOptions.MainMenu:
-                return;
-            default:
-                _uiService.ShowError("Invalid choice. Returning to calculator menu...");
-                break;
-        }
-    }
-
     private void HandleError(Exception ex)
     {
         Console.ForegroundColor = ConsoleColor.Red;
@@ -134,19 +103,7 @@ public class CalculatorController
         _calculatorMenu.ShowMainMenu();
     }
 
-    //private string GetOperatorSymbol(CalculatorOperator op)
-    //{
-    //    return op switch
-    //    {
-    //        CalculatorOperator.Add => "+",
-    //        CalculatorOperator.Subtract => "-",
-    //        CalculatorOperator.Multiply => "*",
-    //        CalculatorOperator.Divide => "/",
-    //        CalculatorOperator.Modulus => "%",
-    //        CalculatorOperator.SquareRoot => "√",
-    //        _ => throw new InvalidOperationException("Invalid operator")
-    //    };
-    //}
+  
     private void DeleteCalculation()
     {
         while (true)
