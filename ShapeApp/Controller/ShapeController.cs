@@ -32,7 +32,7 @@ public class ShapeController
         _inputService = inputService;
     }
 
-    public void Start()
+    public void ShapeAppMenu()
     {
 
         while (true)

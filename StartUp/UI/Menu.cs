@@ -71,7 +71,7 @@ public class Menu
         using (var scope = _container.BeginLifetimeScope())
         {
             var shapeController = scope.Resolve<ShapeController>();
-            shapeController.Start();
+            shapeController.ShapeAppMenu();
         }
     }
     private void StartGame()
