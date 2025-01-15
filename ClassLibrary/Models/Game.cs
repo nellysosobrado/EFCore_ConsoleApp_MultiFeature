@@ -1,14 +1,26 @@
-﻿using ClassLibrary.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using ClassLibrary.Enums;
 
 namespace ClassLibrary.Models;
 
 public class Game
 {
+    [Key]
     public int Id { get; set; }
+
+    [Required]
     public GameMove PlayerMove { get; set; }
+
+    [Required]
     public GameMove ComputerMove { get; set; }
+
+    [Required]
     public string Winner { get; set; } = string.Empty;
+
     public double AverageWinRate { get; set; }
-    public DateTime GameDate { get; set; }
+
+    [Required]
+    public DateTime GameDate { get; set; } = DateTime.Now;
+
+
 }

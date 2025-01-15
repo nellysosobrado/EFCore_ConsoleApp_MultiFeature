@@ -18,6 +18,7 @@ using Microsoft.Extensions.Options;
 using CalculatorApp.UI;
 using ShapeApp.Interfaces;
 using GameApp.Interfaces;
+using ClassLibrary.Repositories.RpsGameRepository;
 
 
 namespace StartUp.Config;
@@ -54,9 +55,10 @@ public static class ContainerConfig
         builder.RegisterType<CalculationInputService>().AsSelf();
         builder.RegisterType<SquareRootCalculator>().AsSelf();
 
-
+        //SHAPE ======================
         //shape factory
         builder.RegisterType<ShapeFactory>().AsSelf();
+        builder.RegisterType<ShapeFactory>().As<IShapeFactory>();
 
         // Register Shape Services
         builder.RegisterType<ShapeRepository>().AsSelf();
@@ -67,25 +69,28 @@ public static class ContainerConfig
         builder.RegisterType<ErrorService>().As<IErrorService>();
         builder.RegisterType<InputService>().As<IInputService>();
 
-        // Register Controllers
+        //Calculators ======================
+
+        //  Controllers
         builder.RegisterType<CalculatorController>().AsSelf();
         builder.RegisterType<ShapeController>().AsSelf();
         builder.RegisterType<GameController>().AsSelf();
 
-        // Register Validators
+        // Validators
         builder.RegisterType<CalculatorValidator>().AsSelf();
         builder.RegisterType<InputValidator>().AsSelf();
         builder.RegisterType<ShapeValidator>().AsSelf();
 
-        // Register Game Services
+        //RpsGame ======================
+
+        //Services
         builder.RegisterType<GameService>().As<IGameService>();
         builder.RegisterType<PlayerInput>().As<IPlayerInput>();
         builder.RegisterType<PlayGame>().As<IPlayGame>();
         builder.RegisterType<GameError>().As<IGameError>();
         builder.RegisterType<DisplayRspGame>().As<IDisplayRspGame>();
-
-        // Registrera ShapeFactory
-        builder.RegisterType<ShapeFactory>().As<IShapeFactory>();
+        builder.RegisterType<RpsGameRepository>().AsSelf();
+   
 
 
         return builder.Build();

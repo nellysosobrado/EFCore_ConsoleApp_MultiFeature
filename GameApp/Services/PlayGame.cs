@@ -1,56 +1,45 @@
 ﻿using GameApp.Interfaces;
-using Spectre.Console;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ClassLibrary.Models;
 
-namespace GameApp.Services
+namespace GameApp.Services;
+
+public class PlayGame : IPlayGame
 {
-    public class PlayGame : IPlayGame
+    private readonly IGameService _gameService;
+    private readonly IPlayerInput _uiService;
+    private readonly IDisplayRspGame _displayGame;
+
+    public PlayGame(
+        IGameService gameService,
+        IPlayerInput uiService,
+        IDisplayRspGame displayGame)
     {
-        private readonly IGameService _gameService;
-        private readonly IPlayerInput _uiService;
-        private readonly IDisplayRspGame _displayGame;
+        _gameService = gameService;
+        _uiService = uiService;
+        _displayGame = displayGame;
+    }
 
-        public PlayGame(
-            IGameService gameService,
-            IPlayerInput uiService, 
-            IDisplayRspGame displayGame)
+    public Game CreateGame()
+    {
+        var playerMove = _uiService.GetPlayerMove();
+        var computerMove = _gameService.GetComputerMove();
+        var winner = _gameService.DetermineWinner(playerMove, computerMove);
+
+        return new Game
         {
-            _gameService = gameService;
-            _uiService = uiService;
-            _displayGame = displayGame;
-        }
+            PlayerMove = playerMove,
+            ComputerMove = computerMove,
+            Winner = winner,
+            GameDate = DateTime.Now
+        };
+    }
 
-
-
-        public Game CreateGame()
-        {
-            var playerMove = _uiService.GetPlayerMove();
-            var computerMove = _gameService.GetComputerMove();
-            var winner = _gameService.DetermineWinner(playerMove, computerMove);
-
-            return new Game
-            {
-                PlayerMove = playerMove,
-                ComputerMove = computerMove,
-                Winner = winner,
-                GameDate = DateTime.Now
-            };
-        }
-
-        public void ProcessGameResult(Game game)
-        {
-            _gameService.SaveGame(game);
-            var winPercentage = _gameService.CalculateWinPercentage();
-            _displayGame.ShowGameResult(game, winPercentage);
-            _uiService.WaitForKeyPress();
-        }
-
-       
-       
+    public void ProcessGameResult(Game game)
+    {
+        _gameService.SaveGame(game);
+        var winPercentage = _gameService.CalculateWinPercentage();
+        game.AverageWinRate = winPercentage;
+        _displayGame.ShowGameResult(game, winPercentage);
+        _uiService.WaitForKeyPress();
     }
 }
