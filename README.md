@@ -1,7 +1,7 @@
 # Project 1: .NET Console App
 
 ## Introduction
-This project is a **console application** built using the **Entity Framework Code First approach**. The goal of the project is to create an application that handles several features, including:
+This project is a **console application** built using the **Entity Framework Code First approach**. The goal of the project is to create an application that handles several features, using same sql database:
 
 - Geometric shape calculations
 - A calculator
@@ -18,9 +18,8 @@ The application is designed with a focus on Object-Oriented Programming (OOP) an
   - Input parameters for different shapes such as rectangles, triangles, parallelograms, and rhombuses.
   - Calculate and save the area and perimeter to the database.
   - Seed initial data for each shape.
-  - Use CRUD operations to add, update, delete, and view existing shapes.
+  - Use CRUD operations to add, update, soft-delete, and display existing shapes.
 - All shapes are saved to the database along with the date the calculation was performed.
-- The application returns to the main menu after each calculation.
 
 #### Techniques and Design:
 - **Error Handling**:
@@ -33,14 +32,14 @@ The application is designed with a focus on Object-Oriented Programming (OOP) an
 ### **Part 2: Calculator**
 - Features:
   - Support for arithmetic operations: addition, subtraction, multiplication, division, square root, and modulus.
-  - Results are displayed with two decimal places if necessary.
-  - Calculations are saved in a separate table with inputs, operator, result, and date.
+  - Results are displayed with two decimal
+  - Calculations are saved in a separate sql database table with inputs, operator, result,date and soft-delete (isdeleted)
   - CRUD operations are available for saved calculations.
-- The application loops until the user chooses to exit.
 
 #### Techniques and Design:
 - **Error Handling**:
-  - Validation of input numbers and operators using Spectre.Console.
+  - Validation of input numbers and operators using Spectre.Console and FluentValidation.
+  -  Errors are caught using **try-catch** blocks.
 - **Design Patterns**:
   - **Strategy Pattern** to manage different operations.
   - **Service Pattern** to separate business logic from the UI.
@@ -50,7 +49,6 @@ The application is designed with a focus on Object-Oriented Programming (OOP) an
   - Play against the computer and save results (win, loss, draw) along with the date.
   - Calculate the average win percentage based on all past games.
   - View a list of previous games, including the player’s choice, the computer’s choice, the result, and the date.
-- CRUD is not necessary for this part, but a list of results (R) is available.
 
 #### Techniques and Design:
 - **Design Patterns**:
