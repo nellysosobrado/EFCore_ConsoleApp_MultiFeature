@@ -53,7 +53,7 @@ public class ShapeController
                         CalculateShape();
                         break;
                     case ShapeMenuOptions.ViewHistory:
-                        ShowShapes();
+                        ShapeHistory();
                         break;
                     case ShapeMenuOptions.UpdateCalculation:
                         UpdateShape();
@@ -86,7 +86,7 @@ public class ShapeController
         _shapeDisplay.ShowResult(latestShape);
     }
 
-    private void ShowShapes()
+    private void ShapeHistory()
     {
         var shapes = _shapeDisplay.GetShapeHistory();
         _shapeDisplay.ShowShapes(shapes);
