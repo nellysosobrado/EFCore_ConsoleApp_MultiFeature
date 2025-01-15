@@ -98,7 +98,7 @@ public class CalculatorController
         Console.Clear();
         var choice = AnsiConsole.Prompt(
             new SelectionPrompt<CalculatorMenuOptions>()
-                .Title("[green]What would you like to do next?[/]")
+                .Title("[yellow]What would you like to do next?[/]")
                 .UseConverter(opt => opt.GetDescription())
                 .AddChoices(Enum.GetValues<CalculatorMenuOptions>()));
 
