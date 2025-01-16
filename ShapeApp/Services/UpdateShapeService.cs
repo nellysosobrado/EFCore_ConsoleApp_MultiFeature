@@ -5,6 +5,7 @@ using ShapeApp.Interfaces;
 using ShapeApp.Validators;
 using Spectre.Console;
 using FluentValidation;
+using System;
 
 namespace ShapeApp.Services;
 
@@ -62,12 +63,14 @@ public class UpdateShapeService : IUpdateShapeService
     }
     public int GetShapeIdForUpdate()
     {
+        Console.Clear();
         return AnsiConsole.Prompt(
             new TextPrompt<int>("[green]Enter the ID of the shape to update:[/]")
                 .ValidationErrorMessage("[red]Please enter a valid ID[/]"));
     }
     public bool ShouldChangeShapeType()
     {
+        Console.Clear();
         return AnsiConsole.Prompt(
             new ConfirmationPrompt("Do you want to change the shape type?")
                 .ShowChoices()
@@ -75,6 +78,7 @@ public class UpdateShapeService : IUpdateShapeService
     }
     public Dictionary<string, double> GetSelectedParametersToUpdate(Dictionary<string, double> currentParameters)
     {
+        Console.Clear();
         var updatedParameters = new Dictionary<string, double>();
 
         AnsiConsole.MarkupLine("[blue]Current parameters:[/]");
@@ -85,6 +89,7 @@ public class UpdateShapeService : IUpdateShapeService
 
         foreach (var param in currentParameters)
         {
+            
             if (AnsiConsole.Prompt(
                 new ConfirmationPrompt($"Do you want to update {param.Key}?")
                     .ShowChoices()
