@@ -6,7 +6,7 @@ namespace GameApp.Services;
 public class PlayGame : IPlayGame
 {
     private readonly IGameService _gameService;
-    private readonly IPlayerInput _uiService;
+    private readonly IPlayerInput _playerInput;
     private readonly IDisplayRspGame _displayGame;
 
     public PlayGame(
@@ -15,13 +15,13 @@ public class PlayGame : IPlayGame
         IDisplayRspGame displayGame)
     {
         _gameService = gameService;
-        _uiService = uiService;
+        _playerInput = uiService;
         _displayGame = displayGame;
     }
 
     public Game CreateGame()
     {
-        var playerMove = _uiService.GetPlayerMove();
+        var playerMove = _playerInput.GetPlayerMove();
         var computerMove = _gameService.GetComputerMove();
         var winner = _gameService.DetermineWinner(playerMove, computerMove);
 
@@ -40,6 +40,6 @@ public class PlayGame : IPlayGame
         var winPercentage = _gameService.CalculateWinPercentage();
         game.AverageWinRate = winPercentage;
         _displayGame.ShowGameResult(game, winPercentage);
-        _uiService.WaitForKeyPress();
+        _playerInput.WaitForKeyPress();
     }
 }

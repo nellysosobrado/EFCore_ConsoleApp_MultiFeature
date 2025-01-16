@@ -34,7 +34,7 @@ public class GameController
             Console.Clear();
             var option = AnsiConsole.Prompt(
                 new SelectionPrompt<GameMenuOptions>()
-                    .Title("[green]Rock Paper Scissors Menu[/]")
+                    .Title("[italic yellow]Rock Paper Scissors Menu[/]")
                     .UseConverter(option => option.GetDescription())
                     .AddChoices(Enum.GetValues<GameMenuOptions>()));
 
