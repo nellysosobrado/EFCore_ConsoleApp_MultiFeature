@@ -9,7 +9,7 @@ This project is mulit project, **console application** built using the **Entity 
 - Classlibrary project
 - Data acces Layer project
 
-The application is designed with a focus on Object-Oriented Programming (OOP) and is built using modern software development principles such as **Dependency Injection**, **DRY**, and **Design Patterns**. All features fulfill the requirements outlined in the project description.
+The application is designed with a focus on Object-Oriented Programming (OOP) and is built using modern software development principles such as **Dependency Injection**, **DRY**, and **Design Patterns**. 
 
 ---
 
