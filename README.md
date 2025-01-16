@@ -3,9 +3,11 @@
 ## Introduction
 This project is mulit project, **console application** built using the **Entity Framework with Code First approach**. The goal of the project is to create an application that handles several features, using same sql database. :
 
-- Geometric shape calculations
-- A calculator
-- A Rock, Paper, Scissors game
+- Geometric shape calculations project
+- A calculator project
+- A Rock, Paper, Scissors game project
+- Classlibrary project
+- Data acces Layer project
 
 The application is designed with a focus on Object-Oriented Programming (OOP) and is built using modern software development principles such as **Dependency Injection**, **DRY**, and **Design Patterns**. All features fulfill the requirements outlined in the project description.
 
