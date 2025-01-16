@@ -25,7 +25,7 @@ public class Menu
             Console.Clear();
             var option = AnsiConsole.Prompt(
                 new SelectionPrompt<MenuOptions>()
-                    .Title("[italic yellow]Project 1:[/]")
+                    .Title("[italic yellow]Project 1[/]")
                     .UseConverter(option => option.GetDescription())
                     .AddChoices(Enum.GetValues<MenuOptions>()));
 

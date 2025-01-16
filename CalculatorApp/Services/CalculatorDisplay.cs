@@ -3,6 +3,7 @@ using System.Globalization;
 
 using CalculatorApp.UI;
 using ClassLibrary.Enums.CalculatorAppEnums.CalculatorEnums;
+using ClassLibrary.Models;
 
 namespace CalculatorApp.Services;
 
@@ -66,7 +67,7 @@ public class CalculatorDisplay : ICalculatorDisplay
             table.AddRow(
                 $"√{operand1}",
                 $"{Math.Round(result, 2)}",
-                isDeleted ? "[red]Deleted[/]" : "[green]Not Deleted[/]"
+                isDeleted ? "[red]Deleted[/]" : "[grey]Not Deleted[/]"
             );
             table.AddRow(
                 $"√{operand2}",
@@ -79,7 +80,7 @@ public class CalculatorDisplay : ICalculatorDisplay
             table.AddRow(
                 $"{operand1} {operatorSymbol} {operand2}",
                 $"{Math.Round(result, 2)}",
-                isDeleted ? "[red]Deleted[/]" : "[green]Not Deleted[/]"
+                isDeleted ? "[red]Deleted[/]" : "[grey]Not Deleted[/]"
             );
         }
         AnsiConsole.Write(table);
@@ -123,7 +124,7 @@ public class CalculatorDisplay : ICalculatorDisplay
             .AddColumn(new TableColumn("[blue]Calculation[/]").Centered())
             .AddColumn(new TableColumn("[magenta]Result[/]").Centered())
             .AddColumn(new TableColumn("[cyan]Status[/]").Centered())
-            .AddColumn(new TableColumn("[red]Deleted At[/]").Centered());
+            .AddColumn(new TableColumn("[grey]Deleted At[/]").Centered());
 
         var pageCalculations = calculations
             .Skip((page - 1) * PageSize)
@@ -141,8 +142,7 @@ public class CalculatorDisplay : ICalculatorDisplay
                     $"[white]{calc.CalculationDate}[/]",
                     $"[white]{expression}[/]",
                     $"[white]{calc.Result}, {Math.Round(secondResult, 2)}[/]",
-                    calc.IsDeleted ? "[red]Deleted[/]" : "[green]Not Deleted[/]",
-                    calc.IsDeleted ? $"[white]{calc.DeletedAt}[/]" : "-"
+                    $"[grey]{calc.DeletedAt:yyyy-MM-dd HH:mm:ss}[/]"
                 );
             }
             else
@@ -153,8 +153,8 @@ public class CalculatorDisplay : ICalculatorDisplay
                     $"[white]{calc.CalculationDate}[/]",
                     $"[white]{expression}[/]",
                     $"[white]{calc.Result}[/]",
-                    calc.IsDeleted ? "[red]Deleted[/]" : "[green]Not Deleted[/]",
-                    calc.IsDeleted ? $"[white]{calc.DeletedAt}[/]" : "-"
+                   calc.IsDeleted ? "[red]Deleted[/]" : "[grey]Not Deleted[/]",
+                    $"[grey]{calc.DeletedAt:yyyy-MM-dd HH:mm:ss}[/]"
                 );
             }
         }

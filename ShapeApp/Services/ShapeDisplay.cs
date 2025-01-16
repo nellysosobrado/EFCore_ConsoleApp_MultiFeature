@@ -101,13 +101,14 @@ namespace ShapeApp.Services
                     .AddColumn(new TableColumn("[cyan]Parameters[/]").LeftAligned())
                     .AddColumn(new TableColumn("[magenta]Area[/]").Centered())
                     .AddColumn(new TableColumn("[red]Perimeter[/]").Centered())
-                    .AddColumn(new TableColumn("[grey]Status[/]").Centered());
+                    .AddColumn(new TableColumn("[grey]Status[/]").Centered())
+                    .AddColumn(new TableColumn("[grey]Deleted at[/]").Centered());
 
                 foreach (var shape in pagination.GetCurrentPage())
                 {
                     var parameters = GetParametersString(shape);
-                    var statusColor = shape.IsDeleted ? "red" : "green";
-                    var status = shape.IsDeleted ? "Deleted" : "Active";
+                    var statusColor = shape.IsDeleted ? "red" : "grey";
+                    var status = shape.IsDeleted ? "Deleted" : "Not Deleted";
 
                     table.AddRow(
                         $"[white]{shape.Id}[/]",
@@ -116,7 +117,10 @@ namespace ShapeApp.Services
                         $"[white]{parameters}[/]",
                         $"[white]{shape.Area:F2}[/]",
                         $"[white]{shape.Perimeter:F2}[/]",
-                        $"[{statusColor}]{status}[/]"
+                        $"[{statusColor}]{status}[/]",
+                        $"[grey]{shape.DeletedAt:yyyy-MM-dd HH:mm:ss}[/]"
+
+
                     );
                 }
 
