@@ -81,6 +81,7 @@ public class CalculatorController
             var choice = _calculatorMenu.ShowMenuAfterUpdate();
             if (choice == UpdateMenuOptions.UpdateAgain)
             {
+                //Console.Clear();
                 UpdateCalculation();
             }
         }

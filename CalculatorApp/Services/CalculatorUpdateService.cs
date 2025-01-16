@@ -100,7 +100,7 @@ namespace CalculatorApp.Services
                     continue;
                 }
 
-                var newValue = _calculatorDisplay.GetNumberInput($"Enter new value for {choice}");
+                var newValue = _calculatorDisplay.GetNumberInput($"{choice}");
                 updatedParameters[choice] = newValue;
             }
         }
@@ -134,7 +134,6 @@ namespace CalculatorApp.Services
         {
             UpdateCalculation(id, operand1, operand2, calculatorOperator);
         }
-        //
         public Calculator GetUpdatedCalculationValues(int id)
         {
             var calculation = _calculatorRepository.GetCalculationById(id);
