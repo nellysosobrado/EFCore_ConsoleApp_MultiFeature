@@ -1,7 +1,7 @@
 # Project 1: .NET Console App
 
 ## Introduction
-This project is a **console application** built using the **Entity Framework Code First approach**. The goal of the project is to create an application that handles several features, using same sql database:
+This project is mulit project, **console application** built using the **Entity Framework with Code First approach**. The goal of the project is to create an application that handles several features, using same sql database. :
 
 - Geometric shape calculations
 - A calculator
