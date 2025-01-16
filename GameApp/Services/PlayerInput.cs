@@ -10,11 +10,17 @@ public class PlayerInput : IPlayerInput
 {
     public GameMove GetPlayerMove()
     {
-        return AnsiConsole.Prompt(
-            new SelectionPrompt<GameMove>()
-                .Title("[green]Choose your move:[/]")
-                .AddChoices(Enum.GetValues<GameMove>()));
+        var prompt = new SelectionPrompt<GameMove>()
+            .Title("[yellow italic]Choose your move:[/]")
+            .AddChoices(Enum.GetValues<GameMove>())
+            .UseConverter(move =>
+            {
+                return $"{move}\n{move.GetAsciiArt()}";
+            });
+
+        return AnsiConsole.Prompt(prompt);
     }
+
     public bool ShouldPlayAgain()
     {
         Console.Clear();

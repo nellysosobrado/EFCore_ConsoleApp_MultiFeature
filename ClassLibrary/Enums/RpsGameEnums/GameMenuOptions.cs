@@ -4,7 +4,7 @@ namespace ClassLibrary.Enums.RpsGameEnums;
 
 public enum GameMenuOptions
 {
-    [Description("Play Game")]
+    [Description("Play Game Against Computer")]
     PlayGame,
 
     [Description("View History")]
