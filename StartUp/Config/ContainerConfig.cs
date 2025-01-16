@@ -111,6 +111,10 @@ public static class ContainerConfig
         builder.RegisterType<GameError>().As<IGameError>();
         builder.RegisterType<DisplayRspGame>().As<IDisplayRspGame>();
         builder.RegisterType<RpsGameRepository>().AsSelf();
+
+
+        //shape seeding
+        builder.RegisterType<InitialSeedData>().AsSelf();
    
 
 

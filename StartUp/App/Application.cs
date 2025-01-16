@@ -38,7 +38,9 @@ public class Application
             dbContext.Database.EnsureCreated();
             if (dbContext.Database.CanConnect())
             {
-                scope.Resolve<ShapeRepository>().SeedData();
+                scope.Resolve<InitialSeedData>().SeedData();
+                Console.WriteLine("Database connection established.");
+                Console.ReadLine(); 
             }
             else
             {
