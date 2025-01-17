@@ -42,15 +42,11 @@ This multi-project console application is built using Entity Framework Core with
    ```bash
    git clone https://github.com/<your-repo-name>.git
    ```
-5. Create the database:
-   ```bash
-   dotnet ef database update
-   ```
- 5. Set 'StartUp' Project as startup project:
+2. Set 'StartUp' Project as startup project:
    ```
    Right click 'Startup' Project. Click 'Set as startup project'
    ```
-6. Run the application:
+3. Run the application:
    ``` Visual Studio
    F5
    ```
