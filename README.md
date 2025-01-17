@@ -1,102 +1,125 @@
-# Project 1: .NET Console App
+# **Project 1: Console App with EF Core**
 
-## Introduction
-This project is mulit project, **console application** built using the **Entity Framework with Code First approach**. The goal of the project is to create an application that handles several features, using same sql database. :
-
-- Geometric shape calculations project
-- A calculator project
-- A Rock, Paper, Scissors game project
-- Classlibrary project
-- Data acces Layer project
-
-The application is designed with a focus on Object-Oriented Programming (OOP) and is built using modern software development principles such as **Dependency Injection**, **DRY**, and **Design Patterns**. 
+## **Table of Contents**
+1. [Project Description](#project-description)
+2. [Technologies](#technologies)
+3. [Features](#features)
+4. [Installation](#installation)
+5. [Architecture and Design Patterns](#architecture-and-design-patterns)
+6. [Design Patterns](#design-patterns)
+7. [Lessons Learned and Reflections](#lessons-learned-and-reflections)
 
 ---
 
-## Features
+## **Project Description**
+This project was developed as part of the *Database Technology* course. The goal is to build a Console App that handles three different modules:
+1. **ShapeApp** – Calculates area and perimeter for various geometric shapes.
+2. **CalculatorApp** – A calculator that performs basic mathematical operations.
+3. **RPSGameApp** – A rock-paper-scissors game against the computer, with results and statistics stored in a database.
 
-### **Part 1: Shapes**
-- Users can:
-  - Input parameters for different shapes such as rectangles, triangles, parallelograms, and rhombuses.
-  - Calculate and save the area and perimeter to the database.
-  - Seed initial data for each shape.
-  - Use CRUD operations to add, update, soft-delete, and display existing shapes.
-- All shapes are saved to the database along with the date the calculation was performed.
-
-#### Techniques and Design:
-- **Error Handling**:
-  - Invalid inputs are handled with **FluentValidation** and Spectre.Console.
-  - Errors are caught using **try-catch** blocks.
-- **Design Patterns**:
-  - **Strategy Pattern** to handle different shapes and their calculation logic.
-  - **Repository Pattern** for database access.
-
-### **Part 2: Calculator**
-- Features:
-  - Support for arithmetic operations: addition, subtraction, multiplication, division, square root, and modulus.
-  - Results are displayed with two decimal
-  - Calculations are saved in a separate sql database table with inputs, operator, result,date and soft-delete (isdeleted)
-  - CRUD operations are available for saved calculations.
-
-#### Techniques and Design:
-- **Error Handling**:
-  - Validation of input numbers and operators using Spectre.Console and FluentValidation.
-  -  Errors are caught using **try-catch** blocks.
-- **Design Patterns**:
-  - **Strategy Pattern** to manage different operations.
-  - **Service Pattern** to separate business logic from the UI.
-
-### **Part 3: Rock, Paper, Scissors**
-- Features:
-  - Play against the computer and save results (win, loss, draw) along with the date.
-  - Calculate the average win percentage based on all past games.
-  - View a list of previous games, including the player’s choice, the computer’s choice, the result, and the date.
-
-#### Techniques and Design:
-- **Design Patterns**:
-  - **Service Pattern** to handle game logic.
+The project uses **Entity Framework Core** with the **Code First approach** to manage the database.
 
 ---
 
-## Technologies Used
+## **Technologies**
+The project is developed using the following technologies and libraries:
+- **Visual Studio**
+- **SQL Database**
 
-### **Languages and Frameworks:**
-- C#
-- .NET Core
-- Entity Framework Core
+## **Nuget packages**
+- **Autofac** (Dependency Injection)
+- **Spectre.Console** (For the user interface)
+- **Fluent validation** (For the user interface)
+- **Microsoft.EntityFrameworkCore.SqlServerr**
+- **Microsoft.EntityFrameworkCore.Tools**
+- **Microsoft.Extensions.Configuration.Json**
 
-### **Database:**
-- SQL Server: Used as the database solution for storing application data.
-- Database management is handled via **Entity Framework Code First**.
-- All three parts of the application (Shapes, Calculator, and Rock, Paper, Scissors) use the same SQL database but store data in separate tables to ensure modular and organized data handling.
-- SQL Server: Used as the database solution for storing application data.
-- Database management is handled via **Entity Framework Code First**.
-- SQL Server
-- Database management is handled via **Entity Framework Code First**.
 
-### **NuGet Packages:**
-- **Spectre.Console**: For elegant and clear console output.
-- **FluentValidation**: For input validation.
-- **Autofac**: For Dependency Injection.
-- **Microsoft.Extensions.Hosting**: To manage the application lifecycle.
-- **Microsoft.EntityFrameworkCore**: For database interactions.
+
+
 
 ---
 
-## Installation
+## **Features**
+### **ShapeApp**
+- Calculates area and perimeter for:
+  - Rectangle
+  - Triangle
+  - Parallelogram
+  - Rhombus
+- CRUD functionality to manage saved calculations.
+- Soft delete functionality to mark calculations as deleted without removing them from the database.
+- All calculations are saved to the database with timestamps.
 
-1. **Clone the repository:**
+### **CalculatorApp**
+- Supports basic mathematical operations:
+  - Addition (+), Subtraction (-), Multiplication (*), Division (/)
+  - Square root (√) and Modulus (%)
+- CRUD functionality to manage saved calculations.
+- Soft delete functionality to mark calculations as deleted without removing them from the database.
+- Results are saved to the database with two decimal precision.
+
+### **RPSGameApp**
+- Play rock-paper-scissors against the computer.
+- Saves game history, including:
+  - Player choice, computer choice, result, and timestamp.
+- Displays statistics, including average win rate.
+
+---
+
+## **Installation**
+1. Clone this repository:
    ```bash
-   git clone https://github.com/<your-username>/console-app-project.git
+   git clone https://github.com/<your-repo-name>.git
+   ```
+5. Create the database:
+   ```bash
+   dotnet ef database update
+   ```
+ 5. Set 'StartUp' Project as startup project:
+   ```
+   Right click 'Startup' Project. Click 'Set as startup project'
+   ```
+6. Run the application:
+   ``` Visual Studio
+   F5
    ```
 
-2. **Open the project in Visual Studio:**
-   - Navigate to the cloned folder and open the project file.
+---
 
-3. **Set the startup project:**
-   - Right-click on the project in **Solution Explorer** and select **"Set as Startup Project"**.
+## **Architecture and Design Patterns**
+The project is structured with a clear architecture and design patterns to ensure the code is modular and maintainable. The solution consists of several projects, each with specific responsibilities:
+- **Startup Project:** This is the entry point of the application where the program begins execution. It coordinates the initialization of other components, such as setting up dependency injection using Autofac and configuring database connections through the DAL. The Startup Project ensures seamless communication between ShapeApp, CalculatorApp, and RPSGameApp by referencing their services and managing their dependencies.
+- **ClassLibrary Project:** This project contains reusable components, including interfaces, shared models, utilities, common enums with their extensions (e.g., enum extensions for menu management), and repositories. Repositories in this project are responsible for abstracting database queries, ensuring that the logic for accessing and manipulating data is centralized and reusable. The ClassLibrary Project serves as a foundation that other projects reference, ensuring consistency, modularity, and reusability across the solution.
+-**DAL (Data Access Layer) Project:** Responsible for managing the database connection and handling all interactions with the database. It includes the DbContext, and configuration files like appsettings.json to store connection strings and other database-related settings. This ensures all database-related logic and configurations are centralized and easy to manage.
+- **ShapeApp Project:** Focuses on geometric calculations, such as area and perimeter, for various shapes. It includes full CRUD functionality, allowing users to create new calculations, read saved data, update existing entries, and mark records as deleted using soft delete. The application uses the Factory Pattern to dynamically create geometric objects based on user input, ensuring a modular and extensible design. The CRUD operations are implemented through repositories to ensure separation of concerns and maintainability. All calculations, along with their timestamps, are stored in the database for future reference.
+- **CalculatorApp Project:** Designed to perform basic mathematical operations such as addition, subtraction, multiplication, and division. This project includes CRUD functionality that allows users to:
+- Create: Save new calculations with operator details and numerical inputs.
+- Read: View previously saved calculations with results and timestamps.
 
-4. **Build and run the application:**
-   - Press **F5** or select **Run** from the menu.
+- Update: Modify stored calculations if corrections are needed.
+- Delete: Soft delete entries, marking them as inactive without permanent removal, preserving data integrity and enabling recovery if necessary.
+
+The CRUD operations are managed through repositories to keep database logic organized and separate from the business logic. All calculations are saved in the database with two-decimal precision for results, ensuring accuracy and consistency in record-keeping.
+
+- **RPSGameApp Project:** is a game where you play rock-paper-scissors against the computer. The game keeps track of what you and the computer choose, who wins, and when each game was played. It also shows you how often you win. The main focus is on playing the game and showing your stats. 
+
+## **Design Patterns**
+
+- Factory Pattern: Used in ShapeApp to dynamically create geometric objects, ensuring flexibility and extensibility.
+
+- Repository Pattern: Abstracts database queries and organizes data access, making the code more modular and testable.
+
+- Dependency Injection: Implemented using Autofac to manage dependencies between classes, improving modularity and testability.
+
+- SOLID Principles: Followed throughout the project to ensure classes have clear, single responsibilities, making the codebase more maintainable and scalable.
+
+---
+
+## **Lessons Learned and Reflections**
+- I learned how to use **design patterns** like Factory Pattern and Repository Pattern to create flexible and scalable code.
+- Implementing **Entity Framework Core** and managing databases with the **Code First approach** gave me deeper insights into database technology.
+- Structuring the project with clear folders and following **SOLID principles** made the codebase easier to manage and extend.
+- I also gained experience in using **Git** and **branching**, which made the work more efficient.
 
 
