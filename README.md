@@ -7,11 +7,12 @@
 4. [features](#features)
 5. [Design Patterns](#design-patterns)
 6. [Lessons Learned and Reflections](#lessons-learned-and-reflections)
+7. [Flowchart](#Flowchart)
 
 ---
 
 ## **Project Description**
-This a multi-project console application is built using Entity Framework Core with the Code First approach to manage the database. The goal is to create an application that handles several features using the same SQL database.
+This multi-project console application is built using Entity Framework Core with the Code First approach to manage the database. The goal is to create an application that handles several features using the same SQL database.
 1. **ShapeApp Project** – Calculates area and perimeter for various geometric shapes.
 2. **CalculatorApp Project** – A calculator that performs basic mathematical operations.
 3. **RPSGameApp Project** – A rock-paper-scissors game against the computer, with results and statistics stored in a database.
@@ -84,5 +85,11 @@ In my project, I utilized several design patterns to ensure the code is modular,
 - Implementing **Entity Framework Core** and managing databases with the **Code First approach** gave me deeper insights into database technology.
 - Structuring the project with clear folders and following **SOLID principles** made the codebase easier to manage and extend.
 - I also gained experience in using **Git** and **branching**, which made the work more efficient.
+  
+---
+
+## **Flowchart**
+
+![Proejct1 drawio](https://github.com/user-attachments/assets/d3fc13f3-5f85-4869-aa14-ac3ca2e9e613)
 
 
