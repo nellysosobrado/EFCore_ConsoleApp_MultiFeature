@@ -1,23 +1,24 @@
-# **Project 1: Console App with EF Core**
+# **Project 1**
 
 ## **Table of Contents**
 1. [Project Description](#project-description)
 2. [Technologies](#technologies)
-3. [Features](#features)
-4. [Installation](#installation)
-5. [Architecture and Design Patterns](#architecture-and-design-patterns)
-6. [Design Patterns](#design-patterns)
-7. [Lessons Learned and Reflections](#lessons-learned-and-reflections)
+3. [Installation](#installation)
+4. [features](#features)
+5. [Design Patterns](#design-patterns)
+6. [Lessons Learned and Reflections](#lessons-learned-and-reflections)
 
 ---
 
 ## **Project Description**
-This project was developed as part of the *Database Technology* course. The goal is to build a Console App that handles three different modules:
-1. **ShapeApp** – Calculates area and perimeter for various geometric shapes.
-2. **CalculatorApp** – A calculator that performs basic mathematical operations.
-3. **RPSGameApp** – A rock-paper-scissors game against the computer, with results and statistics stored in a database.
+This multi-project console application is built using Entity Framework Core with the Code First approach to manage the database. The goal is to create an application that handles several features using the same SQL database.
+1. **ShapeApp Project** – Calculates area and perimeter for various geometric shapes.
+2. **CalculatorApp Project** – A calculator that performs basic mathematical operations.
+3. **RPSGameApp Project** – A rock-paper-scissors game against the computer, with results and statistics stored in a database.
+4.**ClassLibrary Project**– Contains shared classes and reusable code used across multiple applications, such as utility functions and entity models.
+5. **Startup Project** – The entry point for the application; responsible for initializing and coordinating other projects.
+6. **DAL (Data Access Layer) Project** – Manages database interactions, such as CRUD operations, and handles communication with the database using Entity Framework Core.
 
-The project uses **Entity Framework Core** with the **Code First approach** to manage the database.
 
 ---
 
@@ -27,43 +28,12 @@ The project is developed using the following technologies and libraries:
 - **SQL Database**
 
 ## **Nuget packages**
-- **Autofac** (Dependency Injection)
-- **Spectre.Console** (For the user interface)
-- **Fluent validation** (For the user interface)
+- **Autofac** 
+- **Spectre.Console** 
+- **Fluent validation** 
 - **Microsoft.EntityFrameworkCore.SqlServerr**
 - **Microsoft.EntityFrameworkCore.Tools**
-- **Microsoft.Extensions.Configuration.Json**
-
-
-
-
-
----
-
-## **Features**
-### **ShapeApp**
-- Calculates area and perimeter for:
-  - Rectangle
-  - Triangle
-  - Parallelogram
-  - Rhombus
-- CRUD functionality to manage saved calculations.
-- Soft delete functionality to mark calculations as deleted without removing them from the database.
-- All calculations are saved to the database with timestamps.
-
-### **CalculatorApp**
-- Supports basic mathematical operations:
-  - Addition (+), Subtraction (-), Multiplication (*), Division (/)
-  - Square root (√) and Modulus (%)
-- CRUD functionality to manage saved calculations.
-- Soft delete functionality to mark calculations as deleted without removing them from the database.
-- Results are saved to the database with two decimal precision.
-
-### **RPSGameApp**
-- Play rock-paper-scissors against the computer.
-- Saves game history, including:
-  - Player choice, computer choice, result, and timestamp.
-- Displays statistics, including average win rate.
+- **Microsoft.Extensions.Configuration.Design**
 
 ---
 
@@ -87,32 +57,25 @@ The project is developed using the following technologies and libraries:
 
 ---
 
-## **Architecture and Design Patterns**
+## **Features**
 The project is structured with a clear architecture and design patterns to ensure the code is modular and maintainable. The solution consists of several projects, each with specific responsibilities:
-- **Startup Project:** This is the entry point of the application where the program begins execution. It coordinates the initialization of other components, such as setting up dependency injection using Autofac and configuring database connections through the DAL. The Startup Project ensures seamless communication between ShapeApp, CalculatorApp, and RPSGameApp by referencing their services and managing their dependencies.
-- **ClassLibrary Project:** This project contains reusable components, including interfaces, shared models, utilities, common enums with their extensions (e.g., enum extensions for menu management), and repositories. Repositories in this project are responsible for abstracting database queries, ensuring that the logic for accessing and manipulating data is centralized and reusable. The ClassLibrary Project serves as a foundation that other projects reference, ensuring consistency, modularity, and reusability across the solution.
--**DAL (Data Access Layer) Project:** Responsible for managing the database connection and handling all interactions with the database. It includes the DbContext, and configuration files like appsettings.json to store connection strings and other database-related settings. This ensures all database-related logic and configurations are centralized and easy to manage.
-- **ShapeApp Project:** Focuses on geometric calculations, such as area and perimeter, for various shapes. It includes full CRUD functionality, allowing users to create new calculations, read saved data, update existing entries, and mark records as deleted using soft delete. The application uses the Factory Pattern to dynamically create geometric objects based on user input, ensuring a modular and extensible design. The CRUD operations are implemented through repositories to ensure separation of concerns and maintainability. All calculations, along with their timestamps, are stored in the database for future reference.
-- **CalculatorApp Project:** Designed to perform basic mathematical operations such as addition, subtraction, multiplication, and division. This project includes CRUD functionality that allows users to:
-- Create: Save new calculations with operator details and numerical inputs.
-- Read: View previously saved calculations with results and timestamps.
-
-- Update: Modify stored calculations if corrections are needed.
-- Delete: Soft delete entries, marking them as inactive without permanent removal, preserving data integrity and enabling recovery if necessary.
-
-The CRUD operations are managed through repositories to keep database logic organized and separate from the business logic. All calculations are saved in the database with two-decimal precision for results, ensuring accuracy and consistency in record-keeping.
-
-- **RPSGameApp Project:** is a game where you play rock-paper-scissors against the computer. The game keeps track of what you and the computer choose, who wins, and when each game was played. It also shows you how often you win. The main focus is on playing the game and showing your stats. 
+- **Startup Project:** This is where the program starts. It sets up other parts, like connecting to the database and making sure ShapeApp, CalculatorApp, and RPSGameApp work together smoothly.
+- **ClassLibrary Project:** This part has reusable pieces like interfaces, models, utilities, enums, and repositories. It helps other parts of the project work the same way and makes the code easy to reuse.
+- **DAL Project:** This part handles the database connection and all the database work. It includes settings and configurations to keep everything organized and easy to manage.
+- **ShapeApp Project:** This part calculates area and perimeter for shapes. It lets users create, read, update, and delete calculations, using soft delete to mark deleted records without permanently removing them. It uses a pattern to make shapes based on user input and stores all calculations with timestamps and deletion dates in the database.
+- **CalculatorApp Project:** This part does basic math like adding, subtracting, multiplying, dividing, finding the square root, and modulus. It lets users save, view, update, and delete calculations. All calculations are saved in the database with two-decimal precision to keep them accurate.
+- **RPSGameApp Project:** This is a game where you play rock-paper-scissors against the computer. It keeps track of your choices, the computer's choices, who wins, and when you played. It also shows how often you win. The main focus is on playing the game and showing your stats (Win/Losses/Draws/AverageWins)
 
 ## **Design Patterns**
+In my project, I utilized several design patterns to ensure the code is modular, maintainable, and scalable.
 
-- Factory Pattern: Used in ShapeApp to dynamically create geometric objects, ensuring flexibility and extensibility.
+- **Factory Pattern:** I implemented the Factory Pattern in the ShapeApp to dynamically create geometric objects based on user input. This approach provides flexibility and extensibility, allowing the application to easily accommodate new shapes in the future.
 
-- Repository Pattern: Abstracts database queries and organizes data access, making the code more modular and testable.
+- **Repository Pattern:** The Repository Pattern was used to abstract database queries and organize data access. By centralizing data access logic, this pattern makes the code more modular and testable, ensuring that changes to the database structure have minimal impact on the rest of the application.
 
-- Dependency Injection: Implemented using Autofac to manage dependencies between classes, improving modularity and testability.
+- **Dependency Injection:** I used Autofac for dependency injection to manage dependencies between classes. This pattern improves modularity and testability by allowing classes to be easily swapped out or modified without affecting other parts of the application.
 
-- SOLID Principles: Followed throughout the project to ensure classes have clear, single responsibilities, making the codebase more maintainable and scalable.
+- **SOLID Principles:** Throughout the project, I adhered to SOLID principles to ensure that each class has a clear, single responsibility. This approach makes the codebase more maintainable and scalable, as it promotes separation of concerns and reduces the likelihood of introducing bugs when making changes.
 
 ---
 
