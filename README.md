@@ -11,7 +11,7 @@
 ---
 
 ## **Project Description**
-This multi-project console application is built using Entity Framework Core with the Code First approach to manage the database. The goal is to create an application that handles several features using the same SQL database.
+This a multi-project console application is built using Entity Framework Core with the Code First approach to manage the database. The goal is to create an application that handles several features using the same SQL database.
 1. **ShapeApp Project** – Calculates area and perimeter for various geometric shapes.
 2. **CalculatorApp Project** – A calculator that performs basic mathematical operations.
 3. **RPSGameApp Project** – A rock-paper-scissors game against the computer, with results and statistics stored in a database.
