@@ -16,7 +16,7 @@ This multi-project console application is built using Entity Framework Core with
 1. **ShapeApp Project** – Calculates area and perimeter for various geometric shapes.
 2. **CalculatorApp Project** – A calculator that performs basic mathematical operations.
 3. **RPSGameApp Project** – A rock-paper-scissors game against the computer, with results and statistics stored in a database.
-4.**ClassLibrary Project**– Contains shared classes and reusable code used across multiple applications, such as utility functions and entity models.
+4. **ClassLibrary Project**– Contains shared classes and reusable code used across multiple applications, such as utility functions and entity models.
 5. **Startup Project** – The entry point for the application; responsible for initializing and coordinating other projects.
 6. **DAL (Data Access Layer) Project** – Manages database interactions, such as CRUD operations, and handles communication with the database using Entity Framework Core.
 
