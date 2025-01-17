@@ -3,11 +3,12 @@
 ## **Table of Contents**
 1. [Project Description](#project-description)
 2. [Technologies](#technologies)
-3. [Installation](#installation)
-4. [features](#features)
-5. [Design Patterns](#design-patterns)
-6. [Lessons Learned and Reflections](#lessons-learned-and-reflections)
-7. [Flowchart](#Flowchart)
+3. [Nuget packages](#Nuget-packages)
+4. [Installation](#installation)
+5. [features](#features)
+6. [Design Patterns](#design-patterns)
+7. [Lessons Learned and Reflections](#lessons-learned-and-reflections)
+8. [Flowchart](#Flowchart)
 
 ---
 
