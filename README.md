@@ -24,7 +24,6 @@ This multi-project console application is built using Entity Framework Core with
 ---
 
 ## **Technologies**
-The project is developed using the following technologies and libraries:
 - **Visual Studio**
 - **SQL Database**
 
